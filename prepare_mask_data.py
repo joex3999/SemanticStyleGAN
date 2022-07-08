@@ -87,6 +87,12 @@ if __name__ == "__main__":
         default=8,
         help="number of workers for preparing dataset",
     )
+    parser.add_argument(
+        "--cityscapes",
+        type=bool,
+        default=False,
+        help="whether you are dealing with cityscapes or not",
+    )
     parser.add_argument("image_path", type=str, help="path to the image files")
     parser.add_argument("label_path", type=str, help="path to the label files")
 
@@ -94,10 +100,13 @@ if __name__ == "__main__":
 
     images = find_images(args.image_path)
     labels = find_images(args.label_path)
-    get_key = lambda fpath: os.path.splitext(os.path.basename(fpath))[0] # Identify by basename
-    print(labels)
+
+
+    get_key = lambda fpath: os.path.splitext(os.path.basename(fpath))[0]
+    if args.cityscapes:
+     get_key = lambda fpath: "_".join(os.path.splitext(os.path.basename(fpath))[0].split("_")[:-1]) 
     label_dict = {get_key(label):label for label in labels}
-    labels = [label_dict[get_key(image)] for image in images] #TODO: match images and labels
+    labels = [label_dict[get_key(image)] for image in images]
 
     print(f"Number of images: {len(images)}")
     with lmdb.open(args.out, map_size=1024 ** 4, readahead=False) as env:
