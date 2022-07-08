@@ -95,8 +95,9 @@ if __name__ == "__main__":
     images = find_images(args.image_path)
     labels = find_images(args.label_path)
     get_key = lambda fpath: os.path.splitext(os.path.basename(fpath))[0] # Identify by basename
+    print(labels)
     label_dict = {get_key(label):label for label in labels}
-    labels = [label_dict[get_key(image)] for image in images]
+    labels = [label_dict[get_key(image)] for image in images] #TODO: match images and labels
 
     print(f"Number of images: {len(images)}")
     with lmdb.open(args.out, map_size=1024 ** 4, readahead=False) as env:

@@ -7,12 +7,12 @@ from imageio import imread, imwrite
 from multiprocessing import Pool
 import cv2
 from pathlib import Path
-dataset_path = sys.argv[1]
+dataset_path = sys.argv[1]  #TODO use this variable
 
-seg_dataset_path = os.path.join(dataset_path, 'CelebAMask-HQ-mask-anno/')
-seg_trainset_path = os.path.join(dataset_path, 'label_train')
-img_valset_path = os.path.join(dataset_path, 'image_val')
-seg_valset_path = os.path.join(dataset_path, 'label_val')
+# seg_dataset_path = os.path.join(dataset_path, 'CelebAMask-HQ-mask-anno/')
+# seg_trainset_path = os.path.join(dataset_path, 'label_train')
+# img_valset_path = os.path.join(dataset_path, 'image_val')
+# seg_valset_path = os.path.join(dataset_path, 'label_val')
 colored_label = False
 validation_cutoff=28000
 
@@ -131,16 +131,16 @@ def simplify_image_labels(image,viewable=False):
     new_image[mask]= (255/8)*v if viewable else v
   return new_image
 
-def process_img(i):
+def process_img():
     accum=0
-    main_dir="/content/SemanticStyleGAN/data/gtFine"
-    for subdir, dirs, files in os.walk(main_dir):
+   # dataset_path="/content/SemanticStyleGAN/data/gtFine"
+    for subdir, dirs, files in os.walk(dataset_path):
         output_dir = Path(subdir.replace("gtFine","gtFine_preprocessed"))
         output_dir.mkdir(parents=True, exist_ok=True)
         for file in files:
-            # accum+=1
-            # if accum%1000 ==0:
-            #     print(f"Done with {(accum/20000)*100}% of the data")
+            accum+=1
+            if accum%1000 ==0:
+                print(f"Done with {(accum/20000)*100}% of the data")
             if "labelIds" not in file:
                 continue
             #print os.path.join(subdir, file)
@@ -153,12 +153,13 @@ def process_img(i):
 
 if __name__ == "__main__":
 
-    assert os.path.isdir(seg_dataset_path)
-    os.mkdir(seg_trainset_path)
-    os.mkdir(img_valset_path)
-    os.mkdir(seg_valset_path)
+    # assert os.path.isdir(seg_dataset_path)
+    # os.mkdir(seg_trainset_path)
+    # os.mkdir(img_valset_path)
+    # os.mkdir(seg_valset_path)
 
-    pool = Pool(16)
-    with tqdm(total=30000) as pbar:
-        for _ in pool.imap(process_img, range(30000)):
-            pbar.update()
+    # pool = Pool(16)
+    # with tqdm(total=30000) as pbar:
+    #     for _ in pool.imap(process_img, range(30000)):
+    #         pbar.update()
+    process_img()
