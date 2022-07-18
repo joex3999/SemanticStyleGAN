@@ -14,7 +14,7 @@ from pathlib import Path
 # seg_valset_path = os.path.join(dataset_path, 'label_val')
 
 dataset_path = sys.argv[1]  #TODO use this variable
-output_path = sys.argv[2]
+output_prefix = sys.argv[2]
 
 colored_label = False
 validation_cutoff=28000
@@ -137,8 +137,11 @@ def simplify_image_labels(image,viewable=False):
 def process_img():
     accum=0
     for subdir, dirs, files in os.walk(dataset_path):
-        output_dir = Path(subdir.replace("gtFine","gtFine_preprocessed"))
-        output_dir.mkdir(parents=True, exist_ok=True)
+        if(subdir.split("/")[-3]=="gtFine"):
+          output_dir = "/".join(subdir.split("/")[-3:]).replace("gtFine","gtFine_preprocessed")
+          output_dir= Path(output_prefix+output_dir)
+          #print(output_dir)
+          output_dir.mkdir(parents=True, exist_ok=True)
         for file in files:
             accum+=1
             if accum%1000 ==0:
@@ -147,7 +150,7 @@ def process_img():
                 continue
             #print os.path.join(subdir, file)
             filepath = subdir + os.sep + file
-            output_path= filepath.replace("gtFine","gtFine_preprocessed")
+            output_path= str(output_dir) + os.sep + file
             image = imread(filepath)
             preprocessed_image=simplify_image_labels(image,True)
             cv2.imwrite(output_path,preprocessed_image)
