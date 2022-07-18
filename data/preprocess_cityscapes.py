@@ -7,12 +7,15 @@ from imageio import imread, imwrite
 from multiprocessing import Pool
 import cv2
 from pathlib import Path
-dataset_path = sys.argv[1]  #TODO use this variable
 
 # seg_dataset_path = os.path.join(dataset_path, 'CelebAMask-HQ-mask-anno/')
 # seg_trainset_path = os.path.join(dataset_path, 'label_train')
 # img_valset_path = os.path.join(dataset_path, 'image_val')
 # seg_valset_path = os.path.join(dataset_path, 'label_val')
+
+dataset_path = sys.argv[1]  #TODO use this variable
+output_path = sys.argv[2]
+
 colored_label = False
 validation_cutoff=28000
 
@@ -22,15 +25,15 @@ validation_cutoff=28000
 2: human : person rider
 3: vehicle : car truck bus on rails motorcycle bicycle caravan trailer
 4: construction : building wall fence guard rail bridge tunnel
-5: object : pole pole group traffic sign traffic light
+5: object : pole pole group rtaffic sign traffic light
 6: nature : vegetation terrain
 7: sky : sky
 8:void : ground dynamic static
 '''
-#TODO : unlabeled ? ego vehicle ? rectifiacation botdeer ? out of roi > and lp = -1 ?
+#TODO : unlabeled ? ego vehicle ? rectifiacation border ? out of roi > and lp = -1 ?
 cut_down_mapping = {
     0: 0,
-    1: 3,
+    1: 0,
     2: 5,
     3: 0,
     4: 8,
@@ -133,7 +136,6 @@ def simplify_image_labels(image,viewable=False):
 
 def process_img():
     accum=0
-   # dataset_path="/content/SemanticStyleGAN/data/gtFine"
     for subdir, dirs, files in os.walk(dataset_path):
         output_dir = Path(subdir.replace("gtFine","gtFine_preprocessed"))
         output_dir.mkdir(parents=True, exist_ok=True)
