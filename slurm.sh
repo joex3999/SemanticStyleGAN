@@ -3,8 +3,8 @@
 #SBATCH --nodes=1
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=2
-#SBATCH --mem=32G
-#SBATCH --gpus=a40:1
+#SBATCH --mem=16G
+#SBATCH --gpus=1
 #SBATCH --time=15:00:00
 #SBATCH --mail-type=ALL
 ##SBATCH --partition=DEADLINE
