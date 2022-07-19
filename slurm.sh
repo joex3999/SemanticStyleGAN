@@ -14,10 +14,10 @@
 #SBATCH --qos=batch
 #SBATCH --mail-user=joex3999@gmail.com
 
+
 # Activate everything you need
 module load cuda/11.3
 
-module avail
-#python train.py --dataset /no_backups/g013/data/lmdb_cityscapes_256 --inception /no_backups/g013/data/inception_cityscapes_256.pkl --checkpoint_dir /no_backups/g013/checkpoints/cityscapes_256 --seg_dim 9 --size 256 --transparent_dims 3 --residual_refine 
-#python main_test.py
-python3.6 prepare_inception.py /no_backups/g013/data/lmdb_cityscapes_256 --output  /no_backups/g013/data/inception_cityscapes_256.pkl --size 256 --dataset_type mask
+python3.6 train.py --dataset /no_backups/g013/data/lmdb_cityscapes_256 --inception /no_backups/g013/data/inception_cityscapes_256.pkl --checkpoint_dir /no_backups/g013/checkpoints/cityscapes_256 --seg_dim 9 --size 256 --transparent_dims 3 --residual_refine 
+#python3.6 prepare_inception.py /no_backups/g013/data/lmdb_cityscapes_256 --output  /no_backups/g013/data/inception_cityscapes_256.pkl --size 256 --dataset_type mask
+
