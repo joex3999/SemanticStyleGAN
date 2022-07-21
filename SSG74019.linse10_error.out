@@ -1,6 +1,0 @@
------------------------- /usr/share/modules/modulefiles ------------------------
-cuda/10.0           cuda/11.1               pycharm/2020.1.2(default)  
-cuda/10.1(default)  cuda/11.2               vscode/1.63.2(default)     
-cuda/10.2           cuda/11.3               
-cuda/11.0           matlab/R2020a(default)  
-/var/spool/slurm/d/job74019/slurm_script: line 23: python3.6: command not found
