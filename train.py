@@ -385,7 +385,7 @@ if __name__ == '__main__':
     parser.add_argument('--checkpoint_dir', type=str, default='./output/')
     parser.add_argument('--ckpt', type=str, default=None)
 
-    parser.add_argument('--iter', type=int, default=200001)
+    parser.add_argument('--iter', type=int, default=600001)
     parser.add_argument('--batch', type=int, default=4)
     parser.add_argument('--n_sample', type=int, default=16)
     parser.add_argument('--size', type=int, default=256)

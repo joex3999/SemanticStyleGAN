@@ -30,7 +30,6 @@ validation_cutoff=28000
 7: sky : sky
 8:void : ground dynamic static
 '''
-#TODO : unlabeled ? ego vehicle ? rectifiacation border ? out of roi > and lp = -1 ?
 cut_down_mapping = {
     0: 0,
     1: 0,
