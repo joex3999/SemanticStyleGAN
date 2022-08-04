@@ -1,0 +1,2 @@
+/misc/usrhomes/g013/SemanticStyleGAN/../SemanticStyleGAN/models/op/conv2d_gradfix.py:96: UserWarning: conv2d_gradfix not supported on PyTorch 1.12.0. Falling back to torch.nn.functional.conv2d().
+  warnings.warn(

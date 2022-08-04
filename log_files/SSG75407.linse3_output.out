@@ -1,0 +1,684 @@
+Initializing model with arguments:
+{'aug': False,
+ 'base_layers': 2,
+ 'batch': 4,
+ 'channel_multiplier': 2,
+ 'checkpoint_dir': '/no_backups/g013/checkpoints/version_3',
+ 'ckpt': None,
+ 'coarse_channel': 512,
+ 'coarse_size': 64,
+ 'd_reg_every': 16,
+ 'dataset': '/no_backups/g013/data/lmdb_cityscapes_256_version_3',
+ 'depth_layers': 6,
+ 'detach_texture': False,
+ 'distributed': False,
+ 'g_reg_every': 4,
+ 'inception': '/no_backups/g013/data/inception_cityscapes_256_version_3.pkl',
+ 'iter': 600001,
+ 'lambda_mask': 100.0,
+ 'latent': 512,
+ 'local_channel': 64,
+ 'local_layers': 10,
+ 'local_rank': 0,
+ 'lr': 0.002,
+ 'min_feat_size': 16,
+ 'mixing': 0.3,
+ 'n_gpu': 1,
+ 'n_mlp': 8,
+ 'n_sample': 16,
+ 'num_workers': 8,
+ 'path_batch_shrink': 2,
+ 'path_regularize': 0.5,
+ 'r1_img': 10,
+ 'r1_seg': 1000,
+ 'residual_refine': True,
+ 'save_every': 5000,
+ 'seg_dim': 16,
+ 'size': 256,
+ 'start_iter': 0,
+ 'transparent_dims': (10, 12),
+ 'viz_every': 2000}
+n_latent: 34, n_latent_expand: 160
+Initializing model with arguments:
+{'aug': False,
+ 'base_layers': 2,
+ 'batch': 4,
+ 'channel_multiplier': 2,
+ 'checkpoint_dir': '/no_backups/g013/checkpoints/version_3',
+ 'ckpt': None,
+ 'coarse_channel': 512,
+ 'coarse_size': 64,
+ 'd_reg_every': 16,
+ 'dataset': '/no_backups/g013/data/lmdb_cityscapes_256_version_3',
+ 'depth_layers': 6,
+ 'detach_texture': False,
+ 'distributed': False,
+ 'g_reg_every': 4,
+ 'inception': '/no_backups/g013/data/inception_cityscapes_256_version_3.pkl',
+ 'iter': 600001,
+ 'lambda_mask': 100.0,
+ 'latent': 512,
+ 'local_channel': 64,
+ 'local_layers': 10,
+ 'local_rank': 0,
+ 'lr': 0.002,
+ 'min_feat_size': 16,
+ 'mixing': 0.3,
+ 'n_gpu': 1,
+ 'n_mlp': 8,
+ 'n_sample': 16,
+ 'num_workers': 8,
+ 'path_batch_shrink': 2,
+ 'path_regularize': 0.5,
+ 'r1_img': 10,
+ 'r1_seg': 1000,
+ 'residual_refine': True,
+ 'save_every': 5000,
+ 'seg_dim': 16,
+ 'size': 256,
+ 'start_iter': 0,
+ 'transparent_dims': (10, 12),
+ 'viz_every': 2000}
+n_latent: 34, n_latent_expand: 160
+Loading train dataloader with size  5000
+Start Training...
+Start Training Iterations...
+[000000] d: 1.3317; g: 2.9065; real: 0.5282; fake: 0.3078; r1_img: 0.0001; r1_seg: 0.0001; path: 0.0153; mean path: 0.0012; mask: 0.2570; time: 18.10
+[000100] d: 0.7050; g: 1.9437; real: 4.0191; fake: -0.1106; r1_img: 0.0019; r1_seg: 0.0012; path: 0.0002; mean path: 0.0103; mask: 0.0025; time: 2.26
+[000200] d: 0.0821; g: 3.7084; real: 4.2279; fake: -3.0032; r1_img: 0.0000; r1_seg: 0.0001; path: 0.0004; mean path: 0.0159; mask: 0.0042; time: 2.28
+[000300] d: 0.4361; g: 12.5000; real: 4.4330; fake: -0.7648; r1_img: 0.0006; r1_seg: 0.0001; path: 0.0001; mean path: 0.0195; mask: 0.0160; time: 2.30
+[000400] d: 0.0423; g: 4.6896; real: 6.3135; fake: -4.2404; r1_img: 0.0014; r1_seg: 0.0000; path: 0.0000; mean path: 0.0202; mask: 0.0054; time: 3.09
+[000500] d: 0.3793; g: 2.9590; real: 2.7227; fake: -1.0661; r1_img: 0.0002; r1_seg: 0.0001; path: 0.0000; mean path: 0.0207; mask: 0.0024; time: 2.28
+[000600] d: 0.1068; g: 3.4666; real: 2.6170; fake: -3.4283; r1_img: 0.0000; r1_seg: 0.0003; path: 0.0004; mean path: 0.0259; mask: 0.0033; time: 2.28
+[000700] d: 2.3040; g: 4.1830; real: 5.3741; fake: 2.1904; r1_img: 0.0001; r1_seg: 0.0002; path: 0.0000; mean path: 0.0285; mask: 0.0178; time: 2.28
+[000800] d: 0.0903; g: 4.2168; real: 7.6545; fake: -2.6097; r1_img: 0.0009; r1_seg: 0.0003; path: 0.0000; mean path: 0.0282; mask: 0.0026; time: 3.11
+[000900] d: 0.3687; g: 1.8454; real: 3.3705; fake: -1.7396; r1_img: 0.0002; r1_seg: 0.0002; path: 0.0144; mean path: 0.0310; mask: 0.0048; time: 2.30
+[001000] d: 0.1833; g: 2.7931; real: 6.7195; fake: -2.6898; r1_img: 0.0000; r1_seg: 0.0003; path: 0.0019; mean path: 0.0357; mask: 0.0033; time: 2.28
+[001100] d: 0.4859; g: 1.7295; real: 3.4399; fake: -1.2663; r1_img: 0.0001; r1_seg: 0.0002; path: 0.0068; mean path: 0.0443; mask: 0.0030; time: 2.31
+[001200] d: 1.2265; g: 1.9401; real: 0.7141; fake: -0.0390; r1_img: 0.0001; r1_seg: 0.0002; path: 0.0004; mean path: 0.0515; mask: 0.0025; time: 3.16
+[001300] d: 1.5679; g: 3.9145; real: 0.6341; fake: 0.2152; r1_img: 0.0001; r1_seg: 0.0002; path: 0.0025; mean path: 0.0608; mask: 0.0024; time: 2.28
+[001400] d: 0.3573; g: 2.2822; real: 4.7667; fake: -1.0646; r1_img: 0.0003; r1_seg: 0.0001; path: 0.0006; mean path: 0.0604; mask: 0.0013; time: 2.28
+[001500] d: 1.8553; g: 5.3920; real: 5.6857; fake: 0.7963; r1_img: 0.0001; r1_seg: 0.0003; path: 0.0013; mean path: 0.0599; mask: 0.0006; time: 2.30
+[001600] d: 0.5918; g: 1.7131; real: 4.0453; fake: -2.7895; r1_img: 0.0002; r1_seg: 0.0002; path: 0.0030; mean path: 0.0584; mask: 0.0022; time: 3.10
+[001700] d: 0.6668; g: 1.7564; real: 2.0663; fake: -1.4757; r1_img: 0.0003; r1_seg: 0.0000; path: 0.0005; mean path: 0.0610; mask: 0.0011; time: 2.28
+[001800] d: 0.3767; g: 2.6219; real: 3.4492; fake: -1.7856; r1_img: 0.0006; r1_seg: 0.0000; path: 0.0002; mean path: 0.0587; mask: 0.0008; time: 2.31
+[001900] d: 0.5063; g: 1.8229; real: 2.5474; fake: -1.5276; r1_img: 0.0002; r1_seg: 0.0000; path: 0.0003; mean path: 0.0593; mask: 0.0007; time: 2.28
+[002000] d: 0.5167; g: 1.8556; real: 2.6562; fake: -1.5298; r1_img: 0.0001; r1_seg: 0.0004; path: 0.0000; mean path: 0.0608; mask: 0.0005; time: 3.09
+[002100] d: 0.5094; g: 8.1981; real: 0.9286; fake: -1.8366; r1_img: 0.0009; r1_seg: 0.0001; path: 0.0011; mean path: 0.0620; mask: 0.0023; time: 2.27
+[002200] d: 0.3970; g: 1.9261; real: 4.3116; fake: -1.5405; r1_img: 0.0011; r1_seg: 0.0001; path: 0.0008; mean path: 0.0653; mask: 0.0007; time: 2.29
+[002300] d: 0.5512; g: 1.6896; real: 2.6443; fake: -1.2130; r1_img: 0.0002; r1_seg: 0.0002; path: 0.0000; mean path: 0.0649; mask: 0.0013; time: 2.29
+[002400] d: 0.3735; g: 3.4163; real: 2.9342; fake: -1.3764; r1_img: 0.0091; r1_seg: 0.0002; path: 0.0006; mean path: 0.0653; mask: 0.0015; time: 3.07
+[002500] d: 0.6179; g: 3.3588; real: 2.8043; fake: -0.4419; r1_img: 0.0062; r1_seg: 0.0002; path: 0.0107; mean path: 0.0658; mask: 0.0022; time: 2.80
+[002600] d: 0.3863; g: 3.2309; real: 3.3887; fake: -2.2037; r1_img: 0.0005; r1_seg: 0.0001; path: 0.0037; mean path: 0.0732; mask: 0.0016; time: 2.27
+[002700] d: 2.0551; g: 1.8880; real: 4.5200; fake: 1.8182; r1_img: 0.0093; r1_seg: 0.0001; path: 0.0005; mean path: 0.0807; mask: 0.0014; time: 2.26
+[002800] d: 0.3180; g: 1.9697; real: 2.2312; fake: -2.2884; r1_img: 0.0026; r1_seg: 0.0001; path: 0.0026; mean path: 0.0836; mask: 0.0006; time: 3.08
+[002900] d: 0.3561; g: 1.3250; real: 2.1353; fake: -1.6074; r1_img: 0.0032; r1_seg: 0.0001; path: 0.0000; mean path: 0.0875; mask: 0.0014; time: 2.29
+[003000] d: 0.6552; g: 1.9848; real: 1.9935; fake: -0.5557; r1_img: 0.0021; r1_seg: 0.0003; path: 0.0013; mean path: 0.0918; mask: 0.0015; time: 2.37
+[003100] d: 0.3094; g: 2.3024; real: 3.2696; fake: -2.0749; r1_img: 0.0009; r1_seg: 0.0000; path: 0.0007; mean path: 0.0948; mask: 0.0011; time: 2.27
+[003200] d: 0.5438; g: 1.7074; real: 3.1413; fake: -0.7356; r1_img: 0.0057; r1_seg: 0.0001; path: 0.0022; mean path: 0.0937; mask: 0.0010; time: 3.07
+[003300] d: 1.8199; g: 1.1277; real: -1.3356; fake: -3.3917; r1_img: 0.0010; r1_seg: 0.0001; path: 0.0004; mean path: 0.0965; mask: 0.0013; time: 2.28
+[003400] d: 0.3070; g: 7.2876; real: 2.7258; fake: -1.9871; r1_img: 0.0029; r1_seg: 0.0001; path: 0.0024; mean path: 0.1019; mask: 0.0014; time: 2.28
+[003500] d: 1.2774; g: 1.6197; real: 2.0937; fake: 0.3636; r1_img: 0.0026; r1_seg: 0.0017; path: 0.0046; mean path: 0.1039; mask: 0.0008; time: 2.27
+[003600] d: 0.7106; g: 1.3930; real: 1.1824; fake: -0.9563; r1_img: 0.0039; r1_seg: 0.0000; path: 0.0043; mean path: 0.1095; mask: 0.0020; time: 3.08
+[003700] d: 0.8769; g: 2.4998; real: 0.4697; fake: -2.5964; r1_img: 0.0038; r1_seg: 0.0001; path: 0.0052; mean path: 0.1129; mask: 0.0019; time: 2.28
+[003800] d: 0.5614; g: 2.3358; real: 1.5547; fake: -1.2906; r1_img: 0.0020; r1_seg: 0.0001; path: 0.0068; mean path: 0.1089; mask: 0.0006; time: 2.30
+[003900] d: 0.8130; g: 1.7606; real: 1.8782; fake: -0.9521; r1_img: 0.0029; r1_seg: 0.0001; path: 0.0020; mean path: 0.1067; mask: 0.0019; time: 2.27
+[004000] d: 0.7625; g: 1.7214; real: 1.4848; fake: -0.6633; r1_img: 0.0087; r1_seg: 0.0002; path: 0.0553; mean path: 0.1080; mask: 0.0028; time: 3.09
+[004100] d: 0.6768; g: 1.2118; real: 1.4389; fake: -1.0578; r1_img: 0.0073; r1_seg: 0.0008; path: 0.0014; mean path: 0.1060; mask: 0.0014; time: 2.27
+[004200] d: 1.8217; g: 1.4662; real: 0.2363; fake: -0.2363; r1_img: 0.0060; r1_seg: 0.0002; path: 0.0015; mean path: 0.1138; mask: 0.0008; time: 2.31
+[004300] d: 0.7780; g: 0.7178; real: 0.9777; fake: -1.3237; r1_img: 0.0081; r1_seg: 0.0001; path: 0.0013; mean path: 0.1142; mask: 0.0014; time: 2.28
+[004400] d: 1.1278; g: 1.8016; real: 0.7362; fake: -0.0440; r1_img: 0.0099; r1_seg: 0.0000; path: 0.0035; mean path: 0.1162; mask: 0.0013; time: 3.07
+[004500] d: 1.2420; g: 1.5871; real: 2.3127; fake: 0.3207; r1_img: 0.0070; r1_seg: 0.0001; path: 0.0043; mean path: 0.1156; mask: 0.0011; time: 2.27
+[004600] d: 1.1087; g: 2.2741; real: 1.3239; fake: -0.7165; r1_img: 0.0055; r1_seg: 0.0001; path: 0.1432; mean path: 0.1174; mask: 0.0021; time: 2.31
+[004700] d: 0.6032; g: 1.5879; real: 1.8401; fake: -0.9137; r1_img: 0.0141; r1_seg: 0.0002; path: 0.0037; mean path: 0.1217; mask: 0.0011; time: 2.30
+[004800] d: 0.6948; g: 1.3396; real: 1.5583; fake: -1.1588; r1_img: 0.0066; r1_seg: 0.0001; path: 0.0042; mean path: 0.1295; mask: 0.0006; time: 3.11
+[004900] d: 1.2845; g: 1.3610; real: 0.4486; fake: -1.1725; r1_img: 0.0049; r1_seg: 0.0003; path: 0.0029; mean path: 0.1289; mask: 0.0010; time: 2.34
+[005000] d: 0.8506; g: 1.3411; real: 1.7418; fake: -0.5061; r1_img: 0.0027; r1_seg: 0.0001; path: 0.0036; mean path: 0.1307; mask: 0.0009; time: 2.85
+==================Start calculating FID==================
+Gathering activations...
+2000/10000
+4000/10000
+6000/10000
+8000/10000
+10000/10000
+Calculating Inception Score...
+Calculating means and covariances...
+Covariances calculated, getting FID...
+[val] iteration 005000: FID: 267.6280, IS_mean: 1.9235, IS_std: 0.0206
+[005100] d: 0.5417; g: 1.6616; real: 1.4486; fake: -1.2625; r1_img: 0.0057; r1_seg: 0.0000; path: 0.0003; mean path: 0.1297; mask: 0.0012; time: 2.29
+[005200] d: 0.7335; g: 1.9608; real: 2.3208; fake: -1.0259; r1_img: 0.0074; r1_seg: 0.0003; path: 0.0017; mean path: 0.1333; mask: 0.0011; time: 3.12
+[005300] d: 1.0823; g: 1.6121; real: -0.1783; fake: -1.3510; r1_img: 0.0076; r1_seg: 0.0002; path: 0.0009; mean path: 0.1321; mask: 0.0009; time: 2.32
+[005400] d: 0.8853; g: 0.8919; real: 0.0222; fake: -2.0057; r1_img: 0.0023; r1_seg: 0.0001; path: 0.0111; mean path: 0.1327; mask: 0.0011; time: 2.31
+[005500] d: 0.4365; g: 1.1925; real: 1.1936; fake: -2.5632; r1_img: 0.0060; r1_seg: 0.0002; path: 0.0006; mean path: 0.1373; mask: 0.0011; time: 2.28
+[005600] d: 1.1833; g: 0.9382; real: -0.6550; fake: -4.3180; r1_img: 0.0046; r1_seg: 0.0001; path: 0.0025; mean path: 0.1492; mask: 0.0013; time: 3.09
+[005700] d: 0.5904; g: 2.6100; real: 1.9523; fake: -0.9920; r1_img: 0.0069; r1_seg: 0.0001; path: 0.0101; mean path: 0.1500; mask: 0.0007; time: 2.29
+[005800] d: 0.3325; g: 2.2305; real: 2.5571; fake: -1.4604; r1_img: 0.0031; r1_seg: 0.0003; path: 0.0016; mean path: 0.1487; mask: 0.0011; time: 2.29
+[005900] d: 1.1938; g: 0.8422; real: 1.0921; fake: -1.1816; r1_img: 0.0050; r1_seg: 0.0001; path: 0.0002; mean path: 0.1488; mask: 0.0009; time: 2.27
+[006000] d: 0.7057; g: 2.5330; real: 1.9161; fake: -0.5418; r1_img: 0.0049; r1_seg: 0.0001; path: 0.0018; mean path: 0.1461; mask: 0.0008; time: 3.12
+[006100] d: 0.3647; g: 3.0321; real: 2.1376; fake: -1.8479; r1_img: 0.0076; r1_seg: 0.0001; path: 0.0309; mean path: 0.1527; mask: 0.0006; time: 2.28
+[006200] d: 0.4441; g: 3.4983; real: 2.3271; fake: -1.3389; r1_img: 0.0114; r1_seg: 0.0005; path: 0.0001; mean path: 0.1531; mask: 0.0012; time: 2.33
+[006300] d: 0.6073; g: 2.0340; real: 2.0743; fake: -1.1362; r1_img: 0.0092; r1_seg: 0.0001; path: 0.0090; mean path: 0.1502; mask: 0.0008; time: 2.29
+[006400] d: 0.4175; g: 3.5213; real: 2.5766; fake: -2.0227; r1_img: 0.0062; r1_seg: 0.0001; path: 0.0208; mean path: 0.1485; mask: 0.0025; time: 3.10
+[006500] d: 0.5930; g: 1.8343; real: 0.6017; fake: -2.3201; r1_img: 0.0047; r1_seg: 0.0002; path: 0.0049; mean path: 0.1417; mask: 0.0006; time: 2.31
+[006600] d: 0.1821; g: 2.7229; real: 3.7939; fake: -2.2080; r1_img: 0.0031; r1_seg: 0.0001; path: 0.0005; mean path: 0.1411; mask: 0.0011; time: 2.29
+[006700] d: 0.6847; g: 2.3366; real: 2.0767; fake: -0.9505; r1_img: 0.0081; r1_seg: 0.0004; path: 0.0198; mean path: 0.1442; mask: 0.0014; time: 2.32
+[006800] d: 0.5805; g: 2.0678; real: 1.0614; fake: -1.5249; r1_img: 0.0053; r1_seg: 0.0003; path: 0.0023; mean path: 0.1441; mask: 0.0009; time: 3.11
+[006900] d: 0.6272; g: 1.6005; real: 1.9779; fake: -1.9819; r1_img: 0.0022; r1_seg: 0.0001; path: 0.0073; mean path: 0.1429; mask: 0.0016; time: 2.29
+[007000] d: 0.4308; g: 2.4367; real: 2.6327; fake: -1.4653; r1_img: 0.0119; r1_seg: 0.0001; path: 0.0022; mean path: 0.1400; mask: 0.0008; time: 2.31
+[007100] d: 0.5383; g: 1.0729; real: 0.8109; fake: -4.1230; r1_img: 0.0032; r1_seg: 0.0001; path: 0.0565; mean path: 0.1434; mask: 0.0010; time: 2.29
+[007200] d: 1.1439; g: 2.7833; real: 1.5152; fake: -0.1735; r1_img: 0.0040; r1_seg: 0.0001; path: 0.0026; mean path: 0.1413; mask: 0.0005; time: 3.15
+[007300] d: 0.7801; g: 1.5030; real: 0.6855; fake: -2.2361; r1_img: 0.0049; r1_seg: 0.0005; path: 0.0019; mean path: 0.1440; mask: 0.0010; time: 2.29
+[007400] d: 0.3980; g: 0.9303; real: 2.0640; fake: -2.7686; r1_img: 0.0032; r1_seg: 0.0004; path: 0.0044; mean path: 0.1401; mask: 0.0012; time: 2.29
+[007500] d: 0.9811; g: 1.6096; real: 0.3611; fake: -1.8898; r1_img: 0.0051; r1_seg: 0.0001; path: 0.0002; mean path: 0.1393; mask: 0.0012; time: 2.77
+[007600] d: 0.4099; g: 1.5200; real: 1.2094; fake: -2.4076; r1_img: 0.0030; r1_seg: 0.0003; path: 0.0045; mean path: 0.1425; mask: 0.0011; time: 3.09
+[007700] d: 0.6906; g: 1.8010; real: 1.8779; fake: -0.8812; r1_img: 0.0023; r1_seg: 0.0002; path: 0.0016; mean path: 0.1394; mask: 0.0008; time: 2.30
+[007800] d: 0.7667; g: 1.5517; real: 2.0962; fake: -0.4168; r1_img: 0.0059; r1_seg: 0.0002; path: 0.0013; mean path: 0.1469; mask: 0.0005; time: 2.28
+[007900] d: 0.4429; g: 3.8284; real: 3.9397; fake: -1.1040; r1_img: 0.0019; r1_seg: 0.0001; path: 0.0022; mean path: 0.1472; mask: 0.0019; time: 2.30
+[008000] d: 0.5285; g: 1.2961; real: 2.1773; fake: -1.0819; r1_img: 0.0032; r1_seg: 0.0004; path: 0.0038; mean path: 0.1477; mask: 0.0007; time: 3.08
+[008100] d: 0.3546; g: 1.2050; real: 2.9079; fake: -2.0958; r1_img: 0.0038; r1_seg: 0.0003; path: 0.0058; mean path: 0.1519; mask: 0.0009; time: 2.28
+[008200] d: 0.2509; g: 1.7590; real: 2.5858; fake: -2.1656; r1_img: 0.0024; r1_seg: 0.0001; path: 0.0039; mean path: 0.1538; mask: 0.0016; time: 2.30
+[008300] d: 0.1667; g: 2.5312; real: 3.3789; fake: -2.0411; r1_img: 0.0057; r1_seg: 0.0001; path: 0.0010; mean path: 0.1563; mask: 0.0008; time: 2.27
+[008400] d: 0.6363; g: 2.1174; real: 2.1085; fake: -0.7999; r1_img: 0.0062; r1_seg: 0.0003; path: 0.0347; mean path: 0.1551; mask: 0.0005; time: 3.07
+[008500] d: 0.7464; g: 1.0702; real: 1.8869; fake: -0.4755; r1_img: 0.0029; r1_seg: 0.0001; path: 0.0035; mean path: 0.1550; mask: 0.0029; time: 2.30
+[008600] d: 0.7192; g: 3.8217; real: 4.3539; fake: -0.5598; r1_img: 0.0006; r1_seg: 0.0001; path: 0.0093; mean path: 0.1544; mask: 0.0011; time: 2.28
+[008700] d: 0.4515; g: 2.0955; real: 1.9181; fake: -2.1123; r1_img: 0.0014; r1_seg: 0.0004; path: 0.0031; mean path: 0.1579; mask: 0.0009; time: 2.32
+[008800] d: 0.4647; g: 2.3216; real: 3.9870; fake: -0.6916; r1_img: 0.0069; r1_seg: 0.0008; path: 0.0026; mean path: 0.1611; mask: 0.0011; time: 3.12
+[008900] d: 1.1587; g: 0.7728; real: -0.2940; fake: -1.3716; r1_img: 0.0033; r1_seg: 0.0001; path: 0.0270; mean path: 0.1625; mask: 0.0018; time: 2.33
+[009000] d: 0.4470; g: 2.9575; real: 2.3391; fake: -1.1517; r1_img: 0.0025; r1_seg: 0.0000; path: 0.0896; mean path: 0.1640; mask: 0.0008; time: 2.30
+[009100] d: 0.4732; g: 2.7607; real: 1.9071; fake: -1.4945; r1_img: 0.0054; r1_seg: 0.0001; path: 0.0024; mean path: 0.1606; mask: 0.0015; time: 2.33
+[009200] d: 0.7355; g: 2.2684; real: 2.8083; fake: -0.0939; r1_img: 0.0135; r1_seg: 0.0002; path: 0.0007; mean path: 0.1656; mask: 0.0006; time: 3.20
+[009300] d: 0.9232; g: 2.0492; real: 1.1653; fake: -0.6651; r1_img: 0.0026; r1_seg: 0.0001; path: 0.0053; mean path: 0.1708; mask: 0.0011; time: 2.34
+[009400] d: 0.9744; g: 2.4430; real: 0.6901; fake: -0.4750; r1_img: 0.0029; r1_seg: 0.0001; path: 0.0033; mean path: 0.1715; mask: 0.0007; time: 2.27
+[009500] d: 0.3121; g: 0.9685; real: 3.3676; fake: -1.3749; r1_img: 0.0035; r1_seg: 0.0005; path: 0.0253; mean path: 0.1714; mask: 0.0013; time: 2.28
+[009600] d: 0.5862; g: 1.4612; real: 1.0757; fake: -1.7502; r1_img: 0.0183; r1_seg: 0.0001; path: 0.0163; mean path: 0.1745; mask: 0.0009; time: 3.09
+[009700] d: 0.8072; g: 2.3872; real: 0.1699; fake: -2.0374; r1_img: 0.0020; r1_seg: 0.0001; path: 0.0166; mean path: 0.1762; mask: 0.0004; time: 2.28
+[009800] d: 0.6428; g: 2.2937; real: 4.3414; fake: -0.9025; r1_img: 0.0021; r1_seg: 0.0001; path: 0.0005; mean path: 0.1820; mask: 0.0011; time: 2.29
+[009900] d: 0.7063; g: 3.1100; real: 2.9153; fake: -0.2638; r1_img: 0.0025; r1_seg: 0.0002; path: 0.0036; mean path: 0.1753; mask: 0.0011; time: 2.29
+[010000] d: 1.4377; g: 1.8967; real: -1.0491; fake: -2.7818; r1_img: 0.0037; r1_seg: 0.0001; path: 0.0035; mean path: 0.1680; mask: 0.0011; time: 3.61
+==================Start calculating FID==================
+Gathering activations...
+2000/10000
+4000/10000
+6000/10000
+8000/10000
+10000/10000
+Calculating Inception Score...
+Calculating means and covariances...
+Covariances calculated, getting FID...
+[val] iteration 010000: FID: 166.8913, IS_mean: 2.5362, IS_std: 0.0464
+[010100] d: 0.4701; g: 2.0490; real: 1.5255; fake: -1.7260; r1_img: 0.0036; r1_seg: 0.0003; path: 0.0069; mean path: 0.1606; mask: 0.0006; time: 2.30
+[010200] d: 0.2294; g: 1.3276; real: 2.8349; fake: -1.9125; r1_img: 0.0053; r1_seg: 0.0002; path: 0.0019; mean path: 0.1586; mask: 0.0012; time: 2.28
+[010300] d: 0.7990; g: 4.0480; real: 2.9944; fake: 0.0202; r1_img: 0.0034; r1_seg: 0.0001; path: 0.0027; mean path: 0.1592; mask: 0.0015; time: 2.30
+[010400] d: 1.1772; g: 0.9027; real: -0.6484; fake: -2.5416; r1_img: 0.0021; r1_seg: 0.0001; path: 0.0019; mean path: 0.1622; mask: 0.0014; time: 3.09
+[010500] d: 0.3261; g: 1.7882; real: 3.2947; fake: -1.6584; r1_img: 0.0047; r1_seg: 0.0003; path: 0.0014; mean path: 0.1625; mask: 0.0017; time: 2.28
+[010600] d: 0.4025; g: 3.2005; real: 3.7206; fake: -1.1033; r1_img: 0.0035; r1_seg: 0.0003; path: 0.0027; mean path: 0.1573; mask: 0.0013; time: 2.28
+[010700] d: 0.2726; g: 3.1386; real: 3.1105; fake: -1.6985; r1_img: 0.0034; r1_seg: 0.0002; path: 0.0027; mean path: 0.1600; mask: 0.0017; time: 2.29
+[010800] d: 0.4542; g: 2.9434; real: 2.3303; fake: -1.8594; r1_img: 0.0060; r1_seg: 0.0003; path: 0.0042; mean path: 0.1580; mask: 0.0010; time: 3.10
+[010900] d: 0.2038; g: 2.5424; real: 2.4252; fake: -2.8604; r1_img: 0.0019; r1_seg: 0.0001; path: 0.0035; mean path: 0.1582; mask: 0.0014; time: 2.29
+[011000] d: 1.1042; g: 0.6462; real: -0.5893; fake: -3.6036; r1_img: 0.0463; r1_seg: 0.0002; path: 0.0008; mean path: 0.1630; mask: 0.0032; time: 2.30
+[011100] d: 0.7699; g: 2.0305; real: 0.7577; fake: -2.3009; r1_img: 0.0235; r1_seg: 0.0000; path: 0.0152; mean path: 0.1574; mask: 0.0016; time: 2.30
+[011200] d: 0.4472; g: 1.6787; real: 1.7447; fake: -2.0515; r1_img: 0.0027; r1_seg: 0.0004; path: 0.0439; mean path: 0.1633; mask: 0.0015; time: 3.09
+[011300] d: 0.7205; g: 2.7257; real: 1.7784; fake: -1.1631; r1_img: 0.0056; r1_seg: 0.0001; path: 0.0006; mean path: 0.1642; mask: 0.0022; time: 2.28
+[011400] d: 0.8065; g: 1.3120; real: 0.1735; fake: -2.8315; r1_img: 0.0038; r1_seg: 0.0002; path: 0.0083; mean path: 0.1602; mask: 0.0009; time: 2.29
+[011500] d: 0.4883; g: 3.4734; real: 2.3861; fake: -1.2973; r1_img: 0.0026; r1_seg: 0.0001; path: 0.0131; mean path: 0.1560; mask: 0.0012; time: 2.27
+[011600] d: 0.6211; g: 2.2016; real: 2.3453; fake: -0.5836; r1_img: 0.0057; r1_seg: 0.0002; path: 0.0098; mean path: 0.1567; mask: 0.0008; time: 3.08
+[011700] d: 0.6391; g: 1.8573; real: 1.3055; fake: -1.2701; r1_img: 0.0049; r1_seg: 0.0002; path: 0.0159; mean path: 0.1627; mask: 0.0012; time: 2.31
+[011800] d: 0.9945; g: 1.4607; real: -0.2419; fake: -2.2086; r1_img: 0.0066; r1_seg: 0.0003; path: 0.0126; mean path: 0.1641; mask: 0.0004; time: 2.27
+[011900] d: 0.4775; g: 3.2767; real: 4.4190; fake: -1.1037; r1_img: 0.0040; r1_seg: 0.0002; path: 0.0030; mean path: 0.1608; mask: 0.0011; time: 2.28
+[012000] d: 0.2990; g: 2.2907; real: 3.2090; fake: -1.4320; r1_img: 0.0055; r1_seg: 0.0002; path: 0.0078; mean path: 0.1575; mask: 0.0014; time: 3.10
+[012100] d: 0.7604; g: 2.1113; real: 0.9536; fake: -0.9247; r1_img: 0.0073; r1_seg: 0.0003; path: 0.0048; mean path: 0.1638; mask: 0.0006; time: 2.30
+[012200] d: 0.9479; g: 2.7115; real: 3.0825; fake: -0.0179; r1_img: 0.0086; r1_seg: 0.0002; path: 0.0788; mean path: 0.1734; mask: 0.0021; time: 2.27
+[012300] d: 1.0061; g: 2.5103; real: 0.1236; fake: -1.6601; r1_img: 0.0022; r1_seg: 0.0001; path: 0.0021; mean path: 0.1733; mask: 0.0019; time: 2.30
+[012400] d: 0.4586; g: 1.8036; real: 1.6974; fake: -2.6703; r1_img: 0.0026; r1_seg: 0.0001; path: 0.0005; mean path: 0.1744; mask: 0.0013; time: 3.10
+[012500] d: 0.7320; g: 2.4349; real: 3.1842; fake: -0.2612; r1_img: 0.0037; r1_seg: 0.0001; path: 1.2274; mean path: 0.1802; mask: 0.0007; time: 2.85
+[012600] d: 0.2734; g: 2.5189; real: 2.8564; fake: -1.8865; r1_img: 0.0078; r1_seg: 0.0001; path: 0.0073; mean path: 0.1763; mask: 0.0010; time: 2.33
+[012700] d: 0.6890; g: 2.0949; real: 1.0479; fake: -1.2669; r1_img: 0.0062; r1_seg: 0.0002; path: 0.0237; mean path: 0.1779; mask: 0.0005; time: 2.29
+[012800] d: 0.6843; g: 1.1837; real: 1.4688; fake: -1.1785; r1_img: 0.0052; r1_seg: 0.0005; path: 0.0007; mean path: 0.1762; mask: 0.0009; time: 3.10
+[012900] d: 0.4642; g: 2.6043; real: 4.1307; fake: -1.0644; r1_img: 0.0025; r1_seg: 0.0003; path: 0.0033; mean path: 0.1729; mask: 0.0002; time: 2.29
+[013000] d: 0.3222; g: 1.4185; real: 2.4041; fake: -1.6009; r1_img: 0.0038; r1_seg: 0.0002; path: 0.0133; mean path: 0.1786; mask: 0.0012; time: 2.29
+[013100] d: 1.0595; g: 2.0179; real: 0.0148; fake: -2.0083; r1_img: 0.0058; r1_seg: 0.0002; path: 0.0142; mean path: 0.1750; mask: 0.0014; time: 2.30
+[013200] d: 0.6073; g: 1.5719; real: 0.8144; fake: -1.6282; r1_img: 0.0047; r1_seg: 0.0001; path: 0.0207; mean path: 0.1715; mask: 0.0006; time: 3.10
+[013300] d: 0.6084; g: 2.0744; real: 0.9340; fake: -1.4389; r1_img: 0.0065; r1_seg: 0.0001; path: 0.0075; mean path: 0.1719; mask: 0.0005; time: 2.31
+[013400] d: 0.5078; g: 1.8765; real: 1.7317; fake: -2.5444; r1_img: 0.0060; r1_seg: 0.0001; path: 0.0081; mean path: 0.1697; mask: 0.0004; time: 2.33
+[013500] d: 0.3703; g: 2.6463; real: 2.9470; fake: -1.2894; r1_img: 0.0102; r1_seg: 0.0003; path: 0.0068; mean path: 0.1694; mask: 0.0012; time: 2.30
+[013600] d: 0.8847; g: 2.3674; real: 4.1211; fake: 0.1551; r1_img: 0.0032; r1_seg: 0.0001; path: 0.0001; mean path: 0.1743; mask: 0.0011; time: 3.08
+[013700] d: 0.5988; g: 2.0726; real: 2.3210; fake: -0.7507; r1_img: 0.0062; r1_seg: 0.0003; path: 0.2305; mean path: 0.1726; mask: 0.0005; time: 2.29
+[013800] d: 0.4491; g: 1.8192; real: 1.3605; fake: -2.6099; r1_img: 0.0082; r1_seg: 0.0001; path: 0.0034; mean path: 0.1857; mask: 0.0012; time: 2.30
+[013900] d: 0.4722; g: 1.8568; real: 2.3391; fake: -1.8195; r1_img: 0.0064; r1_seg: 0.0008; path: 0.0032; mean path: 0.1873; mask: 0.0006; time: 2.28
+[014000] d: 0.6063; g: 1.7051; real: 0.4449; fake: -2.8648; r1_img: 0.0061; r1_seg: 0.0002; path: 0.0012; mean path: 0.1918; mask: 0.0011; time: 3.09
+[014100] d: 0.2729; g: 2.2494; real: 4.6776; fake: -1.6358; r1_img: 0.0036; r1_seg: 0.0002; path: 0.0040; mean path: 0.1906; mask: 0.0019; time: 2.31
+[014200] d: 1.0015; g: 0.5260; real: -0.1640; fake: -2.2103; r1_img: 0.0096; r1_seg: 0.0002; path: 0.0042; mean path: 0.1886; mask: 0.0028; time: 2.29
+[014300] d: 0.1874; g: 4.3135; real: 3.1368; fake: -2.7351; r1_img: 0.0035; r1_seg: 0.0003; path: 0.0138; mean path: 0.1816; mask: 0.0009; time: 2.29
+[014400] d: 0.5481; g: 2.7168; real: 1.1796; fake: -2.4546; r1_img: 0.0041; r1_seg: 0.0001; path: 0.0123; mean path: 0.1746; mask: 0.0009; time: 3.16
+[014500] d: 0.4072; g: 1.6705; real: 1.8028; fake: -1.8360; r1_img: 0.0082; r1_seg: 0.0000; path: 0.0097; mean path: 0.1810; mask: 0.0011; time: 2.29
+[014600] d: 0.8973; g: 2.2160; real: 1.8513; fake: -0.2887; r1_img: 0.0043; r1_seg: 0.0001; path: 0.0088; mean path: 0.1939; mask: 0.0006; time: 2.29
+[014700] d: 0.4907; g: 1.1036; real: 0.5500; fake: -3.7414; r1_img: 0.0082; r1_seg: 0.0001; path: 0.0069; mean path: 0.1876; mask: 0.0013; time: 2.29
+[014800] d: 0.3872; g: 2.5431; real: 1.6428; fake: -2.6000; r1_img: 0.0036; r1_seg: 0.0002; path: 0.0072; mean path: 0.1856; mask: 0.0008; time: 3.15
+[014900] d: 0.6144; g: 1.3325; real: 1.2722; fake: -3.0441; r1_img: 0.0092; r1_seg: 0.0002; path: 0.0023; mean path: 0.1745; mask: 0.0009; time: 2.30
+[015000] d: 0.6623; g: 1.4915; real: 2.8026; fake: -0.3687; r1_img: 0.0059; r1_seg: 0.0003; path: 0.0005; mean path: 0.1747; mask: 0.0011; time: 2.83
+==================Start calculating FID==================
+Gathering activations...
+2000/10000
+4000/10000
+6000/10000
+8000/10000
+10000/10000
+Calculating Inception Score...
+Calculating means and covariances...
+Covariances calculated, getting FID...
+[val] iteration 015000: FID: 108.7854, IS_mean: 2.7011, IS_std: 0.0441
+[015100] d: 0.9501; g: 3.4094; real: 3.3360; fake: 0.3750; r1_img: 0.0027; r1_seg: 0.0002; path: 0.0083; mean path: 0.1846; mask: 0.0027; time: 2.28
+[015200] d: 2.0654; g: 0.3641; real: -1.8809; fake: -4.7013; r1_img: 0.0017; r1_seg: 0.0000; path: 0.0476; mean path: 0.1826; mask: 0.0017; time: 3.08
+[015300] d: 0.3516; g: 2.2409; real: 3.6942; fake: -1.1449; r1_img: 0.0050; r1_seg: 0.0003; path: 0.0013; mean path: 0.1858; mask: 0.0008; time: 2.32
+[015400] d: 0.4496; g: 1.8719; real: 1.1014; fake: -2.9371; r1_img: 0.0202; r1_seg: 0.0005; path: 0.0004; mean path: 0.1814; mask: 0.0012; time: 2.35
+[015500] d: 1.3251; g: 1.1818; real: -0.7225; fake: -2.3037; r1_img: 0.0064; r1_seg: 0.0001; path: 0.0169; mean path: 0.1917; mask: 0.0020; time: 2.28
+[015600] d: 1.6108; g: 1.7832; real: -1.1727; fake: -2.6436; r1_img: 0.0133; r1_seg: 0.0000; path: 0.0037; mean path: 0.2003; mask: 0.0019; time: 3.09
+[015700] d: 0.7102; g: 1.3248; real: 0.7073; fake: -1.4227; r1_img: 0.0061; r1_seg: 0.0001; path: 0.0031; mean path: 0.1943; mask: 0.0015; time: 2.30
+[015800] d: 0.1622; g: 0.8838; real: 3.7996; fake: -2.0203; r1_img: 0.0016; r1_seg: 0.0001; path: 0.0006; mean path: 0.1940; mask: 0.0008; time: 2.28
+[015900] d: 0.3643; g: 1.9213; real: 1.6330; fake: -2.8819; r1_img: 0.0055; r1_seg: 0.0003; path: 0.0030; mean path: 0.1853; mask: 0.0015; time: 2.30
+[016000] d: 0.2238; g: 2.7857; real: 2.5162; fake: -3.5476; r1_img: 0.0053; r1_seg: 0.0002; path: 0.0083; mean path: 0.1866; mask: 0.0017; time: 3.15
+[016100] d: 0.5930; g: 2.4871; real: 2.8948; fake: -0.5383; r1_img: 0.0054; r1_seg: 0.0001; path: 0.0172; mean path: 0.1830; mask: 0.0009; time: 2.28
+[016200] d: 0.5795; g: 1.6565; real: 1.3310; fake: -0.9073; r1_img: 0.0064; r1_seg: 0.0008; path: 0.0039; mean path: 0.1854; mask: 0.0009; time: 2.29
+[016300] d: 0.2052; g: 2.7783; real: 2.6481; fake: -2.2675; r1_img: 0.0099; r1_seg: 0.0002; path: 0.0110; mean path: 0.1896; mask: 0.0006; time: 2.29
+[016400] d: 0.0619; g: 2.7054; real: 3.7296; fake: -3.4843; r1_img: 0.0090; r1_seg: 0.0001; path: 0.0080; mean path: 0.1928; mask: 0.0013; time: 3.10
+[016500] d: 0.5604; g: 3.4826; real: 4.0693; fake: -0.6531; r1_img: 0.0025; r1_seg: 0.0003; path: 0.0093; mean path: 0.1783; mask: 0.0008; time: 2.31
+[016600] d: 0.7416; g: 1.4504; real: 0.4464; fake: -1.9741; r1_img: 0.0036; r1_seg: 0.0003; path: 0.0005; mean path: 0.1768; mask: 0.0009; time: 2.30
+[016700] d: 0.8746; g: 1.8091; real: -0.0346; fake: -2.6156; r1_img: 0.0067; r1_seg: 0.0002; path: 0.0075; mean path: 0.1738; mask: 0.0016; time: 2.32
+[016800] d: 0.2306; g: 2.1022; real: 3.1512; fake: -1.9210; r1_img: 0.0047; r1_seg: 0.0002; path: 0.0019; mean path: 0.1753; mask: 0.0009; time: 3.10
+[016900] d: 0.3079; g: 2.6116; real: 2.2402; fake: -1.9385; r1_img: 0.0062; r1_seg: 0.0001; path: 0.0083; mean path: 0.1831; mask: 0.0012; time: 2.28
+[017000] d: 0.1030; g: 3.6175; real: 4.1446; fake: -3.7438; r1_img: 0.0038; r1_seg: 0.0002; path: 0.0428; mean path: 0.1799; mask: 0.0011; time: 2.29
+[017100] d: 1.0065; g: 2.8722; real: 1.2492; fake: -0.0840; r1_img: 0.0036; r1_seg: 0.0001; path: 0.0086; mean path: 0.1824; mask: 0.0010; time: 2.26
+[017200] d: 0.4115; g: 1.7330; real: 1.5471; fake: -2.2953; r1_img: 0.0050; r1_seg: 0.0004; path: 0.0033; mean path: 0.1805; mask: 0.0058; time: 3.11
+[017300] d: 0.8301; g: 1.3724; real: -0.1155; fake: -2.8836; r1_img: 0.0028; r1_seg: 0.0002; path: 0.0077; mean path: 0.1833; mask: 0.0011; time: 2.31
+[017400] d: 0.1413; g: 2.3737; real: 2.7849; fake: -2.5747; r1_img: 0.0061; r1_seg: 0.0004; path: 0.0279; mean path: 0.1819; mask: 0.0007; time: 2.28
+[017500] d: 0.2301; g: 2.6412; real: 4.4212; fake: -1.5015; r1_img: 0.0099; r1_seg: 0.0001; path: 0.0017; mean path: 0.1819; mask: 0.0015; time: 2.86
+[017600] d: 0.3360; g: 2.8822; real: 3.4804; fake: -1.2217; r1_img: 0.0050; r1_seg: 0.0006; path: 0.0004; mean path: 0.1848; mask: 0.0011; time: 3.09
+[017700] d: 0.1850; g: 2.2363; real: 2.0639; fake: -2.7975; r1_img: 0.0059; r1_seg: 0.0002; path: 0.0077; mean path: 0.1902; mask: 0.0009; time: 2.32
+[017800] d: 0.7252; g: 1.5464; real: 0.1423; fake: -3.0205; r1_img: 0.0064; r1_seg: 0.0001; path: 0.0022; mean path: 0.1881; mask: 0.0011; time: 2.34
+[017900] d: 0.5773; g: 2.1666; real: 3.8597; fake: -0.4568; r1_img: 0.0035; r1_seg: 0.0001; path: 0.0053; mean path: 0.1940; mask: 0.0020; time: 2.29
+[018000] d: 0.1774; g: 2.7901; real: 3.1929; fake: -2.4625; r1_img: 0.0047; r1_seg: 0.0002; path: 0.0064; mean path: 0.1873; mask: 0.0008; time: 3.17
+[018100] d: 2.5699; g: 1.1625; real: -1.4808; fake: -4.4762; r1_img: 0.0044; r1_seg: 0.0001; path: 0.0001; mean path: 0.1820; mask: 0.0030; time: 2.28
+[018200] d: 0.4839; g: 3.6510; real: 2.3793; fake: -1.9810; r1_img: 0.0021; r1_seg: 0.0002; path: 0.0011; mean path: 0.1733; mask: 0.0017; time: 2.30
+[018300] d: 0.1281; g: 3.8259; real: 2.8929; fake: -4.6602; r1_img: 0.0020; r1_seg: 0.0001; path: 0.0084; mean path: 0.1698; mask: 0.0010; time: 2.28
+[018400] d: 0.8967; g: 2.7524; real: 5.3900; fake: 0.1115; r1_img: 0.0020; r1_seg: 0.0002; path: 0.0099; mean path: 0.1639; mask: 0.0012; time: 3.09
+[018500] d: 0.3891; g: 2.4987; real: 2.4313; fake: -1.1281; r1_img: 0.0129; r1_seg: 0.0002; path: 0.7676; mean path: 0.1822; mask: 0.0020; time: 2.29
+[018600] d: 0.6038; g: 1.9241; real: 2.3817; fake: -0.8962; r1_img: 0.0053; r1_seg: 0.0001; path: 0.0138; mean path: 0.1798; mask: 0.0009; time: 2.31
+[018700] d: 0.0618; g: 2.9094; real: 4.3555; fake: -3.0968; r1_img: 0.0076; r1_seg: 0.0003; path: 0.0057; mean path: 0.1795; mask: 0.0007; time: 2.29
+[018800] d: 0.2860; g: 2.5990; real: 2.6748; fake: -1.9016; r1_img: 0.0106; r1_seg: 0.0001; path: 0.0084; mean path: 0.1785; mask: 0.0008; time: 3.08
+[018900] d: 0.8743; g: 1.4472; real: 0.2162; fake: -1.7657; r1_img: 0.0077; r1_seg: 0.0002; path: 0.0097; mean path: 0.1760; mask: 0.0010; time: 2.27
+[019000] d: 0.7340; g: 3.7656; real: 5.7954; fake: 0.0072; r1_img: 0.0009; r1_seg: 0.0001; path: 0.0048; mean path: 0.1826; mask: 0.0016; time: 2.30
+[019100] d: 0.6439; g: 1.7344; real: 0.5692; fake: -3.2192; r1_img: 0.0053; r1_seg: 0.0001; path: 0.0130; mean path: 0.1786; mask: 0.0017; time: 2.30
+[019200] d: 0.2635; g: 1.9424; real: 2.4563; fake: -2.0930; r1_img: 0.0093; r1_seg: 0.0005; path: 0.0114; mean path: 0.1755; mask: 0.0034; time: 3.09
+[019300] d: 0.3293; g: 1.7177; real: 2.1040; fake: -2.2232; r1_img: 0.0089; r1_seg: 0.0003; path: 0.0099; mean path: 0.1673; mask: 0.0007; time: 2.29
+[019400] d: 0.4486; g: 2.1208; real: 2.0798; fake: -1.5163; r1_img: 0.0043; r1_seg: 0.0001; path: 0.0223; mean path: 0.1725; mask: 0.0020; time: 2.30
+[019500] d: 0.2899; g: 3.3029; real: 3.0831; fake: -1.4236; r1_img: 0.0044; r1_seg: 0.0001; path: 0.0114; mean path: 0.1737; mask: 0.0009; time: 2.28
+[019600] d: 0.3499; g: 1.6885; real: 2.7290; fake: -1.7729; r1_img: 0.0013; r1_seg: 0.0005; path: 0.0121; mean path: 0.1816; mask: 0.0023; time: 3.14
+[019700] d: 0.6631; g: 1.7098; real: 0.8280; fake: -1.7265; r1_img: 0.0014; r1_seg: 0.0002; path: 0.0057; mean path: 0.1758; mask: 0.0011; time: 2.31
+[019800] d: 0.4313; g: 5.4456; real: 5.2271; fake: -0.8562; r1_img: 0.0040; r1_seg: 0.0001; path: 0.0109; mean path: 0.1753; mask: 0.0064; time: 2.31
+[019900] d: 0.9582; g: 2.3529; real: -0.3216; fake: -4.1601; r1_img: 0.0072; r1_seg: 0.0004; path: 0.0003; mean path: 0.1744; mask: 0.0010; time: 2.32
+[020000] d: 0.4078; g: 1.4452; real: 1.6554; fake: -3.1110; r1_img: 0.0057; r1_seg: 0.0001; path: 0.0141; mean path: 0.1740; mask: 0.0007; time: 3.64
+==================Start calculating FID==================
+Gathering activations...
+2000/10000
+4000/10000
+6000/10000
+8000/10000
+10000/10000
+Calculating Inception Score...
+Calculating means and covariances...
+Covariances calculated, getting FID...
+[val] iteration 020000: FID: 80.1109, IS_mean: 2.6369, IS_std: 0.0503
+[020100] d: 0.4290; g: 2.3853; real: 2.9182; fake: -1.9375; r1_img: 0.0061; r1_seg: 0.0001; path: 0.0145; mean path: 0.1733; mask: 0.0012; time: 2.29
+[020200] d: 0.1717; g: 2.5222; real: 5.0364; fake: -1.8933; r1_img: 0.0077; r1_seg: 0.0001; path: 0.0853; mean path: 0.1768; mask: 0.0012; time: 2.29
+[020300] d: 0.4415; g: 4.6912; real: 3.4323; fake: -0.7166; r1_img: 0.0025; r1_seg: 0.0001; path: 0.0011; mean path: 0.1798; mask: 0.0023; time: 2.32
+[020400] d: 0.4078; g: 1.6318; real: 2.1313; fake: -3.0470; r1_img: 0.0038; r1_seg: 0.0001; path: 0.0080; mean path: 0.1836; mask: 0.0020; time: 3.12
+[020500] d: 0.2086; g: 1.7498; real: 2.4849; fake: -3.4626; r1_img: 0.0046; r1_seg: 0.0003; path: 0.0004; mean path: 0.1777; mask: 0.0006; time: 2.31
+[020600] d: 0.2418; g: 2.8623; real: 3.8117; fake: -1.5562; r1_img: 0.0042; r1_seg: 0.0001; path: 0.0126; mean path: 0.1827; mask: 0.0014; time: 2.32
+[020700] d: 1.3939; g: 3.3837; real: 0.9178; fake: 0.3160; r1_img: 0.0029; r1_seg: 0.0001; path: 0.0003; mean path: 0.1914; mask: 0.0018; time: 2.29
+[020800] d: 0.1626; g: 2.8402; real: 3.6462; fake: -2.0516; r1_img: 0.0299; r1_seg: 0.0001; path: 0.0257; mean path: 0.1873; mask: 0.0022; time: 3.13
+[020900] d: 0.2258; g: 3.2178; real: 2.5917; fake: -2.2978; r1_img: 0.0025; r1_seg: 0.0002; path: 0.0025; mean path: 0.1986; mask: 0.0016; time: 2.30
+[021000] d: 0.4877; g: 1.3743; real: 0.7910; fake: -2.5649; r1_img: 0.0087; r1_seg: 0.0003; path: 0.0074; mean path: 0.2019; mask: 0.0024; time: 2.33
+[021100] d: 1.2632; g: 3.2314; real: 4.9598; fake: 0.8859; r1_img: 0.0021; r1_seg: 0.0001; path: 0.0171; mean path: 0.2038; mask: 0.0012; time: 2.31
+[021200] d: 0.0667; g: 3.2223; real: 3.6454; fake: -3.5409; r1_img: 0.0015; r1_seg: 0.0001; path: 0.1221; mean path: 0.2244; mask: 0.0015; time: 3.10
+[021300] d: 0.1331; g: 3.2003; real: 3.6804; fake: -2.6351; r1_img: 0.0034; r1_seg: 0.0004; path: 0.0107; mean path: 0.2240; mask: 0.0016; time: 2.29
+[021400] d: 0.2146; g: 3.8351; real: 3.0129; fake: -1.9616; r1_img: 0.0057; r1_seg: 0.0001; path: 0.0188; mean path: 0.2216; mask: 0.0012; time: 2.32
+[021500] d: 0.1579; g: 4.4473; real: 3.0195; fake: -2.4497; r1_img: 0.0126; r1_seg: 0.0000; path: 0.0092; mean path: 0.2205; mask: 0.0015; time: 2.29
+[021600] d: 0.3488; g: 2.8588; real: 1.9663; fake: -1.6847; r1_img: 0.0109; r1_seg: 0.0002; path: 0.0075; mean path: 0.2112; mask: 0.0025; time: 3.09
+[021700] d: 0.5226; g: 1.9945; real: 0.9875; fake: -2.1668; r1_img: 0.0017; r1_seg: 0.0001; path: 0.0022; mean path: 0.2080; mask: 0.0014; time: 2.30
+[021800] d: 0.2383; g: 2.8771; real: 2.5997; fake: -1.8064; r1_img: 0.0135; r1_seg: 0.0004; path: 0.0161; mean path: 0.2114; mask: 0.0008; time: 2.29
+[021900] d: 0.3922; g: 2.3463; real: 1.2954; fake: -2.2610; r1_img: 0.0077; r1_seg: 0.0001; path: 0.0174; mean path: 0.2101; mask: 0.0028; time: 2.26
+[022000] d: 0.3844; g: 3.0766; real: 1.7988; fake: -2.1252; r1_img: 0.0019; r1_seg: 0.0002; path: 0.0020; mean path: 0.2012; mask: 0.0017; time: 3.10
+[022100] d: 0.3901; g: 1.2442; real: 1.7151; fake: -2.4861; r1_img: 0.0038; r1_seg: 0.0002; path: 0.0200; mean path: 0.1931; mask: 0.0011; time: 2.30
+[022200] d: 0.6486; g: 3.4907; real: 4.0014; fake: -0.6255; r1_img: 0.0070; r1_seg: 0.0003; path: 0.0022; mean path: 0.2067; mask: 0.0009; time: 2.29
+[022300] d: 0.1993; g: 3.1582; real: 2.6293; fake: -2.4370; r1_img: 0.0091; r1_seg: 0.0001; path: 0.0013; mean path: 0.2055; mask: 0.0012; time: 2.30
+[022400] d: 0.0947; g: 2.4081; real: 3.0863; fake: -3.2704; r1_img: 0.0123; r1_seg: 0.0002; path: 0.0028; mean path: 0.2018; mask: 0.0013; time: 3.09
+[022500] d: 0.6553; g: 0.8314; real: 0.3204; fake: -3.3091; r1_img: 0.0057; r1_seg: 0.0000; path: 0.0049; mean path: 0.2017; mask: 0.0006; time: 2.82
+[022600] d: 0.1575; g: 3.0164; real: 2.5093; fake: -4.0037; r1_img: 0.0021; r1_seg: 0.0001; path: 0.0138; mean path: 0.1930; mask: 0.0010; time: 2.29
+[022700] d: 1.3825; g: 1.0629; real: -0.9698; fake: -3.1393; r1_img: 0.0056; r1_seg: 0.0001; path: 0.2300; mean path: 0.1904; mask: 0.0009; time: 2.28
+[022800] d: 1.3881; g: 2.1349; real: -0.4023; fake: -1.5393; r1_img: 0.0068; r1_seg: 0.0001; path: 0.0251; mean path: 0.1975; mask: 0.0018; time: 3.07
+[022900] d: 0.5261; g: 2.5737; real: 3.2751; fake: -0.5151; r1_img: 0.0046; r1_seg: 0.0001; path: 0.0164; mean path: 0.1977; mask: 0.0014; time: 2.29
+[023000] d: 0.4884; g: 2.3925; real: 1.9103; fake: -1.0359; r1_img: 0.0060; r1_seg: 0.0002; path: 0.0008; mean path: 0.1901; mask: 0.0018; time: 2.29
+[023100] d: 1.0676; g: 2.2687; real: -0.0245; fake: -1.2611; r1_img: 0.0068; r1_seg: 0.0001; path: 0.0033; mean path: 0.2006; mask: 0.0010; time: 2.32
+[023200] d: 0.9060; g: 0.9483; real: 0.0957; fake: -3.7564; r1_img: 0.0056; r1_seg: 0.0001; path: 0.0147; mean path: 0.1961; mask: 0.0013; time: 3.10
+[023300] d: 0.1989; g: 2.2013; real: 4.1758; fake: -1.7810; r1_img: 0.0066; r1_seg: 0.0002; path: 0.0006; mean path: 0.1910; mask: 0.0012; time: 2.30
+[023400] d: 0.2286; g: 1.9935; real: 3.0518; fake: -2.0181; r1_img: 0.0075; r1_seg: 0.0002; path: 0.0130; mean path: 0.1912; mask: 0.0012; time: 2.37
+[023500] d: 0.6228; g: 1.7156; real: 2.1142; fake: -4.0067; r1_img: 0.0048; r1_seg: 0.0000; path: 0.0052; mean path: 0.1888; mask: 0.0011; time: 2.29
+[023600] d: 1.4889; g: 0.9957; real: -0.9983; fake: -2.9195; r1_img: 0.0033; r1_seg: 0.0001; path: 0.0082; mean path: 0.1870; mask: 0.0014; time: 3.09
+[023700] d: 0.1696; g: 3.5879; real: 3.1066; fake: -2.9845; r1_img: 0.0072; r1_seg: 0.0002; path: 0.1060; mean path: 0.1841; mask: 0.0009; time: 2.28
+[023800] d: 0.1656; g: 3.9228; real: 2.3900; fake: -3.7809; r1_img: 0.0086; r1_seg: 0.0001; path: 0.0124; mean path: 0.1817; mask: 0.0007; time: 2.28
+[023900] d: 0.8808; g: 1.0020; real: 0.2887; fake: -1.5199; r1_img: 0.0068; r1_seg: 0.0003; path: 0.0042; mean path: 0.1792; mask: 0.0015; time: 2.34
+[024000] d: 1.2982; g: 1.4897; real: -0.4589; fake: -1.2336; r1_img: 0.0038; r1_seg: 0.0001; path: 0.0052; mean path: 0.1888; mask: 0.0018; time: 3.12
+[024100] d: 0.1750; g: 2.1916; real: 2.5185; fake: -2.6836; r1_img: 0.0061; r1_seg: 0.0003; path: 0.0529; mean path: 0.1876; mask: 0.0010; time: 2.33
+[024200] d: 0.4126; g: 1.6045; real: 2.4400; fake: -1.5113; r1_img: 0.0039; r1_seg: 0.0002; path: 0.1398; mean path: 0.1891; mask: 0.0011; time: 2.29
+[024300] d: 0.5593; g: 2.9353; real: 5.7931; fake: -1.3471; r1_img: 0.0029; r1_seg: 0.0001; path: 0.0108; mean path: 0.1840; mask: 0.0015; time: 2.29
+[024400] d: 0.4663; g: 2.6833; real: 4.2628; fake: -0.7149; r1_img: 0.0032; r1_seg: 0.0002; path: 0.0004; mean path: 0.1909; mask: 0.0011; time: 3.08
+[024500] d: 0.4596; g: 3.9716; real: 4.6872; fake: -0.6471; r1_img: 0.0035; r1_seg: 0.0002; path: 0.0134; mean path: 0.1950; mask: 0.0029; time: 2.28
+[024600] d: 0.3925; g: 1.9884; real: 1.8012; fake: -1.6070; r1_img: 0.0023; r1_seg: 0.0001; path: 0.0827; mean path: 0.1983; mask: 0.0008; time: 2.29
+[024700] d: 0.0949; g: 4.4218; real: 4.3541; fake: -3.0525; r1_img: 0.0075; r1_seg: 0.0002; path: 0.0032; mean path: 0.1882; mask: 0.0009; time: 2.31
+[024800] d: 0.0601; g: 2.5652; real: 4.2803; fake: -3.4027; r1_img: 0.0026; r1_seg: 0.0002; path: 0.0086; mean path: 0.1885; mask: 0.0013; time: 3.17
+[024900] d: 0.7383; g: 1.4198; real: 0.1433; fake: -2.6544; r1_img: 0.0035; r1_seg: 0.0000; path: 0.0119; mean path: 0.1921; mask: 0.0013; time: 2.31
+[025000] d: 0.4366; g: 1.1408; real: 1.0454; fake: -2.3976; r1_img: 0.0085; r1_seg: 0.0006; path: 0.1385; mean path: 0.1810; mask: 0.0007; time: 2.80
+==================Start calculating FID==================
+Gathering activations...
+2000/10000
+4000/10000
+6000/10000
+8000/10000
+10000/10000
+Calculating Inception Score...
+Calculating means and covariances...
+Covariances calculated, getting FID...
+[val] iteration 025000: FID: 71.6056, IS_mean: 2.5629, IS_std: 0.0600
+[025100] d: 0.5913; g: 1.2762; real: 0.7669; fake: -1.5590; r1_img: 0.0076; r1_seg: 0.0004; path: 0.0069; mean path: 0.1815; mask: 0.0010; time: 2.30
+[025200] d: 0.2305; g: 2.3814; real: 2.4599; fake: -3.3700; r1_img: 0.0092; r1_seg: 0.0003; path: 0.0066; mean path: 0.1762; mask: 0.0012; time: 3.14
+[025300] d: 0.6329; g: 1.9896; real: 0.6880; fake: -1.6114; r1_img: 0.0069; r1_seg: 0.0001; path: 0.0005; mean path: 0.1716; mask: 0.0024; time: 2.30
+[025400] d: 1.4076; g: 1.3381; real: -0.8501; fake: -2.0781; r1_img: 0.0081; r1_seg: 0.0004; path: 0.0108; mean path: 0.1634; mask: 0.0002; time: 2.31
+[025500] d: 0.2345; g: 3.5943; real: 2.9191; fake: -1.8921; r1_img: 0.0043; r1_seg: 0.0001; path: 0.0024; mean path: 0.1688; mask: 0.0008; time: 2.29
+[025600] d: 1.0630; g: 1.0901; real: -0.2536; fake: -1.9534; r1_img: 0.0035; r1_seg: 0.0001; path: 0.0011; mean path: 0.1688; mask: 0.0006; time: 3.11
+[025700] d: 0.5626; g: 1.9440; real: 4.0008; fake: -0.6228; r1_img: 0.0122; r1_seg: 0.0001; path: 0.0020; mean path: 0.1632; mask: 0.0012; time: 2.29
+[025800] d: 0.7322; g: 1.1890; real: 0.6238; fake: -1.6081; r1_img: 0.0014; r1_seg: 0.0003; path: 0.0004; mean path: 0.1663; mask: 0.0008; time: 2.31
+[025900] d: 0.4363; g: 1.8667; real: 3.9202; fake: -0.8958; r1_img: 0.0050; r1_seg: 0.0001; path: 0.0154; mean path: 0.1583; mask: 0.0012; time: 2.29
+[026000] d: 1.1320; g: 0.7081; real: -0.6628; fake: -3.3334; r1_img: 0.0044; r1_seg: 0.0001; path: 0.0018; mean path: 0.1608; mask: 0.0013; time: 3.10
+[026100] d: 0.8049; g: 1.6826; real: 4.5663; fake: -0.2716; r1_img: 0.0078; r1_seg: 0.0001; path: 0.0030; mean path: 0.1571; mask: 0.0004; time: 2.39
+[026200] d: 0.8073; g: 1.8158; real: 0.0878; fake: -3.5386; r1_img: 0.0067; r1_seg: 0.0002; path: 0.0038; mean path: 0.1595; mask: 0.0012; time: 2.31
+[026300] d: 0.5379; g: 0.9791; real: 1.0435; fake: -2.8559; r1_img: 0.0039; r1_seg: 0.0001; path: 0.0024; mean path: 0.1682; mask: 0.0009; time: 2.29
+[026400] d: 0.7147; g: 1.9654; real: 0.4291; fake: -2.5806; r1_img: 0.0028; r1_seg: 0.0001; path: 0.0028; mean path: 0.1733; mask: 0.0008; time: 3.11
+[026500] d: 0.1155; g: 2.5568; real: 5.6939; fake: -2.4042; r1_img: 0.0028; r1_seg: 0.0001; path: 0.0158; mean path: 0.1729; mask: 0.0005; time: 2.29
+[026600] d: 0.3679; g: 2.1656; real: 5.0789; fake: -1.1752; r1_img: 0.0318; r1_seg: 0.0002; path: 0.0101; mean path: 0.1718; mask: 0.0008; time: 2.30
+[026700] d: 0.0656; g: 2.7881; real: 5.9651; fake: -2.7537; r1_img: 0.0092; r1_seg: 0.0001; path: 0.0080; mean path: 0.1743; mask: 0.0012; time: 2.29
+[026800] d: 0.1165; g: 2.9074; real: 3.3372; fake: -3.1043; r1_img: 0.0038; r1_seg: 0.0001; path: 0.0517; mean path: 0.1828; mask: 0.0009; time: 3.12
+[026900] d: 0.1614; g: 1.7376; real: 4.1207; fake: -2.1583; r1_img: 0.0022; r1_seg: 0.0001; path: 0.0032; mean path: 0.1758; mask: 0.0007; time: 2.29
+[027000] d: 0.2711; g: 3.0560; real: 2.0798; fake: -2.2756; r1_img: 0.0095; r1_seg: 0.0001; path: 0.0273; mean path: 0.1825; mask: 0.0009; time: 2.28
+[027100] d: 0.7071; g: 1.6190; real: 0.1878; fake: -3.9857; r1_img: 0.0037; r1_seg: 0.0005; path: 0.0163; mean path: 0.1814; mask: 0.0013; time: 2.30
+[027200] d: 0.1130; g: 1.5878; real: 3.0254; fake: -3.3884; r1_img: 0.0041; r1_seg: 0.0003; path: 0.0024; mean path: 0.1904; mask: 0.0010; time: 3.08
+[027300] d: 0.8192; g: 1.9956; real: 0.2991; fake: -1.5137; r1_img: 0.0011; r1_seg: 0.0001; path: 0.0027; mean path: 0.1882; mask: 0.0010; time: 2.33
+[027400] d: 0.3740; g: 4.3999; real: 4.7411; fake: -0.8494; r1_img: 0.0013; r1_seg: 0.0001; path: 0.0024; mean path: 0.2000; mask: 0.0014; time: 2.29
+[027500] d: 0.4432; g: 1.8981; real: 0.8263; fake: -3.4160; r1_img: 0.0057; r1_seg: 0.0001; path: 0.0166; mean path: 0.1993; mask: 0.0014; time: 2.78
+[027600] d: 0.5774; g: 2.2511; real: 0.7066; fake: -2.6133; r1_img: 0.0075; r1_seg: 0.0001; path: 0.1107; mean path: 0.2032; mask: 0.0022; time: 3.11
+[027700] d: 0.5383; g: 1.1568; real: 1.0114; fake: -2.4749; r1_img: 0.0063; r1_seg: 0.0001; path: 0.0106; mean path: 0.2021; mask: 0.0018; time: 2.30
+[027800] d: 0.1307; g: 3.2522; real: 4.4264; fake: -2.2091; r1_img: 0.0093; r1_seg: 0.0003; path: 0.0007; mean path: 0.2032; mask: 0.0011; time: 2.29
+[027900] d: 0.1547; g: 3.1878; real: 2.5338; fake: -2.7812; r1_img: 0.0046; r1_seg: 0.0001; path: 0.0111; mean path: 0.2054; mask: 0.0013; time: 2.30
+[028000] d: 0.0826; g: 3.2884; real: 3.5576; fake: -3.4045; r1_img: 0.0041; r1_seg: 0.0001; path: 0.0104; mean path: 0.1983; mask: 0.0010; time: 3.11
+[028100] d: 0.6165; g: 2.7382; real: 0.9417; fake: -2.9551; r1_img: 0.0020; r1_seg: 0.0001; path: 0.0087; mean path: 0.1876; mask: 0.0030; time: 2.32
+[028200] d: 0.4670; g: 2.3220; real: 1.3412; fake: -1.9293; r1_img: 0.0036; r1_seg: 0.0001; path: 0.0075; mean path: 0.1914; mask: 0.0019; time: 2.30
+[028300] d: 0.0701; g: 3.3382; real: 6.0412; fake: -2.7441; r1_img: 0.0044; r1_seg: 0.0001; path: 0.0209; mean path: 0.1949; mask: 0.0009; time: 2.30
+[028400] d: 0.6638; g: 3.1425; real: 6.2905; fake: -0.2883; r1_img: 0.0021; r1_seg: 0.0001; path: 0.0076; mean path: 0.1866; mask: 0.0015; time: 3.09
+[028500] d: 0.4086; g: 2.2347; real: 1.6698; fake: -2.4988; r1_img: 0.0080; r1_seg: 0.0004; path: 0.0167; mean path: 0.1877; mask: 0.0018; time: 2.31
+[028600] d: 0.4620; g: 2.4464; real: 1.3759; fake: -1.9743; r1_img: 0.0033; r1_seg: 0.0001; path: 0.0270; mean path: 0.1862; mask: 0.0008; time: 2.29
+[028700] d: 0.3726; g: 4.4812; real: 4.2523; fake: -1.6006; r1_img: 0.0038; r1_seg: 0.0000; path: 0.0110; mean path: 0.1908; mask: 0.0330; time: 2.37
+[028800] d: 0.5657; g: 1.8327; real: 0.6125; fake: -3.3091; r1_img: 0.0020; r1_seg: 0.0002; path: 0.0062; mean path: 0.1934; mask: 0.0055; time: 3.10
+[028900] d: 0.1273; g: 2.4216; real: 3.6327; fake: -2.9032; r1_img: 0.0034; r1_seg: 0.0002; path: 0.0130; mean path: 0.2005; mask: 0.0025; time: 2.28
+[029000] d: 0.7616; g: 3.7992; real: 5.3243; fake: 0.0374; r1_img: 0.0017; r1_seg: 0.0002; path: 0.0154; mean path: 0.2020; mask: 0.0019; time: 2.32
+[029100] d: 0.6478; g: 1.3746; real: 0.8117; fake: -2.7735; r1_img: 0.0025; r1_seg: 0.0002; path: 0.0099; mean path: 0.2041; mask: 0.0038; time: 2.31
+[029200] d: 0.1370; g: 2.8491; real: 4.3558; fake: -2.2707; r1_img: 0.0027; r1_seg: 0.0001; path: 0.0011; mean path: 0.2031; mask: 0.0045; time: 3.11
+[029300] d: 0.8036; g: 3.2611; real: 3.4861; fake: 0.0852; r1_img: 0.0046; r1_seg: 0.0001; path: 0.0052; mean path: 0.1982; mask: 0.0020; time: 2.31
+[029400] d: 0.1736; g: 2.9432; real: 2.9963; fake: -2.3603; r1_img: 0.0054; r1_seg: 0.0002; path: 0.0040; mean path: 0.1936; mask: 0.0007; time: 2.34
+[029500] d: 0.5969; g: 1.7946; real: 0.6433; fake: -2.5215; r1_img: 0.0010; r1_seg: 0.0001; path: 0.0080; mean path: 0.1982; mask: 0.0011; time: 2.29
+[029600] d: 0.1695; g: 3.4084; real: 4.3179; fake: -2.0857; r1_img: 0.0039; r1_seg: 0.0001; path: 0.0010; mean path: 0.1990; mask: 0.0022; time: 3.09
+[029700] d: 1.2563; g: 2.1151; real: 2.6972; fake: 0.8189; r1_img: 0.0101; r1_seg: 0.0001; path: 0.0011; mean path: 0.1921; mask: 0.0017; time: 2.29
+[029800] d: 0.3671; g: 2.5934; real: 1.5370; fake: -2.2972; r1_img: 0.0047; r1_seg: 0.0003; path: 0.0103; mean path: 0.1900; mask: 0.0007; time: 2.29
+[029900] d: 0.1991; g: 2.4727; real: 1.8416; fake: -3.9277; r1_img: 0.0025; r1_seg: 0.0002; path: 0.0012; mean path: 0.1903; mask: 0.0005; time: 2.30
+[030000] d: 0.0805; g: 2.1587; real: 3.1436; fake: -3.6126; r1_img: 0.0034; r1_seg: 0.0003; path: 0.0105; mean path: 0.1832; mask: 0.0012; time: 3.60
+==================Start calculating FID==================
+Gathering activations...
+2000/10000
+4000/10000
+6000/10000
+8000/10000
+10000/10000
+Calculating Inception Score...
+Calculating means and covariances...
+Covariances calculated, getting FID...
+[val] iteration 030000: FID: 68.0880, IS_mean: 2.6518, IS_std: 0.0358
+[030100] d: 0.5623; g: 2.6744; real: 2.4855; fake: -0.5765; r1_img: 0.0025; r1_seg: 0.0000; path: 0.0088; mean path: 0.1952; mask: 0.0016; time: 2.32
+[030200] d: 0.1871; g: 2.5406; real: 4.8403; fake: -2.1526; r1_img: 0.0045; r1_seg: 0.0001; path: 0.0001; mean path: 0.1933; mask: 0.0054; time: 2.29
+[030300] d: 0.1055; g: 4.2519; real: 3.4867; fake: -2.7684; r1_img: 0.0067; r1_seg: 0.0002; path: 0.0123; mean path: 0.1883; mask: 0.0013; time: 2.33
+[030400] d: 0.8242; g: 3.2154; real: 0.0357; fake: -4.5899; r1_img: 0.0020; r1_seg: 0.0000; path: 0.0010; mean path: 0.1912; mask: 0.0002; time: 3.13
+[030500] d: 0.3831; g: 1.8474; real: 6.6041; fake: -0.8172; r1_img: 0.0098; r1_seg: 0.0003; path: 0.0144; mean path: 0.1858; mask: 0.0021; time: 2.30
+[030600] d: 0.4301; g: 2.7803; real: 2.3378; fake: -1.0103; r1_img: 0.0072; r1_seg: 0.0003; path: 0.0140; mean path: 0.1852; mask: 0.0016; time: 2.31
+[030700] d: 0.3371; g: 2.0992; real: 2.1070; fake: -2.2772; r1_img: 0.0044; r1_seg: 0.0002; path: 0.0658; mean path: 0.1842; mask: 0.0007; time: 2.30
+[030800] d: 1.2808; g: 0.7897; real: -0.7161; fake: -2.4384; r1_img: 0.0044; r1_seg: 0.0000; path: 0.0071; mean path: 0.1912; mask: 0.0011; time: 3.12
+[030900] d: 0.7474; g: 1.9579; real: 0.4467; fake: -2.1134; r1_img: 0.0022; r1_seg: 0.0000; path: 0.0094; mean path: 0.1855; mask: 0.0010; time: 2.29
+[031000] d: 0.1678; g: 1.7549; real: 4.2140; fake: -2.0730; r1_img: 0.0139; r1_seg: 0.0004; path: 0.0075; mean path: 0.1879; mask: 0.0005; time: 2.30
+[031100] d: 1.5541; g: 0.1463; real: -1.0220; fake: -3.6997; r1_img: 0.0017; r1_seg: 0.0001; path: 0.0036; mean path: 0.1907; mask: 0.0019; time: 2.29
+[031200] d: 0.1203; g: 3.0157; real: 4.4044; fake: -2.7453; r1_img: 0.0021; r1_seg: 0.0001; path: 0.0159; mean path: 0.1888; mask: 0.0016; time: 3.21
+[031300] d: 0.2842; g: 3.3436; real: 1.7606; fake: -2.8129; r1_img: 0.0010; r1_seg: 0.0001; path: 0.0100; mean path: 0.1897; mask: 0.0020; time: 2.27
+[031400] d: 0.1725; g: 2.1772; real: 4.5161; fake: -2.1402; r1_img: 0.0023; r1_seg: 0.0002; path: 0.0057; mean path: 0.1890; mask: 0.0007; time: 2.30
+[031500] d: 0.2623; g: 4.3243; real: 5.9821; fake: -1.3682; r1_img: 0.0039; r1_seg: 0.0002; path: 0.0001; mean path: 0.1942; mask: 0.0013; time: 2.29
+[031600] d: 1.5474; g: 2.3247; real: -0.5415; fake: -1.9901; r1_img: 0.0058; r1_seg: 0.0000; path: 0.0093; mean path: 0.1919; mask: 0.0003; time: 3.11
+[031700] d: 0.7055; g: 2.5911; real: 2.6314; fake: -0.4601; r1_img: 0.0079; r1_seg: 0.0002; path: 0.0175; mean path: 0.1959; mask: 0.0008; time: 2.28
+[031800] d: 0.3437; g: 3.9613; real: 4.5136; fake: -1.2581; r1_img: 0.0035; r1_seg: 0.0000; path: 0.0187; mean path: 0.1864; mask: 0.0007; time: 2.30
+[031900] d: 0.5208; g: 3.3116; real: 4.3679; fake: -0.4900; r1_img: 0.0042; r1_seg: 0.0000; path: 0.0096; mean path: 0.1738; mask: 0.0029; time: 2.29
+[032000] d: 0.3333; g: 2.3716; real: 3.1983; fake: -1.4116; r1_img: 0.0080; r1_seg: 0.0002; path: 0.0124; mean path: 0.1713; mask: 0.0007; time: 3.06
+[032100] d: 0.8415; g: 2.4687; real: 5.6759; fake: 0.1357; r1_img: 0.0031; r1_seg: 0.0001; path: 0.0082; mean path: 0.1734; mask: 0.0033; time: 2.29
+[032200] d: 0.6183; g: 2.0867; real: 0.4709; fake: -4.2937; r1_img: 0.0043; r1_seg: 0.0001; path: 0.0103; mean path: 0.1701; mask: 0.0009; time: 2.26
+[032300] d: 0.1532; g: 2.9612; real: 5.0592; fake: -2.1694; r1_img: 0.0063; r1_seg: 0.0004; path: 0.0033; mean path: 0.1661; mask: 0.0006; time: 2.29
+[032400] d: 0.0635; g: 2.6031; real: 3.7549; fake: -4.0842; r1_img: 0.0046; r1_seg: 0.0001; path: 0.0093; mean path: 0.1644; mask: 0.0007; time: 3.09
+[032500] d: 0.3507; g: 1.9781; real: 1.9002; fake: -2.4133; r1_img: 0.0017; r1_seg: 0.0002; path: 0.0517; mean path: 0.1756; mask: 0.0039; time: 2.82
+[032600] d: 0.0776; g: 4.1822; real: 4.4953; fake: -2.8587; r1_img: 0.0060; r1_seg: 0.0002; path: 0.0138; mean path: 0.1777; mask: 0.0012; time: 2.36
+[032700] d: 0.1680; g: 3.0430; real: 4.2890; fake: -2.3677; r1_img: 0.0149; r1_seg: 0.0001; path: 0.0170; mean path: 0.1759; mask: 0.0026; time: 2.33
+[032800] d: 0.3076; g: 2.8600; real: 4.8609; fake: -1.6297; r1_img: 0.0019; r1_seg: 0.0001; path: 0.0002; mean path: 0.1909; mask: 0.0010; time: 3.09
+[032900] d: 1.0686; g: 1.2626; real: -0.5412; fake: -3.2612; r1_img: 0.0033; r1_seg: 0.0002; path: 0.0129; mean path: 0.1828; mask: 0.0014; time: 2.28
+[033000] d: 0.1494; g: 3.0330; real: 3.2166; fake: -2.1783; r1_img: 0.0043; r1_seg: 0.0000; path: 0.0137; mean path: 0.1772; mask: 0.0009; time: 2.32
+[033100] d: 0.2795; g: 2.8571; real: 6.0804; fake: -1.1833; r1_img: 0.0072; r1_seg: 0.0001; path: 0.0002; mean path: 0.1820; mask: 0.0016; time: 2.30
+[033200] d: 1.2565; g: 0.2327; real: -0.7735; fake: -3.2026; r1_img: 0.0029; r1_seg: 0.0001; path: 0.0006; mean path: 0.1801; mask: 0.0011; time: 3.11
+[033300] d: 0.4318; g: 2.3581; real: 1.6198; fake: -3.2340; r1_img: 0.0036; r1_seg: 0.0001; path: 0.0032; mean path: 0.1794; mask: 0.0006; time: 2.32
+[033400] d: 0.4961; g: 2.5650; real: 3.7658; fake: -0.8491; r1_img: 0.0285; r1_seg: 0.0001; path: 0.0236; mean path: 0.1735; mask: 0.0014; time: 2.30
+[033500] d: 0.7849; g: 1.8783; real: 1.7435; fake: -0.2062; r1_img: 0.0048; r1_seg: 0.0001; path: 0.0293; mean path: 0.1818; mask: 0.0009; time: 2.29
+[033600] d: 0.1123; g: 3.1059; real: 3.4373; fake: -2.7266; r1_img: 0.0029; r1_seg: 0.0003; path: 0.0086; mean path: 0.1872; mask: 0.0042; time: 3.07
+[033700] d: 1.0931; g: 2.1171; real: 4.7544; fake: 0.5258; r1_img: 0.0035; r1_seg: 0.0001; path: 0.0091; mean path: 0.1872; mask: 0.0014; time: 2.35
+[033800] d: 0.7582; g: 2.1288; real: 0.3598; fake: -3.7992; r1_img: 0.0021; r1_seg: 0.0002; path: 0.0863; mean path: 0.1955; mask: 0.0011; time: 2.31
+[033900] d: 0.2462; g: 2.3691; real: 5.8458; fake: -1.3442; r1_img: 0.0053; r1_seg: 0.0004; path: 0.0070; mean path: 0.1905; mask: 0.0009; time: 2.28
+[034000] d: 0.0579; g: 2.7804; real: 4.7076; fake: -3.2266; r1_img: 0.0024; r1_seg: 0.0002; path: 0.0066; mean path: 0.1885; mask: 0.0024; time: 3.13
+[034100] d: 0.0809; g: 3.1279; real: 3.8559; fake: -2.9305; r1_img: 0.0051; r1_seg: 0.0001; path: 0.0029; mean path: 0.1872; mask: 0.0007; time: 2.28
+[034200] d: 0.1337; g: 2.1060; real: 3.2660; fake: -2.3357; r1_img: 0.0070; r1_seg: 0.0001; path: 0.0008; mean path: 0.1848; mask: 0.0009; time: 2.36
+[034300] d: 0.0468; g: 3.6072; real: 6.8974; fake: -3.2100; r1_img: 0.0044; r1_seg: 0.0002; path: 0.0123; mean path: 0.1899; mask: 0.0006; time: 2.31
+[034400] d: 0.7053; g: 2.2460; real: 3.8305; fake: -0.3304; r1_img: 0.0102; r1_seg: 0.0004; path: 0.0176; mean path: 0.1922; mask: 0.0006; time: 3.11
+[034500] d: 0.8930; g: 1.6977; real: -0.1819; fake: -2.9983; r1_img: 0.0048; r1_seg: 0.0001; path: 0.0141; mean path: 0.1839; mask: 0.0005; time: 2.30
+[034600] d: 0.1196; g: 3.7098; real: 4.6196; fake: -2.4817; r1_img: 0.0018; r1_seg: 0.0001; path: 0.0039; mean path: 0.1918; mask: 0.0006; time: 2.29
+[034700] d: 0.4220; g: 3.2210; real: 4.4291; fake: -1.1637; r1_img: 0.0038; r1_seg: 0.0001; path: 0.0128; mean path: 0.1893; mask: 0.0012; time: 2.31
+[034800] d: 0.2381; g: 2.1695; real: 2.4294; fake: -2.5940; r1_img: 0.0121; r1_seg: 0.0003; path: 0.0098; mean path: 0.1814; mask: 0.0004; time: 3.13
+[034900] d: 0.4402; g: 3.3553; real: 2.7067; fake: -1.0916; r1_img: 0.0032; r1_seg: 0.0002; path: 0.0004; mean path: 0.1823; mask: 0.0007; time: 2.29
+[035000] d: 0.6588; g: 3.4882; real: 2.1829; fake: -1.7698; r1_img: 0.0017; r1_seg: 0.0001; path: 0.5112; mean path: 0.1783; mask: 0.0008; time: 2.91
+==================Start calculating FID==================
+Gathering activations...
+2000/10000
+4000/10000
+6000/10000
+8000/10000
+10000/10000
+Calculating Inception Score...
+Calculating means and covariances...
+Covariances calculated, getting FID...
+[val] iteration 035000: FID: 68.6886, IS_mean: 2.5810, IS_std: 0.0524
+[035100] d: 0.1732; g: 2.0311; real: 3.0473; fake: -2.0975; r1_img: 0.0040; r1_seg: 0.0001; path: 0.0084; mean path: 0.1794; mask: 0.0010; time: 2.28
+[035200] d: 1.2527; g: 1.9072; real: -0.7153; fake: -3.3704; r1_img: 0.0038; r1_seg: 0.0000; path: 0.0107; mean path: 0.1712; mask: 0.0004; time: 3.10
+[035300] d: 0.3345; g: 2.6226; real: 1.4332; fake: -2.3350; r1_img: 0.0031; r1_seg: 0.0001; path: 0.0195; mean path: 0.1658; mask: 0.0007; time: 2.28
+[035400] d: 0.0799; g: 4.0037; real: 4.2528; fake: -3.0729; r1_img: 0.0034; r1_seg: 0.0001; path: 0.0064; mean path: 0.1786; mask: 0.0015; time: 2.28
+[035500] d: 0.0567; g: 3.9795; real: 3.9104; fake: -3.8120; r1_img: 0.0013; r1_seg: 0.0001; path: 0.0056; mean path: 0.1742; mask: 0.0027; time: 2.31
+[035600] d: 0.0796; g: 2.1602; real: 3.0789; fake: -4.2194; r1_img: 0.0027; r1_seg: 0.0002; path: 0.0207; mean path: 0.1753; mask: 0.0017; time: 3.10
+[035700] d: 0.9082; g: 1.2013; real: 0.0162; fake: -1.8948; r1_img: 0.0076; r1_seg: 0.0007; path: 0.0110; mean path: 0.1737; mask: 0.0007; time: 2.28
+[035800] d: 0.2071; g: 3.0691; real: 5.1823; fake: -1.8894; r1_img: 0.0093; r1_seg: 0.0000; path: 0.0124; mean path: 0.1708; mask: 0.0007; time: 2.29
+[035900] d: 0.6763; g: 2.3435; real: 0.8977; fake: -1.8500; r1_img: 0.0025; r1_seg: 0.0001; path: 0.0106; mean path: 0.1667; mask: 0.0010; time: 2.29
+[036000] d: 0.6300; g: 1.5156; real: 5.1963; fake: -0.5702; r1_img: 0.0285; r1_seg: 0.0007; path: 0.0076; mean path: 0.1651; mask: 0.0019; time: 3.12
+[036100] d: 0.0824; g: 3.5532; real: 3.4032; fake: -3.8286; r1_img: 0.0119; r1_seg: 0.0003; path: 0.0218; mean path: 0.1699; mask: 0.0011; time: 2.31
+[036200] d: 0.4642; g: 3.1238; real: 3.9764; fake: -0.7749; r1_img: 0.0065; r1_seg: 0.0000; path: 0.0023; mean path: 0.1762; mask: 0.0013; time: 2.30
+[036300] d: 0.1912; g: 4.0673; real: 4.1426; fake: -2.1686; r1_img: 0.0042; r1_seg: 0.0002; path: 0.0042; mean path: 0.1738; mask: 0.0011; time: 2.28
+[036400] d: 0.3841; g: 2.0755; real: 1.2618; fake: -2.1947; r1_img: 0.0105; r1_seg: 0.0000; path: 0.0009; mean path: 0.1797; mask: 0.0033; time: 3.16
+[036500] d: 0.0745; g: 2.3588; real: 4.5775; fake: -2.8158; r1_img: 0.0026; r1_seg: 0.0000; path: 0.0206; mean path: 0.1801; mask: 0.0012; time: 2.29
+[036600] d: 0.3569; g: 3.8641; real: 3.5407; fake: -1.2455; r1_img: 0.0037; r1_seg: 0.0003; path: 0.0023; mean path: 0.1820; mask: 0.0009; time: 2.30
+[036700] d: 0.7697; g: 2.1606; real: 0.7566; fake: -1.3342; r1_img: 0.0059; r1_seg: 0.0001; path: 0.1180; mean path: 0.1874; mask: 0.0016; time: 2.29
+[036800] d: 0.5822; g: 2.2010; real: 3.0519; fake: -1.4854; r1_img: 0.0059; r1_seg: 0.0021; path: 0.0006; mean path: 0.1904; mask: 0.0046; time: 3.09
+[036900] d: 0.1511; g: 2.9924; real: 4.6017; fake: -2.2025; r1_img: 0.0037; r1_seg: 0.0001; path: 0.0010; mean path: 0.1874; mask: 0.0009; time: 2.32
+[037000] d: 0.1683; g: 2.8948; real: 3.8162; fake: -1.9659; r1_img: 0.0092; r1_seg: 0.0001; path: 0.0294; mean path: 0.1888; mask: 0.0008; time: 2.29
+[037100] d: 0.0770; g: 3.5494; real: 3.9617; fake: -3.5902; r1_img: 0.0052; r1_seg: 0.0000; path: 0.0175; mean path: 0.1889; mask: 0.0024; time: 2.33
+[037200] d: 1.0742; g: 2.4813; real: 1.0157; fake: -0.8847; r1_img: 0.0096; r1_seg: 0.0002; path: 0.0017; mean path: 0.1894; mask: 0.0014; time: 3.22
+[037300] d: 0.1610; g: 3.5150; real: 3.5511; fake: -2.5625; r1_img: 0.0005; r1_seg: 0.0001; path: 0.0025; mean path: 0.1870; mask: 0.0079; time: 2.28
+[037400] d: 0.5112; g: 4.6562; real: 4.4391; fake: -0.8217; r1_img: 0.0020; r1_seg: 0.0001; path: 0.0292; mean path: 0.1832; mask: 0.0016; time: 2.29
+[037500] d: 0.2271; g: 2.5526; real: 1.8803; fake: -3.5712; r1_img: 0.0035; r1_seg: 0.0001; path: 0.0042; mean path: 0.1823; mask: 0.0025; time: 2.81
+[037600] d: 0.0525; g: 3.0955; real: 4.2584; fake: -3.7167; r1_img: 0.0073; r1_seg: 0.0001; path: 0.0155; mean path: 0.1792; mask: 0.0027; time: 3.09
+[037700] d: 0.1178; g: 2.5925; real: 6.7785; fake: -2.3099; r1_img: 0.0181; r1_seg: 0.0004; path: 0.0055; mean path: 0.1773; mask: 0.0023; time: 2.28
+[037800] d: 0.2164; g: 2.2146; real: 3.6693; fake: -1.6548; r1_img: 0.0018; r1_seg: 0.0001; path: 0.0128; mean path: 0.1732; mask: 0.0007; time: 2.30
+[037900] d: 0.9618; g: 1.0079; real: -0.2261; fake: -2.1578; r1_img: 0.0067; r1_seg: 0.0002; path: 0.0038; mean path: 0.1814; mask: 0.0009; time: 2.31
+[038000] d: 0.0732; g: 2.9282; real: 3.4855; fake: -4.0157; r1_img: 0.0032; r1_seg: 0.0001; path: 0.0140; mean path: 0.1807; mask: 0.0020; time: 3.12
+[038100] d: 0.2919; g: 3.5712; real: 3.2518; fake: -1.5484; r1_img: 0.0022; r1_seg: 0.0001; path: 0.0171; mean path: 0.1782; mask: 0.0035; time: 2.28
+[038200] d: 0.2812; g: 4.1164; real: 5.0575; fake: -2.2242; r1_img: 0.0022; r1_seg: 0.0000; path: 0.0159; mean path: 0.1825; mask: 0.0026; time: 2.27
+[038300] d: 0.1803; g: 2.8634; real: 3.5901; fake: -1.9807; r1_img: 0.0091; r1_seg: 0.0005; path: 0.0131; mean path: 0.1751; mask: 0.0006; time: 2.28
+[038400] d: 0.3925; g: 1.2895; real: 1.6750; fake: -2.3291; r1_img: 0.0133; r1_seg: 0.0002; path: 0.0159; mean path: 0.1735; mask: 0.0014; time: 3.09
+[038500] d: 0.1251; g: 3.1304; real: 2.6578; fake: -3.4278; r1_img: 0.0075; r1_seg: 0.0002; path: 0.0135; mean path: 0.1714; mask: 0.0015; time: 2.31
+[038600] d: 0.0888; g: 2.7828; real: 4.1177; fake: -3.2020; r1_img: 0.0038; r1_seg: 0.0001; path: 0.0065; mean path: 0.1747; mask: 0.0008; time: 2.29
+[038700] d: 0.9971; g: 2.2301; real: 0.8794; fake: -0.6928; r1_img: 0.0019; r1_seg: 0.0001; path: 0.0082; mean path: 0.1750; mask: 0.0018; time: 2.28
+[038800] d: 0.0304; g: 3.0250; real: 4.5467; fake: -4.1698; r1_img: 0.0023; r1_seg: 0.0001; path: 0.0112; mean path: 0.1598; mask: 0.0015; time: 3.10
+[038900] d: 0.5352; g: 2.3290; real: 1.5682; fake: -1.7074; r1_img: 0.0046; r1_seg: 0.0007; path: 0.0022; mean path: 0.1682; mask: 0.0031; time: 2.32
+[039000] d: 0.0759; g: 3.3285; real: 5.6788; fake: -2.7267; r1_img: 0.0023; r1_seg: 0.0002; path: 0.0212; mean path: 0.1661; mask: 0.0012; time: 2.32
+[039100] d: 0.4336; g: 3.3154; real: 4.9939; fake: -1.1788; r1_img: 0.0082; r1_seg: 0.0004; path: 0.2195; mean path: 0.1711; mask: 0.0014; time: 2.29
+[039200] d: 0.3623; g: 3.1178; real: 3.6450; fake: -1.0929; r1_img: 0.0030; r1_seg: 0.0001; path: 0.0122; mean path: 0.1711; mask: 0.0008; time: 3.09
+[039300] d: 0.7147; g: 1.7590; real: 0.1047; fake: -4.1489; r1_img: 0.0020; r1_seg: 0.0000; path: 0.0133; mean path: 0.1669; mask: 0.0004; time: 2.32
+[039400] d: 0.4788; g: 1.5270; real: 4.4791; fake: -0.7271; r1_img: 0.0029; r1_seg: 0.0002; path: 0.0021; mean path: 0.1684; mask: 0.0008; time: 2.27
+[039500] d: 0.0568; g: 4.2218; real: 3.7020; fake: -3.7255; r1_img: 0.0022; r1_seg: 0.0001; path: 0.0087; mean path: 0.1653; mask: 0.0010; time: 2.30
+[039600] d: 0.3336; g: 1.8003; real: 1.4786; fake: -2.5730; r1_img: 0.0070; r1_seg: 0.0002; path: 0.0100; mean path: 0.1732; mask: 0.0021; time: 3.09
+[039700] d: 0.6308; g: 1.7116; real: 0.3684; fake: -4.9960; r1_img: 0.0018; r1_seg: 0.0001; path: 0.0121; mean path: 0.1705; mask: 0.0021; time: 2.30
+[039800] d: 0.1239; g: 2.2729; real: 2.6613; fake: -3.1782; r1_img: 0.0017; r1_seg: 0.0001; path: 0.0006; mean path: 0.1673; mask: 0.0014; time: 2.33
+[039900] d: 0.0283; g: 5.4522; real: 5.2948; fake: -4.7079; r1_img: 0.0024; r1_seg: 0.0001; path: 0.0026; mean path: 0.1679; mask: 0.0025; time: 2.29
+[040000] d: 0.1332; g: 4.0537; real: 2.5588; fake: -4.0128; r1_img: 0.0009; r1_seg: 0.0001; path: 0.0094; mean path: 0.1647; mask: 0.0030; time: 3.64
+==================Start calculating FID==================
+Gathering activations...
+2000/10000
+4000/10000
+6000/10000
+8000/10000
+10000/10000
+Calculating Inception Score...
+Calculating means and covariances...
+Covariances calculated, getting FID...
+[val] iteration 040000: FID: 63.7047, IS_mean: 2.7022, IS_std: 0.0347
+[040100] d: 0.2863; g: 2.8127; real: 5.2166; fake: -1.2059; r1_img: 0.0014; r1_seg: 0.0002; path: 0.0055; mean path: 0.1686; mask: 0.0012; time: 2.31
+[040200] d: 1.7245; g: 0.7203; real: -1.3881; fake: -2.9853; r1_img: 0.0014; r1_seg: 0.0001; path: 0.0067; mean path: 0.1617; mask: 0.0019; time: 2.30
+[040300] d: 1.0001; g: 1.3356; real: 0.0844; fake: -2.0899; r1_img: 0.0023; r1_seg: 0.0000; path: 0.0093; mean path: 0.1598; mask: 0.0030; time: 2.28
+[040400] d: 1.2508; g: 2.5849; real: 2.7827; fake: 0.6662; r1_img: 0.0030; r1_seg: 0.0005; path: 0.0004; mean path: 0.1624; mask: 0.0014; time: 3.11
+[040500] d: 0.0811; g: 3.8875; real: 6.4275; fake: -2.8017; r1_img: 0.0056; r1_seg: 0.0001; path: 0.0126; mean path: 0.1600; mask: 0.0011; time: 2.29
+[040600] d: 0.0847; g: 4.1812; real: 5.4221; fake: -2.8852; r1_img: 0.0053; r1_seg: 0.0000; path: 0.0217; mean path: 0.1682; mask: 0.0017; time: 2.29
+[040700] d: 0.0923; g: 3.1763; real: 3.8481; fake: -3.8640; r1_img: 0.0018; r1_seg: 0.0000; path: 0.0199; mean path: 0.1710; mask: 0.0010; time: 2.26
+[040800] d: 0.0784; g: 2.0514; real: 4.6486; fake: -2.8231; r1_img: 0.0056; r1_seg: 0.0001; path: 0.0231; mean path: 0.1679; mask: 0.0025; time: 3.11
+[040900] d: 0.0642; g: 3.2321; real: 3.5541; fake: -3.4273; r1_img: 0.0021; r1_seg: 0.0001; path: 0.1409; mean path: 0.1668; mask: 0.0023; time: 2.32
+[041000] d: 0.3207; g: 2.4165; real: 1.1775; fake: -3.6751; r1_img: 0.0019; r1_seg: 0.0001; path: 0.0835; mean path: 0.1659; mask: 0.0009; time: 2.30
+[041100] d: 0.0532; g: 4.9806; real: 4.9791; fake: -3.6066; r1_img: 0.0045; r1_seg: 0.0003; path: 0.0349; mean path: 0.1599; mask: 0.0033; time: 2.28
+[041200] d: 0.0846; g: 3.1236; real: 5.9477; fake: -2.9867; r1_img: 0.0019; r1_seg: 0.0001; path: 0.0649; mean path: 0.1563; mask: 0.0031; time: 3.09
+[041300] d: 1.7348; g: 2.8540; real: 5.5637; fake: 1.4851; r1_img: 0.0040; r1_seg: 0.0002; path: 0.0056; mean path: 0.1612; mask: 0.0009; time: 2.32
+[041400] d: 0.0997; g: 3.8362; real: 3.8698; fake: -2.5721; r1_img: 0.0030; r1_seg: 0.0003; path: 0.0198; mean path: 0.1569; mask: 0.0014; time: 2.29
+[041500] d: 0.2891; g: 2.8525; real: 2.3033; fake: -1.9671; r1_img: 0.0052; r1_seg: 0.0002; path: 0.0112; mean path: 0.1660; mask: 0.0012; time: 2.29
+[041600] d: 0.2043; g: 2.0205; real: 3.1578; fake: -2.5566; r1_img: 0.0058; r1_seg: 0.0004; path: 0.0359; mean path: 0.1709; mask: 0.0038; time: 3.12
+[041700] d: 0.5205; g: 3.5241; real: 3.8545; fake: -0.6274; r1_img: 0.0052; r1_seg: 0.0002; path: 0.0060; mean path: 0.1710; mask: 0.0004; time: 2.28
+[041800] d: 0.1388; g: 4.0098; real: 2.2745; fake: -3.5139; r1_img: 0.0028; r1_seg: 0.0001; path: 0.0186; mean path: 0.1654; mask: 0.0007; time: 2.37
+[041900] d: 0.1434; g: 2.3818; real: 3.2894; fake: -2.6956; r1_img: 0.0088; r1_seg: 0.0003; path: 0.0646; mean path: 0.1639; mask: 0.0012; time: 2.29
+[042000] d: 0.0915; g: 2.8565; real: 4.1437; fake: -2.7580; r1_img: 0.0041; r1_seg: 0.0002; path: 0.0102; mean path: 0.1595; mask: 0.0022; time: 3.09
+[042100] d: 0.3327; g: 2.1402; real: 1.2927; fake: -2.5751; r1_img: 0.0088; r1_seg: 0.0002; path: 0.0098; mean path: 0.1652; mask: 0.0006; time: 2.29
+[042200] d: 0.1973; g: 2.5915; real: 5.5972; fake: -1.6172; r1_img: 0.0017; r1_seg: 0.0001; path: 0.0022; mean path: 0.1676; mask: 0.0018; time: 2.32
+[042300] d: 0.0928; g: 3.1049; real: 5.0234; fake: -3.2911; r1_img: 0.0058; r1_seg: 0.0000; path: 0.0012; mean path: 0.1619; mask: 0.0018; time: 2.28
+[042400] d: 0.0558; g: 3.2389; real: 3.4677; fake: -4.0842; r1_img: 0.0020; r1_seg: 0.0001; path: 0.0173; mean path: 0.1623; mask: 0.0018; time: 3.14
+[042500] d: 0.0648; g: 4.1266; real: 6.1637; fake: -3.1524; r1_img: 0.0020; r1_seg: 0.0001; path: 0.0042; mean path: 0.1727; mask: 0.0011; time: 2.82
+[042600] d: 0.2675; g: 2.0062; real: 1.4007; fake: -5.8210; r1_img: 0.0046; r1_seg: 0.0000; path: 0.0556; mean path: 0.1755; mask: 0.0021; time: 2.28
+[042700] d: 0.0739; g: 3.4579; real: 3.2284; fake: -3.6348; r1_img: 0.0027; r1_seg: 0.0001; path: 0.0079; mean path: 0.1749; mask: 0.0016; time: 2.32
+[042800] d: 0.8511; g: 2.1565; real: 1.7101; fake: -1.4302; r1_img: 0.0061; r1_seg: 0.0001; path: 0.0252; mean path: 0.1823; mask: 0.0006; time: 3.12
+[042900] d: 0.1167; g: 3.8103; real: 2.8086; fake: -3.2149; r1_img: 0.0025; r1_seg: 0.0001; path: 0.0229; mean path: 0.1773; mask: 0.0039; time: 2.30
+[043000] d: 2.4615; g: 1.1494; real: -2.2357; fake: -2.9290; r1_img: 0.0022; r1_seg: 0.0000; path: 0.0226; mean path: 0.1707; mask: 0.0096; time: 2.29
+[043100] d: 0.9659; g: 1.1058; real: 0.0157; fake: -2.3327; r1_img: 0.0024; r1_seg: 0.0000; path: 0.0218; mean path: 0.1678; mask: 0.0010; time: 2.31
+[043200] d: 1.2380; g: 1.9008; real: -0.6063; fake: -2.6451; r1_img: 0.0069; r1_seg: 0.0000; path: 0.0251; mean path: 0.1616; mask: 0.0010; time: 3.13
+[043300] d: 0.0907; g: 3.2485; real: 5.1327; fake: -2.4642; r1_img: 0.0042; r1_seg: 0.0001; path: 0.1747; mean path: 0.1629; mask: 0.0010; time: 2.34
+[043400] d: 0.2014; g: 2.8337; real: 4.5241; fake: -2.1661; r1_img: 0.0063; r1_seg: 0.0001; path: 0.0233; mean path: 0.1697; mask: 0.0009; time: 2.28
+[043500] d: 0.1455; g: 3.0978; real: 4.2192; fake: -2.1581; r1_img: 0.0073; r1_seg: 0.0004; path: 0.0007; mean path: 0.1701; mask: 0.0007; time: 2.29
+[043600] d: 0.8568; g: 1.8160; real: 2.0889; fake: -0.3252; r1_img: 0.0177; r1_seg: 0.0003; path: 0.0117; mean path: 0.1656; mask: 0.0012; time: 3.10
+[043700] d: 0.2865; g: 1.7163; real: 5.3304; fake: -1.1720; r1_img: 0.0017; r1_seg: 0.0001; path: 0.0028; mean path: 0.1646; mask: 0.0017; time: 2.30
+[043800] d: 0.1863; g: 4.6658; real: 2.9853; fake: -3.4059; r1_img: 0.0028; r1_seg: 0.0001; path: 0.0052; mean path: 0.1744; mask: 0.0018; time: 2.27
+[043900] d: 0.1043; g: 2.2824; real: 4.5233; fake: -2.6475; r1_img: 0.0044; r1_seg: 0.0001; path: 0.0166; mean path: 0.1901; mask: 0.0014; time: 2.28
+[044000] d: 0.0649; g: 2.9158; real: 3.9252; fake: -3.8980; r1_img: 0.0053; r1_seg: 0.0002; path: 0.0199; mean path: 0.1855; mask: 0.0006; time: 3.09
+[044100] d: 0.0646; g: 4.2812; real: 4.8103; fake: -3.1899; r1_img: 0.0016; r1_seg: 0.0001; path: 0.0266; mean path: 0.1874; mask: 0.0017; time: 2.29
+[044200] d: 1.7532; g: 0.6128; real: -1.5262; fake: -4.2236; r1_img: 0.0010; r1_seg: 0.0001; path: 0.0148; mean path: 0.1839; mask: 0.0022; time: 2.29
+[044300] d: 0.2467; g: 3.2168; real: 3.9340; fake: -1.7155; r1_img: 0.0024; r1_seg: 0.0001; path: 0.0295; mean path: 0.1771; mask: 0.0013; time: 2.27
+[044400] d: 0.0396; g: 3.1608; real: 4.4640; fake: -3.8544; r1_img: 0.0016; r1_seg: 0.0000; path: 0.0180; mean path: 0.1763; mask: 0.0006; time: 3.14
+[044500] d: 0.1577; g: 1.7957; real: 2.6873; fake: -3.2146; r1_img: 0.0076; r1_seg: 0.0004; path: 0.0626; mean path: 0.1758; mask: 0.0015; time: 2.27
+[044600] d: 0.3265; g: 3.2563; real: 3.6272; fake: -1.1153; r1_img: 0.0019; r1_seg: 0.0004; path: 0.0151; mean path: 0.1829; mask: 0.0018; time: 2.30
+[044700] d: 0.1141; g: 4.0666; real: 4.2569; fake: -2.4095; r1_img: 0.0060; r1_seg: 0.0001; path: 0.0004; mean path: 0.1836; mask: 0.0036; time: 2.29
+[044800] d: 0.1890; g: 2.0536; real: 2.3090; fake: -3.6392; r1_img: 0.0031; r1_seg: 0.0002; path: 0.0165; mean path: 0.1901; mask: 0.0007; time: 3.13
+[044900] d: 0.1519; g: 3.6604; real: 4.0557; fake: -2.3046; r1_img: 0.0018; r1_seg: 0.0002; path: 0.0150; mean path: 0.1858; mask: 0.0006; time: 2.30
+[045000] d: 0.8213; g: 3.3356; real: 1.4198; fake: -0.6787; r1_img: 0.0013; r1_seg: 0.0001; path: 0.0004; mean path: 0.1779; mask: 0.0014; time: 2.83
+==================Start calculating FID==================
+Gathering activations...
+2000/10000
+4000/10000
+6000/10000
+8000/10000
+10000/10000
+Calculating Inception Score...
+Calculating means and covariances...
+Covariances calculated, getting FID...
+[val] iteration 045000: FID: 51.0844, IS_mean: 2.0787, IS_std: 0.0331
+[045100] d: 0.2298; g: 3.3284; real: 1.9773; fake: -3.2664; r1_img: 0.0052; r1_seg: 0.0001; path: 0.0103; mean path: 0.1765; mask: 0.0009; time: 2.35
+[045200] d: 0.1641; g: 5.0910; real: 3.3232; fake: -3.1150; r1_img: 0.0047; r1_seg: 0.0001; path: 0.0137; mean path: 0.1672; mask: 0.0015; time: 3.11
+[045300] d: 0.8857; g: 1.4346; real: -0.0785; fake: -3.0249; r1_img: 0.0103; r1_seg: 0.0002; path: 0.0011; mean path: 0.1704; mask: 0.0006; time: 2.30
+[045400] d: 0.3561; g: 1.8510; real: 1.2266; fake: -3.2198; r1_img: 0.0148; r1_seg: 0.0001; path: 0.0178; mean path: 0.1760; mask: 0.0007; time: 2.27
+[045500] d: 0.0701; g: 3.4927; real: 5.0878; fake: -3.0506; r1_img: 0.0021; r1_seg: 0.0001; path: 0.0765; mean path: 0.1720; mask: 0.0016; time: 2.28
+[045600] d: 0.7413; g: 1.7964; real: 0.4450; fake: -3.2688; r1_img: 0.0038; r1_seg: 0.0001; path: 0.0076; mean path: 0.1705; mask: 0.0012; time: 3.12
+[045700] d: 0.2238; g: 3.9948; real: 3.8982; fake: -2.3550; r1_img: 0.0032; r1_seg: 0.0000; path: 0.0050; mean path: 0.1773; mask: 0.0018; time: 2.31
+[045800] d: 0.0360; g: 4.4866; real: 5.5710; fake: -3.7630; r1_img: 0.0018; r1_seg: 0.0001; path: 0.0151; mean path: 0.1818; mask: 0.0019; time: 2.28
+[045900] d: 0.1568; g: 2.2955; real: 3.0455; fake: -2.3115; r1_img: 0.0027; r1_seg: 0.0005; path: 0.0130; mean path: 0.1815; mask: 0.0011; time: 2.29
+[046000] d: 0.3117; g: 1.5944; real: 1.1164; fake: -4.6433; r1_img: 0.0045; r1_seg: 0.0000; path: 0.0018; mean path: 0.1778; mask: 0.0026; time: 3.11
+[046100] d: 0.1808; g: 2.5868; real: 2.4446; fake: -3.1069; r1_img: 0.0035; r1_seg: 0.0001; path: 0.0156; mean path: 0.1818; mask: 0.0067; time: 2.28
+[046200] d: 0.0746; g: 3.7337; real: 4.5803; fake: -3.1271; r1_img: 0.0052; r1_seg: 0.0001; path: 0.0302; mean path: 0.1797; mask: 0.0014; time: 2.36
+[046300] d: 0.1701; g: 4.1289; real: 3.9277; fake: -2.0702; r1_img: 0.0043; r1_seg: 0.0001; path: 0.0604; mean path: 0.1849; mask: 0.0006; time: 2.28
+[046400] d: 0.0248; g: 3.6152; real: 4.8465; fake: -4.1596; r1_img: 0.0013; r1_seg: 0.0001; path: 0.0026; mean path: 0.1782; mask: 0.0039; time: 3.12
+[046500] d: 0.0263; g: 3.6081; real: 4.3917; fake: -4.7518; r1_img: 0.0020; r1_seg: 0.0000; path: 0.0116; mean path: 0.1786; mask: 0.0032; time: 2.30
+[046600] d: 0.3263; g: 1.9044; real: 1.9012; fake: -2.3133; r1_img: 0.0022; r1_seg: 0.0001; path: 0.0425; mean path: 0.1932; mask: 0.0007; time: 2.32
+[046700] d: 0.1028; g: 2.7713; real: 5.5317; fake: -3.0021; r1_img: 0.0053; r1_seg: 0.0002; path: 0.0101; mean path: 0.1907; mask: 0.0014; time: 2.31
+[046800] d: 0.0904; g: 3.1781; real: 3.5771; fake: -3.1231; r1_img: 0.0042; r1_seg: 0.0001; path: 0.0391; mean path: 0.1915; mask: 0.0021; time: 3.07
+[046900] d: 0.3375; g: 3.2602; real: 2.0214; fake: -3.4148; r1_img: 0.0062; r1_seg: 0.0000; path: 0.0147; mean path: 0.1891; mask: 0.0027; time: 2.31
+[047000] d: 0.2560; g: 3.7991; real: 2.4566; fake: -3.1593; r1_img: 0.0027; r1_seg: 0.0001; path: 0.0135; mean path: 0.1857; mask: 0.0037; time: 2.28
+[047100] d: 1.0020; g: 0.6428; real: -0.3524; fake: -2.3705; r1_img: 0.0016; r1_seg: 0.0002; path: 0.0007; mean path: 0.1814; mask: 0.0019; time: 2.29
+[047200] d: 0.2410; g: 5.7137; real: 5.2899; fake: -1.4764; r1_img: 0.0024; r1_seg: 0.0001; path: 0.0128; mean path: 0.1954; mask: 0.0004; time: 3.11
+[047300] d: 0.2124; g: 3.2067; real: 4.6019; fake: -2.0637; r1_img: 0.0083; r1_seg: 0.0001; path: 0.0017; mean path: 0.1873; mask: 0.0023; time: 2.27
+[047400] d: 0.0639; g: 5.0518; real: 5.1912; fake: -3.7346; r1_img: 0.0026; r1_seg: 0.0000; path: 0.0286; mean path: 0.1870; mask: 0.0022; time: 2.31
+[047500] d: 0.4463; g: 3.8662; real: 2.0563; fake: -1.2865; r1_img: 0.0013; r1_seg: 0.0003; path: 0.0231; mean path: 0.1759; mask: 0.0004; time: 2.79
+[047600] d: 0.5945; g: 3.0756; real: 0.4797; fake: -4.0296; r1_img: 0.0047; r1_seg: 0.0000; path: 0.0908; mean path: 0.1784; mask: 0.0006; time: 3.14
+[047700] d: 0.0286; g: 4.0832; real: 4.4687; fake: -4.7145; r1_img: 0.0037; r1_seg: 0.0001; path: 0.0096; mean path: 0.1723; mask: 0.0015; time: 2.28
+[047800] d: 0.4704; g: 2.7075; real: 0.6637; fake: -3.9613; r1_img: 0.0085; r1_seg: 0.0001; path: 0.0130; mean path: 0.1745; mask: 0.0024; time: 2.32
+[047900] d: 0.2968; g: 3.5882; real: 1.1931; fake: -5.3161; r1_img: 0.0041; r1_seg: 0.0000; path: 0.0552; mean path: 0.1738; mask: 0.0006; time: 2.33
+[048000] d: 0.7763; g: 0.9608; real: 0.0331; fake: -3.8141; r1_img: 0.0015; r1_seg: 0.0000; path: 0.0011; mean path: 0.1846; mask: 0.0010; time: 3.08
+[048100] d: 0.1375; g: 3.0234; real: 2.6921; fake: -3.0683; r1_img: 0.0047; r1_seg: 0.0002; path: 0.0144; mean path: 0.1872; mask: 0.0010; time: 2.32
+[048200] d: 0.8189; g: 4.8913; real: 5.4540; fake: -0.1713; r1_img: 0.0019; r1_seg: 0.0000; path: 0.0146; mean path: 0.1831; mask: 0.0069; time: 2.30
+[048300] d: 0.1934; g: 2.3742; real: 4.6649; fake: -1.8010; r1_img: 0.0026; r1_seg: 0.0000; path: 0.0227; mean path: 0.1937; mask: 0.0061; time: 2.27
+[048400] d: 1.1027; g: 2.5081; real: 5.3214; fake: 0.5580; r1_img: 0.0014; r1_seg: 0.0000; path: 0.0166; mean path: 0.1892; mask: 0.0019; time: 3.09
+[048500] d: 0.0324; g: 3.3801; real: 4.7728; fake: -4.3310; r1_img: 0.0038; r1_seg: 0.0002; path: 0.0248; mean path: 0.1820; mask: 0.0022; time: 2.27
+[048600] d: 0.8445; g: 3.4243; real: 1.2754; fake: -0.7156; r1_img: 0.0018; r1_seg: 0.0000; path: 0.0092; mean path: 0.1826; mask: 0.0008; time: 2.28
+[048700] d: 2.6904; g: 1.0660; real: -2.3962; fake: -3.6740; r1_img: 0.0029; r1_seg: 0.0000; path: 0.0202; mean path: 0.1855; mask: 0.0015; time: 2.31
+[048800] d: 0.0349; g: 4.5950; real: 5.6292; fake: -3.5217; r1_img: 0.0030; r1_seg: 0.0001; path: 0.0138; mean path: 0.1811; mask: 0.0007; time: 3.12
+[048900] d: 0.6508; g: 2.7651; real: 2.6999; fake: -0.4412; r1_img: 0.0063; r1_seg: 0.0001; path: 0.0336; mean path: 0.1771; mask: 0.0009; time: 2.34
+[049000] d: 0.0930; g: 2.6324; real: 2.8824; fake: -3.3590; r1_img: 0.0148; r1_seg: 0.0004; path: 0.0209; mean path: 0.1717; mask: 0.0031; time: 2.29
+[049100] d: 0.2490; g: 4.0176; real: 1.8992; fake: -3.8588; r1_img: 0.0033; r1_seg: 0.0001; path: 0.0292; mean path: 0.1741; mask: 0.0009; time: 2.28
+[049200] d: 0.2818; g: 3.0179; real: 2.2555; fake: -2.0179; r1_img: 0.0141; r1_seg: 0.0001; path: 0.0117; mean path: 0.1787; mask: 0.0004; time: 3.11
+[049300] d: 0.1599; g: 3.5684; real: 2.4120; fake: -3.5745; r1_img: 0.0037; r1_seg: 0.0000; path: 0.0126; mean path: 0.1692; mask: 0.0004; time: 2.28
+[049400] d: 0.2477; g: 3.4754; real: 5.7954; fake: -1.7963; r1_img: 0.0061; r1_seg: 0.0005; path: 0.0394; mean path: 0.1718; mask: 0.0009; time: 2.31
+[049500] d: 0.0657; g: 3.8253; real: 4.4370; fake: -2.9976; r1_img: 0.0032; r1_seg: 0.0001; path: 0.0116; mean path: 0.1657; mask: 0.0005; time: 2.30
+[049600] d: 0.0193; g: 4.0515; real: 4.4472; fake: -5.1729; r1_img: 0.0025; r1_seg: 0.0000; path: 0.0138; mean path: 0.1664; mask: 0.0029; time: 3.08
+[049700] d: 0.9548; g: 2.3456; real: -0.3339; fake: -3.1797; r1_img: 0.0020; r1_seg: 0.0000; path: 0.0145; mean path: 0.1678; mask: 0.0006; time: 2.28
+[049800] d: 0.2286; g: 2.7184; real: 5.8291; fake: -1.5929; r1_img: 0.0744; r1_seg: 0.0005; path: 0.0477; mean path: 0.1939; mask: 0.0008; time: 2.29
+[049900] d: 0.0994; g: 2.6240; real: 2.8093; fake: -3.3864; r1_img: 0.0029; r1_seg: 0.0002; path: 0.0595; mean path: 0.1965; mask: 0.0023; time: 2.28

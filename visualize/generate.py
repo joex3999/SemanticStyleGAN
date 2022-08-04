@@ -22,7 +22,8 @@ import numpy as np
 import imageio
 import time
 import torch
-
+import sys
+sys.path.insert(0,'../SemanticStyleGAN')
 from models import make_model
 from visualize.utils import generate
 
@@ -64,8 +65,8 @@ if __name__ == '__main__':
         styles = args.truncation * styles + (1-args.truncation) * mean_latent.unsqueeze(0)
         images, segs = generate(model, styles, mean_latent=mean_latent, batch_size=args.batch)
         for i in range(len(images)):
-            imageio.imwrite(f"{args.outdir}/{str(i).zfill(6)}_img.jpg", images[i])
-            imageio.imwrite(f"{args.outdir}/{str(i).zfill(6)}_seg.jpg", segs[i])
+            imageio.imwrite(f"{args.outdir}/{str(i).zfill(6)}_img.png", images[i])
+            imageio.imwrite(f"{args.outdir}/{str(i).zfill(6)}_seg.png", segs[i])
             if args.save_latent:
                 np.save(f'{args.outdir}/{str(i).zfill(6)}_latent.npy', styles[i:i+1].cpu().numpy())
     print(f"Average speed: {(time.time() - start_time)/(args.sample)}s")
