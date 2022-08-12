@@ -9,3 +9,4 @@ Consider using one of the following signatures instead:
   warnings.warn(msg)
 /misc/usrhomes/g013/SemanticStyleGAN/models/op/conv2d_gradfix.py:96: UserWarning: conv2d_gradfix not supported on PyTorch 1.12.0. Falling back to torch.nn.functional.conv2d().
   warnings.warn(
+slurmstepd: error: *** JOB 75407 ON linse3 CANCELLED AT 2022-08-08T14:46:29 ***

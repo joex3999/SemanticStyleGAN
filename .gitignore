@@ -130,3 +130,7 @@ dmypy.json
 .pt
 .DS_Store
 pretrained/
+
+#Custom 
+log_files/
+

@@ -1,6 +1,7 @@
 import os
 import sys
 import shutil
+import argparse
 import numpy as np
 from tqdm import tqdm
 from imageio import imread, imwrite
@@ -9,25 +10,27 @@ import cv2
 from pathlib import Path
 import cityscapes_mapping
 
-dataset_path = sys.argv[1]
-output_prefix = sys.argv[2]
 
-validation_cutoff = 28000
 cut_down_mapping_v1 = cityscapes_mapping.cut_down_mapping_v1
 cut_down_mapping_v2 = cityscapes_mapping.cut_down_mapping_v2
+
+# validation_cutoff = 28000
 
 # Reading an image, Simplifing it's labels to only 8 labels instead of 33
 def simplify_image_labels(image, viewable=False):
     new_image = np.zeros(image.shape)
     for k, v in cut_down_mapping_v2.items():
         mask = image == k
-        new_image[mask] = (255 / 8) * v if viewable else v
+        new_image[mask] = (
+            (255 / 19) * v if viewable else v
+        )  # 19 or max class basically.
     return new_image
 
 
-def process_img():
+def process_img(dataset_path, output_prefix, extra_data):
     accum = 0
     for subdir, _, files in os.walk(dataset_path):
+        #The dataset has to be of format */gtFine/train/*/*.png
         if subdir.split("/")[-3] == "gtFine":
             output_dir = "/".join(subdir.split("/")[-3:]).replace(
                 "gtFine", "gtFine_preprocessed"
@@ -38,10 +41,15 @@ def process_img():
         for file in files:
             accum += 1
             if accum % 1000 == 0:
-                print(f"Done with {(accum/20000)*100}% of the data")
-            if "labelIds" not in file:
+                print(f"Done with {accum} images")
+          
+            #In normal dataset, label images contain labelIds prefix.
+            if not extra_data and "labelIds" not in file:
                 continue
-            # print os.path.join(subdir, file)
+            #In extra dataset, files does not contain _prob prefix.
+            if extra_data and "_prob" in file:
+                continue
+
             filepath = subdir + os.sep + file
             output_path = str(output_dir) + os.sep + file
             image = imread(filepath)
@@ -50,4 +58,10 @@ def process_img():
 
 
 if __name__ == "__main__":
-    process_img()
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--dataset", type=str, default=None)
+    parser.add_argument("--output", type=str, default=None)
+    parser.add_argument("--extra_data", type=bool, default=False)
+    args = parser.parse_args()
+
+    process_img(args.dataset, args.output, args.extra_data)

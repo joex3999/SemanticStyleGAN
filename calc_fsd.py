@@ -7,15 +7,17 @@ from imageio import imread, imwrite
 from scipy import linalg
 import argparse
 import sys
+from tqdm import tqdm
 
 sys.path.insert(0, "../SemanticStyleGAN")
 from models import make_model
 from visualize.utils import generate
 
+
 # import matplotlib.pyplot as plt
 ##TODO: Remove and import it from another class
 # TODO: Refactor code
-# TODO: Pretiffy
+## TODO: Save original image statistics to someplace for faster calculation.
 color_map = {
     0: [0, 0, 0],  # Void
     1: [128, 64, 128],  # Road
@@ -108,6 +110,17 @@ def from_rgb_to_label(image, color_map):
     return new_image
 
 
+def calculate_mean_for_one_hot(image):
+    sem_seg_tensor = torch.tensor(image)
+    sem_seg_squeezed = sem_seg_tensor.reshape(-1)
+    res = torch.nn.functional.one_hot(sem_seg_squeezed.to(torch.int64), -1)
+    final_res = res.reshape(
+        sem_seg_tensor.shape[0], sem_seg_tensor.shape[1], -1
+    ).float()
+    mean_val = torch.mean(final_res, dim=(0, 1))
+    return mean_val
+
+
 def calculate_real_cond(dataset_path):
     dataset_mean_values = []
     accum = 0
@@ -115,47 +128,48 @@ def calculate_real_cond(dataset_path):
         for file in files:
             accum += 1
             if accum % 10 == 0:
-                print(f"Done with {(accum/5000)*100}% of the data")
+                print(f"Done with {(accum/5000)*100}% of the real data")
             if "labelIds" not in file:
                 continue
             filepath = subdir + os.sep + file
             image = imread(filepath)
-            sem_seg_tensor = torch.tensor(image)
-            sem_seg_squeezed = sem_seg_tensor.reshape(-1)
-            res = torch.nn.functional.one_hot(sem_seg_squeezed.to(torch.int64), -1)
-            final_res = res.reshape(
-                sem_seg_tensor.shape[0], sem_seg_tensor.shape[1], -1
-            ).float()
-            mean_val = torch.mean(final_res, dim=(0, 1))
+            mean_val = calculate_mean_for_one_hot(image)
             dataset_mean_values.append(mean_val.cpu().numpy())
     real_cond = np.concatenate(dataset_mean_values)
     return real_cond
 
 
 def calculate_generated_cond(ckpt, sample, truncation, truncation_mean, batch, device):
+    print(f"Loading model from checkpoint")
     model = initalize_model(ckpt, "cuda")
+    print(f"Model initalized successfuly")
     mean_latent = model.style(
         torch.randn(truncation_mean, model.style_dim, device=device)
     ).mean(0)
     start_time = time.time()
     dataset_mean_values = []
     with torch.no_grad():
-        styles = model.style(torch.randn(sample, model.style_dim, device=device))
-        styles = truncation * styles + (1 - truncation) * mean_latent.unsqueeze(0)
-        images, segs = generate(
-            model, styles, mean_latent=mean_latent, batch_size=batch
-        )
+        n_batch = sample // batch
+        resid = sample - (n_batch * batch)
+        batch_sizes = [batch] * n_batch + [resid]
+        for batch_iter in tqdm(batch_sizes):
+            if batch_iter < batch:
+                print(f"Skipping batch iteration of size {batch_iter}")
+                continue
+
+            styles = model.style(
+                torch.randn(batch_iter, model.style_dim, device=device)
+            )
+            styles = truncation * styles + (1 - truncation) * mean_latent.unsqueeze(0)
+            images, segs = generate(
+                model, styles, mean_latent=mean_latent, batch_size=batch
+            )
+
+            for i in range(len(images)):
+                converted_seg = from_rgb_to_label(segs[i], color_map)
+                mean_val = calculate_mean_for_one_hot(converted_seg)
+                dataset_mean_values.append(mean_val.cpu().numpy())
         print(f"Time taken to generate images : {time.time()-start_time}")
-        for i in range(len(images)):
-            converted_seg = from_rgb_to_label(segs[i], color_map)
-            sem_seg_tensor = torch.tensor(converted_seg)
-            sem_seg_squeezed = sem_seg_tensor.reshape(-1)
-            res = torch.nn.functional.one_hot(sem_seg_squeezed.to(torch.int64), -1)
-            final_res = res.reshape(
-                sem_seg_tensor.shape[0], sem_seg_tensor.shape[1], -1
-            ).float()
-            mean_val = torch.mean(final_res, dim=(0, 1))
-            dataset_mean_values.append(mean_val.cpu().numpy())
         generated_cond = np.concatenate(dataset_mean_values)
     print(f"Average speed: {(time.time() - start_time)/(sample)}s")
     return generated_cond
@@ -165,14 +179,14 @@ if __name__ == "__main__":
 
     parser = argparse.ArgumentParser()
 
-    parser.add_argument("ckpt", type=str, help="path to the model checkpoint")
+    parser.add_argument("--ckpt", type=str, help="path to the model checkpoint")
     parser.add_argument("--dataset", type=str, default=8, help="path for dataset")
     parser.add_argument("--batch", type=int, default=8, help="batch size for inference")
     parser.add_argument(
         "--sample",
         type=int,
-        default=20,
-        help="number of samples to be generated",
+        default=50000,
+        help="number of samples to be generated to calculate FSD",
     )
     parser.add_argument(
         "--truncation", type=float, default=0.7, help="truncation ratio"
@@ -186,10 +200,23 @@ if __name__ == "__main__":
     parser.add_argument(
         "--device", type=str, default="cuda", help="running device for inference"
     )
+    parser.add_argument(
+        "--real_dataset_values",
+        type=str,
+        default=None,
+        help="saved value for real dataset",
+    )
     args = parser.parse_args()
     start_time = time.time()
-    real_cond = calculate_real_cond(args.dataset)
+    print("Calculating!!!")
+    if args.real_dataset_values:
+        print(f"loading file for real dataset values from :{args.real_dataset_values}")
+        real_cond = np.load(args.real_dataset_values)
+    else:
+        print(f"Calculating values for the real data.")
+        real_cond = calculate_real_cond(args.dataset)
     print(f"time taken to calculate statistics of real data: {time.time()-start_time}")
+    print("Calculating generated cond")
     generated_cond = calculate_generated_cond(
         args.ckpt,
         args.sample,
@@ -200,4 +227,6 @@ if __name__ == "__main__":
     )
     print(f"time taken to calculate statistics of fake data: {time.time()-start_time}")
     fsd = calculate_fsd(real_cond, generated_cond)
-    print(f"FSD value is {fsd} , Time Taken in total : {time.time()-start_time}")
+    print(
+        f"FSD value by semantic pallete method is {fsd} , Time Taken in total : {time.time()-start_time}"
+    )
