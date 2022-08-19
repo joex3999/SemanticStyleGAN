@@ -1,0 +1,12 @@
+/misc/usrhomes/g013/SemanticStyleGAN/train.py:71: UserWarning: This overload of add_ is deprecated:
+	add_(Number alpha, Tensor other)
+Consider using one of the following signatures instead:
+	add_(Tensor other, *, Number alpha) (Triggered internally at  /opt/conda/conda-bld/pytorch_1656352660876/work/torch/csrc/utils/python_arg_parser.cpp:1174.)
+  par1[k].data.mul_(decay).add_(1 - decay, par2[k].data)
+/usrhomes/g013/anaconda3/envs/myenv/lib/python3.9/site-packages/torchvision/models/_utils.py:208: UserWarning: The parameter 'pretrained' is deprecated since 0.13 and will be removed in 0.15, please use 'weights' instead.
+  warnings.warn(
+/usrhomes/g013/anaconda3/envs/myenv/lib/python3.9/site-packages/torchvision/models/_utils.py:223: UserWarning: Arguments other than a weight enum or `None` for 'weights' are deprecated since 0.13 and will be removed in 0.15. The current behavior is equivalent to passing `weights=Inception_V3_Weights.IMAGENET1K_V1`. You can also use `weights=Inception_V3_Weights.DEFAULT` to get the most up-to-date weights.
+  warnings.warn(msg)
+/misc/usrhomes/g013/SemanticStyleGAN/models/op/conv2d_gradfix.py:96: UserWarning: conv2d_gradfix not supported on PyTorch 1.12.0. Falling back to torch.nn.functional.conv2d().
+  warnings.warn(
+slurmstepd: error: *** JOB 75407 ON linse3 CANCELLED AT 2022-08-08T14:46:29 ***

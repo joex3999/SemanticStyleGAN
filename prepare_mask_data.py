@@ -47,21 +47,25 @@ def resize_worker(img_file, size, use_rgb, format, resample):
     img = resize_and_convert(img, size, format, resample)
     return i, img
 
+
 def find_images(path):
     if os.path.isfile(path):
         with open(path, "r") as f:
             files = [line.strip() for line in f.readlines()]
     else:
         files = list()
-        IMAGE_EXTENSIONS = {'jpg', 'png', 'jpeg', 'webp'}
+        IMAGE_EXTENSIONS = {"jpg", "png", "jpeg", "webp"}
         IMAGE_EXTENSIONS = IMAGE_EXTENSIONS.union({f.upper() for f in IMAGE_EXTENSIONS})
         for ext in IMAGE_EXTENSIONS:
-            files += glob(f'{path}/**/*.{ext}', recursive=True)
+            files += glob(f"{path}/**/*.{ext}", recursive=True)
         files = sorted(files)
     return files
 
+
 def prepare(env, files, n_worker, size, prefix, use_rgb, format, resample):
-    resize_fn = partial(resize_worker, size=size, use_rgb=use_rgb, format=format, resample=resample)
+    resize_fn = partial(
+        resize_worker, size=size, use_rgb=use_rgb, format=format, resample=resample
+    )
 
     total = 0
     with env.begin(write=True) as txn:
@@ -101,15 +105,34 @@ if __name__ == "__main__":
     images = find_images(args.image_path)
     labels = find_images(args.label_path)
 
-
     get_key = lambda fpath: os.path.splitext(os.path.basename(fpath))[0]
     if args.cityscapes:
-     #Only retrieve the city_id_id2 from the saved file name.
-     get_key = lambda fpath: "_".join(os.path.splitext(os.path.basename(fpath))[0].split("_")[:2]) 
-    label_dict = {get_key(label):label for label in labels}
+        get_key = lambda fpath: "_".join(
+            os.path.splitext(os.path.basename(fpath))[0].split("_")[:3]
+        )
+    label_dict = {get_key(label): label for label in labels}
     labels = [label_dict[get_key(image)] for image in images]
-
+    print(get_key(labels[0]))
+    print(get_key(images[0]))
     print(f"Number of images: {len(images)}")
-    with lmdb.open(args.out, map_size=1024 ** 4, readahead=False) as env:
-        prepare(env, images, args.n_worker, args.size, 'image', use_rgb=True, format='jpeg', resample=Image.LANCZOS)
-        prepare(env, labels, args.n_worker, args.size, 'label', use_rgb=False, format='png', resample=Image.NEAREST)
+    with lmdb.open(args.out, map_size=1024**4, readahead=False) as env:
+        prepare(
+            env,
+            images,
+            args.n_worker,
+            args.size,
+            "image",
+            use_rgb=True,
+            format="jpeg",
+            resample=Image.LANCZOS,
+        )
+        prepare(
+            env,
+            labels,
+            args.n_worker,
+            args.size,
+            "label",
+            use_rgb=False,
+            format="png",
+            resample=Image.NEAREST,
+        )
