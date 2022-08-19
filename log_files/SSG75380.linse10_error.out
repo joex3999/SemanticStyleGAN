@@ -1,8 +1,0 @@
-Traceback (most recent call last):
-  File "/misc/usrhomes/g013/SemanticStyleGAN/visualize/generate.py", line 54, in <module>
-    ckpt = torch.load(args.ckpt)
-  File "/usrhomes/g013/anaconda3/envs/myenv/lib/python3.9/site-packages/torch/serialization.py", line 705, in load
-    with _open_zipfile_reader(opened_file) as opened_zipfile:
-  File "/usrhomes/g013/anaconda3/envs/myenv/lib/python3.9/site-packages/torch/serialization.py", line 242, in __init__
-    super(_open_zipfile_reader, self).__init__(torch._C.PyTorchFileReader(name_or_buffer))
-RuntimeError: PytorchStreamReader failed reading zip archive: failed finding central directory
