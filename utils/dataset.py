@@ -26,6 +26,7 @@ import cv2
 import lmdb
 import albumentations
 import albumentations.augmentations as A
+import albumentations.augmentations.geometric as G
 
 
 class MaskDataset(Dataset):
@@ -60,9 +61,9 @@ class MaskDataset(Dataset):
         if self.aug == True:
             self.aug_t = albumentations.Compose([
                             A.transforms.HorizontalFlip(p=0.5),
-                            A.transforms.ShiftScaleRotate(shift_limit=0.1,
+                            G.transforms.ShiftScaleRotate(shift_limit=0.1,
                                                 scale_limit=0.2,
-                                                rotate_limit=15,
+                                                rotate_limit=15,#from -15 to 15. Maybe increase this a bit.
                                                 border_mode=cv2.BORDER_CONSTANT,
                                                 value=0,
                                                 mask_value=0,

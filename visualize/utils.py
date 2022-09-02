@@ -35,71 +35,115 @@ from scipy.interpolate import CubicSpline
 #     12: [207, 113, 192],
 #     13: [159, 89, 165],
 #     14: [142, 82, 172],
-#     15: [158, 115, 200], 
+#     15: [158, 115, 200],
 #     16: [116, 95, 159],
 # }
-#City Scapes Color Map for version_3
+# City Scapes Color Map for version_3
 #
 color_map = {
-    0: [0, 0, 0], #Void
-    1: [128, 64,128], #Road
-    2: [244, 35,232], # Side Walk
-    3: [70, 70, 70], # Building
-    4: [102,102,156], # Wall
-    5: [190,153,153],#Fence
-    6: [153,153,153],# pole
-    7: [250,170, 30], # traffic light
-    8: [220,220,  0], #Traffic sign
-    9: [107,142, 35], # Vegitation
-    10: [70,130,180], #sky
-    11: [220, 20, 60], #human
-    12: [255,  0,  0],#rider
-    13: [ 0,  0,142],#car
-    14: [ 0, 60,100],# other vehicles
-    15: [ 0,  0,230],  #bike and motorcycle
+    0: [0, 0, 0],  # Void
+    1: [128, 64, 128],  # Road
+    2: [244, 35, 232],  # Side Walk
+    3: [70, 70, 70],  # Building
+    4: [102, 102, 156],  # Wall
+    5: [190, 153, 153],  # Fence
+    6: [153, 153, 153],  # pole
+    7: [250, 170, 30],  # traffic light
+    8: [220, 220, 0],  # Traffic sign
+    9: [107, 142, 35],  # Vegitation
+    10: [70, 130, 180],  # sky
+    11: [220, 20, 60],  # human
+    12: [255, 0, 0],  # rider
+    13: [0, 0, 142],  # car
+    14: [0, 60, 100],  # other vehicles
+    15: [0, 0, 230],  # bike and motorcycle
     16: [116, 95, 159],
 }
-def generate_img(model, styles, mean_latent=None, truncation=1.0, batch_size=16, *args, **kwargs):
+
+
+def generate_img(
+    model, styles, mean_latent=None, truncation=1.0, batch_size=16, *args, **kwargs
+):
     images = []
     for head in range(0, styles.size(0), batch_size):
-        images_, _ = model([styles[head:head+batch_size]], input_is_latent=True,
-                                    truncation=truncation, truncation_latent=mean_latent, *args, **kwargs)
+        images_, _ = model(
+            [styles[head : head + batch_size]],
+            input_is_latent=True,
+            truncation=truncation,
+            truncation_latent=mean_latent,
+            *args,
+            **kwargs
+        )
         images.append(images_)
-    images = torch.cat(images,0)
+    images = torch.cat(images, 0)
     return tensor2image(images)
 
-def generate(model, styles, mean_latent=None, truncation=1.0, batch_size=16, *args, **kwargs):
+
+def generate(
+    model, styles, mean_latent=None, truncation=1.0, batch_size=16, *args, **kwargs
+):
     images, segs = [], []
     for head in range(0, styles.size(0), batch_size):
-        images_, segs_ = model([styles[head:head+batch_size]], input_is_latent=True,
-                                    truncation=truncation, truncation_latent=mean_latent, *args, **kwargs)
+        images_, segs_ = model(
+            [styles[head : head + batch_size]],
+            input_is_latent=True,
+            truncation=truncation,
+            truncation_latent=mean_latent,
+            *args,
+            **kwargs
+        )
         images.append(images_.detach().cpu())
         segs.append(segs_.detach().cpu())
-    images, segs = torch.cat(images,0), torch.cat(segs,0)
+    images, segs = torch.cat(images, 0), torch.cat(segs, 0)
     return tensor2image(images), tensor2seg(segs)
 
+
+def generate_tensor(
+    model, styles, mean_latent=None, truncation=1.0, batch_size=16, *args, **kwargs
+):  # TODO: combine this and generate into one func
+    images, segs = [], []
+    for head in range(0, styles.size(0), batch_size):
+        images_, segs_ = model(
+            [styles[head : head + batch_size]],
+            input_is_latent=True,
+            truncation=truncation,
+            truncation_latent=mean_latent,
+            *args,
+            **kwargs
+        )
+        images.append(images_.detach().cpu())
+        segs.append(segs_.detach().cpu())
+    images, segs = torch.cat(images, 0), torch.cat(segs, 0)
+    return tensor2image(images), tensor2seg(segs)
+
+
 def tensor2image(tensor):
-    images = tensor.cpu().clamp(-1,1).permute(0,2,3,1).numpy()
+    images = tensor.cpu().clamp(-1, 1).permute(0, 2, 3, 1).numpy()
     images = images * 127.5 + 127.5
     images = images.astype(np.uint8)
     return images
-    
+
+
 def tensor2seg(sample_seg):
     seg_dim = sample_seg.size(1)
     sample_seg = torch.argmax(sample_seg, dim=1).detach().cpu().numpy()
-    sample_mask = np.zeros((sample_seg.shape[0], sample_seg.shape[1], sample_seg.shape[2], 3), dtype=np.uint8)
+    sample_mask = np.zeros(
+        (sample_seg.shape[0], sample_seg.shape[1], sample_seg.shape[2], 3),
+        dtype=np.uint8,
+    )
     for key in range(seg_dim):
-        sample_mask[sample_seg==key] = color_map[key]
+        sample_mask[sample_seg == key] = color_map[key]
     return sample_mask
+
 
 def cubic_spline_interpolate(styles, step):
     device = styles.device
     styles = styles.detach().cpu().numpy()
     N, K, D = styles.shape
     x = np.linspace(0.0, 1.0, N)
-    y = styles.reshape(N,K*D)
+    y = styles.reshape(N, K * D)
     spl = CubicSpline(x, y)
     x_out = np.linspace(0.0, 1.0, step)
-    results = spl(x_out) # Step x KD
-    results = results.reshape(step,K,D)
+    results = spl(x_out)  # Step x KD
+    results = results.reshape(step, K, D)
     return torch.tensor(results, device=device).float()
