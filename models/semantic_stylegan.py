@@ -31,6 +31,7 @@ from .utils import (
     ConvLayer,
     ResBlock,
     PositionEmbedding,
+    Blur,
 )
 
 
@@ -100,8 +101,13 @@ class RenderNet(nn.Module):
         }
         self.out_size = out_size
         self.min_size = min_size
+        self.fade_iters = 0
+
+        self.alpha = 1
         self.log_out_size = int(math.log(out_size, 2))
         self.log_min_size = int(math.log(min_size, 2))
+        self.depth = self.log_min_size + 1
+        # J-TODO: Check that the depth start from 1 not from 2 or 0.
         self.coarse_size = coarse_size
         self.n_layers = (self.log_out_size - self.log_min_size) * 2
 
@@ -110,6 +116,15 @@ class RenderNet(nn.Module):
         self.noises = nn.Module()
         self.to_rgbs = nn.ModuleList()
         self.to_segs = nn.ModuleList()
+        # Upsampling
+        # factor=2
+        # kernel_size=3
+        # p = (len(blur_kernel) - factor) - (kernel_size - 1)
+        # pad0 = (p + 1) // 2 + factor - 1
+        # pad1 = p // 2 + 1
+        # self.blur = Blur(blur_kernel, pad=(pad0, pad1), upsample_factor=factor)
+        self.upsample = nn.Upsample(scale_factor=2, mode="nearest")
+        ##End Upsampling
         for i in range(self.log_out_size - self.log_min_size):
             cur_size = self.min_size * (2 ** (i + 1))
             out_channel = self.channels[cur_size]
@@ -161,7 +176,8 @@ class RenderNet(nn.Module):
         noise = self.get_noise(noise, randomize_noise)
         x_orig, x = x, F.adaptive_avg_pool2d(x, (self.min_size, self.min_size))
         rgb, seg = None, None
-        for i in range(self.log_out_size - self.log_min_size):
+
+        for i in range(self.depth - self.log_min_size):
             if x.size(2) == self.coarse_size:
                 x = torch.cat((x, x_orig), 1)
             x = self.convs[2 * i](x, None, noise=noise[2 * i])
@@ -172,7 +188,33 @@ class RenderNet(nn.Module):
             seg = self.to_segs[i](x, None, seg)
             if skip_seg is not None and seg.size(2) == skip_seg.size(2):
                 seg += skip_seg
+        if self.alpha < 1:
+            ##Upsampling
+
+            # out = F.conv_transpose2d(input, weight.transpose(0, 1), padding=0, stride=2)
+            # x_old = self.blur(out)
+
+            x_old = self.upsample(
+                x
+            )  # Is this the correct way of sampling compared to Sampling in the conv block?
+            ## End Upsampling
+            print(f"X old shape is {x_old.shape}")
+            print(f"X new shape is {x.shape}")
+            print(f"alpha is = {self.alpha}")
+            old_rgb = self.to_rgbs[self.depth - 1](
+                x_old, None, None
+            )  ##J-TODO -1? and rgb as third Option?
+            old_seg = self.to_segs[self.depth - 1](x_old, None, None)
+            rgb = (1 - self.alpha) * old_rgb + self.alpha * rgb
+            seg = (1 - self.alpha) * old_seg + self.alpha * seg
+            self.alpha += self.fade_iters
+
         return rgb, seg
+
+    def grow_network(self, num_iterations):
+        self.fade_iters = 1 / num_iterations
+        self.alpha = 1 / num_iterations
+        self.depth += 1
 
 
 class SemanticGenerator(nn.Module):
@@ -490,31 +532,49 @@ class DualBranchDiscriminator(nn.Module):
             512: 32 * channel_multiplier,
             1024: 16 * channel_multiplier,
         }
+        self.depth = 1
+        self.alpha = 1
+        self.fade_iters = 0
         log_size = int(math.log(img_size, 2))
         if seg_size is None:
             seg_size = img_size
+        self.downsample = nn.AvgPool2d(kernel_size=(2, 2), stride=(2, 2))
+        # convs_img_list = [ConvLayer(img_dim, self.channels[img_size], 1, spectral_norm=True)]
+        self.convs_initial_layer = []
+        for i in range(log_size, 2, -1):
+            self.convs_initial_layer.append(
+                ConvLayer(img_dim, self.channels[2 ** (i)], 1, spectral_norm=True)
+            )
 
-        convs = [ConvLayer(img_dim, self.channels[img_size], 1, spectral_norm=True)]
-
+        self.convs_img_list = []
         in_channel = self.channels[img_size]
         for i in range(log_size, 2, -1):
             out_channel = self.channels[2 ** (i - 1)]
-            convs.append(
+            self.convs_img_list.append(
                 ResBlock(in_channel, out_channel, blur_kernel, spectral_norm=True)
             )
             in_channel = out_channel
-        self.convs_img = nn.Sequential(*convs)
 
+        # self.convs_img = nn.Sequential(*convs_img_list)
+
+        # seg_size = img_size anyway.
         log_size = int(math.log(seg_size, 2))
-        convs = [ConvLayer(seg_dim, self.channels[seg_size], 1, spectral_norm=True)]
+        # convs_seg_list = [ConvLayer(seg_dim, self.channels[seg_size], 1, spectral_norm=True)]
+        self.seg_initial_layer = []
+        for i in range(log_size, 2, -1):
+            self.seg_initial_layer.append(
+                ConvLayer(seg_dim, self.channels[2 ** (i)], 1, spectral_norm=True)
+            )
+
+        self.convs_seg_list = []
         in_channel = self.channels[seg_size]
         for i in range(log_size, 2, -1):
             out_channel = self.channels[2 ** (i - 1)]
-            convs.append(
+            self.convs_seg_list.append(
                 ResBlock(in_channel, out_channel, blur_kernel, spectral_norm=True)
             )
             in_channel = out_channel
-        self.convs_seg = nn.Sequential(*convs)
+        # self.convs_seg = nn.Sequential(*convs_seg_list)
 
         self.stddev_group = 4
         self.stddev_feat = 1
@@ -540,12 +600,59 @@ class DualBranchDiscriminator(nn.Module):
 
         return x
 
+    # def forward(self, img, seg=None):
+    #     batch = img.shape[0]
+
+    #     out = self.convs_img(img)
+    #     if seg is not None:
+    #         out = out + self.convs_seg(seg)
+
+    #     out = self._cal_stddev(out)
+
+    #     out = self.final_conv(out)
+
+    #     out = out.view(batch, -1)
+    #     out = self.final_linear(out)
+
+    #     return out
+
+    # J-TODO: convs_initial_layer should be changed to from_rgb.
+    # checking for self.alpha should be done after 1 block of discriminator
     def forward(self, img, seg=None):
         batch = img.shape[0]
+        layers_length = len(self.convs_img_list)
 
-        out = self.convs_img(img)
+        out_img = img.copy()
+        out_img = self.convs_initial_layer[layers_length - self.depth](out_img)  # 16x16
+        out_img = self.convs_img_list[layers_length - self.depth](out_img)
+
+        out_seg = seg.copy()
+        out_seg = self.seg_initial_layer[layers_length - self.depth](out_seg)
+        out_seg = self.convs_seg_list[layers_length - self.depth](out_seg)
+
+        if self.alpha < 1:
+            out_img_old = self.downsample(img)
+            out_img_old = self.convs_initial_layer[layers_length - self.depth + 1](
+                out_img
+            )  # 8x8
+
+            out_seg_old = self.downsample(seg)
+            out_seg_old = self.seg_initial_layer[layers_length-self.depth+1](out_seg_old)
+           
+            out_img = (1 - self.alpha) * out_img_old + self.alpha * out_img
+            out_seg = (1 - self.alpha) * out_seg_old + self.alpha * out_seg
+            self.alpha += self.fade_iters
+
+        for i in range(self.depth - 1, 0, -1):
+            out_img = self.convs_img_list[layers_length - i](out_img)
+
+        out = out_img
+
         if seg is not None:
-            out = out + self.convs_seg(seg)
+            for i in range(self.depth - 1, 0, -1):
+                out_seg = self.convs_seg_list[layers_length - i](out_seg)
+
+            out = out_img + out_seg
 
         out = self._cal_stddev(out)
 
@@ -555,3 +662,8 @@ class DualBranchDiscriminator(nn.Module):
         out = self.final_linear(out)
 
         return out
+
+    def grow_network(self, num_iterations):
+        self.fade_iters = 1 / num_iterations
+        self.alpha = 1 / num_iterations
+        self.depth += 1
