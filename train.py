@@ -249,15 +249,16 @@ def train(
         # if rand_num<=0.8:'
         discriminator.zero_grad()
         d_loss.backward()
-        if g_temp_loss - d_loss <= loss_threshold:
-            d_optim.step()
-            iterations_d_no_update = 0
-        else:
-            iterations_d_no_update += 1
-            if iterations_d_no_update > 20:
-                print(
-                    f"It has been {iterations_d_no_update} iterations without an update"
-                )
+        d_optim.step()
+        # iterations_d_no_update = 0
+        # if g_temp_loss - d_loss <= loss_threshold:
+
+        # else:
+        #     iterations_d_no_update += 1
+        #     if iterations_d_no_update > 20:
+        #         print(
+        #             f"It has been {iterations_d_no_update} iterations without an update"
+        #         )
         d_regularize = i % args.d_reg_every == 0
 
         if d_regularize:
@@ -271,10 +272,10 @@ def train(
                 * args.d_reg_every
                 + 0 * real_pred[0]
             ).backward()
-
-            if g_temp_loss - d_loss <= loss_threshold:
-                d_optim.step()
-                iterations_d_no_update = 0
+            d_optim.step()
+            # if g_temp_loss - d_loss <= loss_threshold:
+                
+            #     iterations_d_no_update = 0
         loss_dict["r1_img"] = r1_img_loss
         loss_dict["r1_seg"] = r1_seg_loss
 

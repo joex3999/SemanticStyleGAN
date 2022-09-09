@@ -114,7 +114,7 @@ def generate_tensor(
         images.append(images_.detach().cpu())
         segs.append(segs_.detach().cpu())
     images, segs = torch.cat(images, 0), torch.cat(segs, 0)
-    return tensor2image(images), tensor2seg(segs)
+    return images, segs
 
 
 def tensor2image(tensor):

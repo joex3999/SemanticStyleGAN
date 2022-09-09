@@ -5,21 +5,21 @@
 #SBATCH --cpus-per-task=2
 #SBATCH --mem=32G
 #SBATCH --mem=8G
-#SBATCH --gpus=3
+#SBATCH --gpus=4
 #SBATCH --time=4-23:00:00
 #SBATCH --mail-type=ALL
 ##SBATCH --partition=DEADLINE
 ##SBATCH --comment=ECCVRebuttal
-#SBATCH --output=./log_files/SSG_v3.10/SSG%j.%N_output.out
-#SBATCH --error=./log_files/SSG_v3.10/SSG%j.%N_error.out
+#SBATCH --output=./log_files/SSG_v3.11/SSG%j.%N_output.out
+#SBATCH --error=./log_files/SSG_v3.11/SSG%j.%N_error.out
 #SBATCH --qos=batch
 
 # Activate everything you need
 module load cuda/11.3
 
 #Training using Multiple GPUs
-#CUDA_VISIBLE_DEVICES=0,1,2 python3.9 -m torch.distributed.launch --nproc_per_node=3 train.py --dataset /no_backups/g013/data/lmdb_datasets/lmdb_v3.3 --inception /no_backups/g013/data/inception_models/inception_v3.3.pkl --save_every 5000 --checkpoint_dir /no_backups/g013/checkpoints/SSG_v3.10  --seg_dim 16 --size 256  --residual_refine 
-python3.9 train.py --dataset /no_backups/g013/data/lmdb_datasets/lmdb_v3.3 --inception /no_backups/g013/data/inception_models/inception_v3.3.pkl --save_every 5000 --checkpoint_dir /no_backups/g013/checkpoints/SSG_v3.10  --seg_dim 16 --size 256  --residual_refine 
+CUDA_VISIBLE_DEVICES=0,1,2,3 python3.9 -m torch.distributed.launch --nproc_per_node=3 train.py --dataset /no_backups/g013/data/lmdb_datasets/lmdb_v3.3 --inception /no_backups/g013/data/inception_models/inception_v3.3.pkl --save_every 5000 --checkpoint_dir /no_backups/g013/checkpoints/SSG_v3.11  --seg_dim 16 --size 256  --residual_refine 
+#python3.9 train.py --dataset /no_backups/g013/data/lmdb_datasets/lmdb_v3.3 --inception /no_backups/g013/data/inception_models/inception_v3.3.pkl --save_every 5000 --checkpoint_dir /no_backups/g013/checkpoints/SSG_v3.10  --seg_dim 16 --size 256  --residual_refine 
 
 #Start Training From the Beginning
 #python3.9 train.py --dataset /no_backups/g013/data/lmdb_datasets/lmdb_v3.3 --inception /no_backups/g013/data/inception_models/inception_v3.3.pkl --save_every 5000 --checkpoint_dir /no_backups/g013/checkpoints/SSG_v3.5_2  --seg_dim 16 --size 256  --residual_refine 
