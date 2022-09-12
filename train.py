@@ -143,17 +143,18 @@ def color_segmap(sample_seg, color_map):
 def save_sample_image(folder, name, sample_img, global_step, writer=None, **kwargs):
     n_sample = len(sample_img)
     utils.save_image(
-            sample_img,
-            os.path.join(ckpt_dir, f'{folder}/{name}_{str(global_step).zfill(6)}.jpeg'),
-            nrow=int(math.ceil(n_sample ** 0.5)),
-            **kwargs
+        sample_img,
+        os.path.join(ckpt_dir, f"{folder}/{str(global_step).zfill(6)}_{name}.jpeg"),
+        nrow=int(math.ceil(n_sample**0.5)),
+        **kwargs,
     )
     if writer is not None:
-        writer.add_image(name, utils.make_grid(
-            sample_img,
-            nrow=int(math.ceil(n_sample ** 0.5)),
-            **kwargs
-        ), global_step)
+        writer.add_image(
+            name,
+            utils.make_grid(sample_img, nrow=int(math.ceil(n_sample**0.5)), **kwargs),
+            global_step,
+        )
+
 
 def train(args, ckpt_dir, loader, generator, discriminator, g_optim, d_optim, g_ema, device, writer):
 
@@ -460,12 +461,12 @@ if __name__ == '__main__':
     g_optim = optim.Adam(
         generator.parameters(),
         lr=args.lr * g_reg_ratio,
-        betas=(0 ** g_reg_ratio, 0.99 ** g_reg_ratio),
+        betas=(0**g_reg_ratio, 0.99**g_reg_ratio),
     )
     d_optim = optim.Adam(
         discriminator.parameters(),
         lr=args.lr * d_reg_ratio,
-        betas=(0 ** d_reg_ratio, 0.99 ** d_reg_ratio),
+        betas=(0**d_reg_ratio, 0.99**d_reg_ratio),
     )
 
     if args.ckpt is not None:

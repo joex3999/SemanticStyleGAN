@@ -1,6 +1,6 @@
 ## TODO: Change this entire file.
 """
-0: unlabled out of roi
+0: unlabled out of roi  ground dynamic static
 1: Flat : road sidewalk parking rail track
 2: human : person rider
 3: vehicle : car truck bus on rails motorcycle bicycle caravan trailer
@@ -8,16 +8,15 @@
 5: object : pole pole group rtaffic sign traffic light
 6: nature : vegetation terrain
 7: sky : sky
-8:void : ground dynamic static
 """
 cut_down_mapping_v1 = {
     0: 0,
     1: 0,
-    2: 5,
+    2: 0,
     3: 0,
-    4: 8,
-    5: 8,
-    6: 8,
+    4: 0,
+    5: 0,
+    6: 0,
     7: 1,
     8: 1,
     9: 1,

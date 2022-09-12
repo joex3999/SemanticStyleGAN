@@ -26,7 +26,7 @@ import cv2
 import lmdb
 import albumentations
 import albumentations.augmentations as A
-
+import albumentations.augmentations.geometric as G
 
 class MaskDataset(Dataset):
     def __init__(self, path, transform=None, resolution=256, label_size=0, aug=False):
@@ -58,15 +58,17 @@ class MaskDataset(Dataset):
 
         self.aug = aug
         if self.aug == True:
+            print("Applying Augmentation")
+            #Next Setting : Make prop smaller and augmentations easier to guess
             self.aug_t = albumentations.Compose([
-                            A.transforms.HorizontalFlip(p=0.5),
-                            A.transforms.ShiftScaleRotate(shift_limit=0.1,
-                                                scale_limit=0.2,
+                            A.transforms.HorizontalFlip(p=0.3),
+                            G.transforms.ShiftScaleRotate(shift_limit=0.0625,
+                                                scale_limit=0.1,
                                                 rotate_limit=15,
                                                 border_mode=cv2.BORDER_CONSTANT,
                                                 value=0,
                                                 mask_value=0,
-                                                p=0.5),
+                                                p=0.3),
                     ])
         
 

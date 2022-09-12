@@ -59,6 +59,19 @@ color_map = {
     15: [ 0,  0,230],  #bike and motorcycle
     16: [116, 95, 159],
 }
+
+#City Scapes Color Map for version 1 
+#
+# color_map = {
+#     0: [0, 0, 0], #Void
+#     1: [128, 64,128], #Road
+#     2: [220, 20, 60], # Human
+#     3: [ 0,  0,142], # Vehicle
+#     4: [70, 70, 70], # Buildings/Construction
+#     5: [190,153,153],#Objects
+#     6: [107,142, 35],# Naturer
+#     7: [70,130,180], #Sky
+# }
 def generate_img(model, styles, mean_latent=None, truncation=1.0, batch_size=16, *args, **kwargs):
     images = []
     for head in range(0, styles.size(0), batch_size):
@@ -77,6 +90,24 @@ def generate(model, styles, mean_latent=None, truncation=1.0, batch_size=16, *ar
         segs.append(segs_.detach().cpu())
     images, segs = torch.cat(images,0), torch.cat(segs,0)
     return tensor2image(images), tensor2seg(segs)
+
+def generate_tensors(
+    model, styles, mean_latent=None, truncation=1.0, batch_size=16, *args, **kwargs
+):  # TODO: combine this and generate into one func
+    images, segs = [], []
+    for head in range(0, styles.size(0), batch_size):
+        images_, segs_ = model(
+            [styles[head : head + batch_size]],
+            input_is_latent=True,
+            truncation=truncation,
+            truncation_latent=mean_latent,
+            *args,
+            **kwargs
+        )
+        images.append(images_.detach().cpu())
+        segs.append(segs_.detach().cpu())
+    images, segs = torch.cat(images, 0), torch.cat(segs, 0)
+    return tensor2image(images), tensor2seg(segs),images, segs
 
 def tensor2image(tensor):
     images = tensor.cpu().clamp(-1,1).permute(0,2,3,1).numpy()
