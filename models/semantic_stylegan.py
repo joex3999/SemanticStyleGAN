@@ -175,11 +175,14 @@ class RenderNet(nn.Module):
     ):
         noise = self.get_noise(noise, randomize_noise)
         x_orig, x = x, F.adaptive_avg_pool2d(x, (self.min_size, self.min_size))
-        rgb, seg = None, None
+        rgb, seg, x_old, old_rgb, old_seg = None, None, None, None, None
 
         for i in range(self.depth - self.log_min_size):
             if x.size(2) == self.coarse_size:
                 x = torch.cat((x, x_orig), 1)
+            x_old = x
+            old_rgb = rgb
+            old_seg = seg
             x = self.convs[2 * i](x, None, noise=noise[2 * i])
             x = self.convs[2 * i + 1](x, None, noise=noise[2 * i + 1])
             rgb = self.to_rgbs[i](x, None, rgb)
@@ -193,18 +196,20 @@ class RenderNet(nn.Module):
 
             # out = F.conv_transpose2d(input, weight.transpose(0, 1), padding=0, stride=2)
             # x_old = self.blur(out)
-
+            # J-TODO: This is wrong implementation, u r upsamling the last outmost val
             x_old = self.upsample(
-                x
+                x_old
             )  # Is this the correct way of sampling compared to Sampling in the conv block?
             ## End Upsampling
             print(f"X old shape is {x_old.shape}")
             print(f"X new shape is {x.shape}")
             print(f"alpha is = {self.alpha}")
-            old_rgb = self.to_rgbs[self.depth - 1](
-                x_old, None, None
+            old_rgb = self.to_rgbs[self.depth - self.log_min_size - 2](
+                x_old, None, old_rgb
             )  ##J-TODO -1? and rgb as third Option?
-            old_seg = self.to_segs[self.depth - 1](x_old, None, None)
+            old_seg = self.to_segs[self.depth - self.log_min_size - 2](
+                x_old, None, old_seg
+            )
             rgb = (1 - self.alpha) * old_rgb + self.alpha * rgb
             seg = (1 - self.alpha) * old_seg + self.alpha * seg
             self.alpha += self.fade_iters
@@ -617,6 +622,7 @@ class DualBranchDiscriminator(nn.Module):
     #     return out
 
     # J-TODO: convs_initial_layer should be changed to from_rgb.
+    # J-TODO: Need to specify maximum depth
     # checking for self.alpha should be done after 1 block of discriminator
     def forward(self, img, seg=None):
         batch = img.shape[0]
@@ -637,8 +643,10 @@ class DualBranchDiscriminator(nn.Module):
             )  # 8x8
 
             out_seg_old = self.downsample(seg)
-            out_seg_old = self.seg_initial_layer[layers_length-self.depth+1](out_seg_old)
-           
+            out_seg_old = self.seg_initial_layer[layers_length - self.depth + 1](
+                out_seg_old
+            )
+
             out_img = (1 - self.alpha) * out_img_old + self.alpha * out_img
             out_seg = (1 - self.alpha) * out_seg_old + self.alpha * out_seg
             self.alpha += self.fade_iters

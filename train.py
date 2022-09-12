@@ -203,8 +203,7 @@ def train(
     path_lengths = torch.tensor(0.0, device=device)
     mean_path_length_avg = 0
     loss_dict = {}
-    iterations_d_no_update = 0
-    loss_threshold = 2.0
+    current_depth = 1
     if args.distributed:
         g_module = generator.module
         d_module = discriminator.module
@@ -228,7 +227,25 @@ def train(
         real_data = next(loader)
         real_img, real_mask = real_data["image"], real_data["mask"]
         real_img, real_mask = real_img.to(device), real_mask.to(device)
+        resolution = 2 ** (current_depth + 1)
+        print(f"Current output resolution is {resolution}")
+        print(f"Shape of images and segmentation used to be {real_img.shape}")
+        if resolution != args.size:
 
+            real_img = F.interpolate(real_img, resolution)
+            real_mask = F.interpolate(real_mask, resolution)
+            print(f"Changed shape of real img and seg to {real_img.shape} ")
+
+        ##Increase depth of network:
+        if i % 200 == 0:
+            if 2 ** (current_depth + 1) < args.size:
+                fade_iterations = 100
+                generator.grow_network(fade_iterations)
+                discriminator.grow_network(fade_iterations)
+                current_depth += 1
+                print(
+                    f"Increased the depth of the network from{current_depth-1} to {current_depth}"
+                )
         ### Train Discriminator ###
         requires_grad(generator, False)
         requires_grad(discriminator, True)
@@ -274,7 +291,7 @@ def train(
             ).backward()
             d_optim.step()
             # if g_temp_loss - d_loss <= loss_threshold:
-                
+
             #     iterations_d_no_update = 0
         loss_dict["r1_img"] = r1_img_loss
         loss_dict["r1_seg"] = r1_seg_loss
