@@ -11,15 +11,15 @@ from pathlib import Path
 import cityscapes_mapping
 
 
-cut_down_mapping_v1 = cityscapes_mapping.cut_down_mapping_v1
-# cut_down_mapping_v2 = cityscapes_mapping.cut_down_mapping_v2
+#cut_down_mapping_v1 = cityscapes_mapping.cut_down_mapping_v1
+cut_down_mapping_v2 = cityscapes_mapping.cut_down_mapping_v2
 
 # validation_cutoff = 28000
 
 # Reading an image, Simplifing it's labels to only 8 labels instead of 33
 def simplify_image_labels(image, viewable=False):
     new_image = np.zeros(image.shape)
-    for k, v in cut_down_mapping_v1.items():  ##TODO: Currently using v1
+    for k, v in cut_down_mapping_v2.items():  ##TODO: Currently using v1
         mask = image == k
         new_image[mask] = (
             (255 / 19) * v if viewable else v

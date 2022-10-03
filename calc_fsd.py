@@ -8,16 +8,17 @@ from scipy import linalg
 import argparse
 import sys
 from tqdm import tqdm
+from loguru import logger
 
 sys.path.insert(0, "../SemanticStyleGAN")
 from models import make_model
 from visualize.utils import generate
+from torchmetrics.functional import kl_divergence
 
 
 # import matplotlib.pyplot as plt
 ##TODO: Remove and import it from another class
 # TODO: Refactor code
-## TODO: Save original image statistics to someplace for faster calculation.
 color_map = {
     0: [0, 0, 0],  # Void
     1: [128, 64, 128],  # Road
@@ -61,7 +62,7 @@ def calculate_frechet_distance(mu1, sigma1, mu2, sigma2, eps=1e-6):
     if not np.isfinite(covmean).all():
         # msg = ('fid calculation produces singular product; '
         #        'adding %s to diagonal of cov estimates') % eps
-        # print(msg)
+        # logger.info(msg)
         offset = np.eye(sigma1.shape[0]) * eps
         covmean = linalg.sqrtm((sigma1 + offset).dot(sigma2 + offset))
 
@@ -88,6 +89,15 @@ def calculate_fsd(real_data, generated_data):
     return fsd_value
 
 
+def calculate_kl(real_data, generated_data):
+    m1 = np.mean(real_data, axis=0)
+    m2 = np.mean(generated_data, axis=0)
+
+    m1 = torch.tensor(m1).unsqueeze(0)
+    m2 = torch.tensor(m2).unsqueeze(0)
+    return kl_divergence(m1, m2)
+
+
 def initalize_model(ckpt, device):
     ckpt = torch.load(ckpt)
     model = make_model(ckpt["args"])
@@ -97,6 +107,9 @@ def initalize_model(ckpt, device):
     return model
 
 
+# Stupid way of converting from rgb segmentation maps to the original labels
+# converting from a label map back to it's label by summing the 3 channels into 1 channel, then
+# checking mapping the knows sums to the correct label(index)
 def from_rgb_to_label(image, color_map):
     color_map_sum = {}
     new_image = np.zeros((image.shape[0], image.shape[1]))
@@ -112,37 +125,55 @@ def from_rgb_to_label(image, color_map):
 
 def calculate_mean_for_one_hot(image):
     sem_seg_tensor = torch.tensor(image)
-    sem_seg_squeezed = sem_seg_tensor.reshape(-1)
-    res = torch.nn.functional.one_hot(sem_seg_squeezed.to(torch.int64), -1)
+    sem_seg_unsqueezed = sem_seg_tensor.reshape(-1)
+    res = torch.nn.functional.one_hot(sem_seg_unsqueezed.to(torch.int64), 16)
     final_res = res.reshape(
         sem_seg_tensor.shape[0], sem_seg_tensor.shape[1], -1
     ).float()
     mean_val = torch.mean(final_res, dim=(0, 1))
+    mean_val = mean_val.unsqueeze(0)
     return mean_val
 
 
-def calculate_real_cond(dataset_path):
+def calculate_real_cond(dataset_path, save_real_ds, sample_num=None):
+    logger.info(f"Calculating values for the real data.")
+    logger.info(f"Save real dataset : {save_real_ds}")
     dataset_mean_values = []
     accum = 0
+    files_count = (
+        sum([len(files) for r, d, files in os.walk(dataset_path)])
+        if sample_num is None
+        else sample_num
+    )
     for subdir, _, files in os.walk(dataset_path):
         for file in files:
             accum += 1
             if accum % 10 == 0:
-                print(f"Done with {(accum/5000)*100}% of the real data")
-            if "labelIds" not in file:
+                logger.info(f"Done with {accum} / {files_count} of the real data")
+            extra_data = "leftImg8bit" in file
+            # In normal dataset, label images contain labelIds prefix.
+            if not extra_data and "labelIds" not in file:
                 continue
+            # In extra dataset, files does not contain _prob prefix.
+            if extra_data and "_prob" in file:
+                continue
+            if len(dataset_mean_values) >= sample_num:
+                break
             filepath = subdir + os.sep + file
             image = imread(filepath)
             mean_val = calculate_mean_for_one_hot(image)
             dataset_mean_values.append(mean_val.cpu().numpy())
     real_cond = np.concatenate(dataset_mean_values)
+    if save_real_ds:
+        np.save("./real_dataset_cond_5k.npy", real_cond)
     return real_cond
 
 
 def calculate_generated_cond(ckpt, sample, truncation, truncation_mean, batch, device):
-    print(f"Loading model from checkpoint")
+    logger.info("Calculating generated cond")
+    logger.info(f"Loading model from checkpoint")
     model = initalize_model(ckpt, "cuda")
-    print(f"Model initalized successfuly")
+    logger.info(f"Model initalized successfuly")
     mean_latent = model.style(
         torch.randn(truncation_mean, model.style_dim, device=device)
     ).mean(0)
@@ -154,7 +185,7 @@ def calculate_generated_cond(ckpt, sample, truncation, truncation_mean, batch, d
         batch_sizes = [batch] * n_batch + [resid]
         for batch_iter in tqdm(batch_sizes):
             if batch_iter < batch:
-                print(f"Skipping batch iteration of size {batch_iter}")
+                logger.info(f"Skipping batch iteration of size {batch_iter}")
                 continue
 
             styles = model.style(
@@ -169,9 +200,9 @@ def calculate_generated_cond(ckpt, sample, truncation, truncation_mean, batch, d
                 converted_seg = from_rgb_to_label(segs[i], color_map)
                 mean_val = calculate_mean_for_one_hot(converted_seg)
                 dataset_mean_values.append(mean_val.cpu().numpy())
-        print(f"Time taken to generate images : {time.time()-start_time}")
+        logger.info(f"Time taken to generate images : {time.time()-start_time}")
         generated_cond = np.concatenate(dataset_mean_values)
-    print(f"Average speed: {(time.time() - start_time)/(sample)}s")
+    logger.info(f"Average speed: {(time.time() - start_time)/(sample)}s")
     return generated_cond
 
 
@@ -185,7 +216,7 @@ if __name__ == "__main__":
     parser.add_argument(
         "--sample",
         type=int,
-        default=50000,
+        default=5000,
         help="number of samples to be generated to calculate FSD",
     )
     parser.add_argument(
@@ -206,17 +237,29 @@ if __name__ == "__main__":
         default=None,
         help="saved value for real dataset",
     )
+    parser.add_argument(
+        "--save_real_dataset",
+        type=bool,
+        default=False,
+        help="saved value for real dataset",
+    )
     args = parser.parse_args()
+    logger.add("./log_files/logguru/logging_{time}_fsd.log")
     start_time = time.time()
-    print("Calculating!!!")
+    logger.info("Calculating!!!")
     if args.real_dataset_values:
-        print(f"loading file for real dataset values from :{args.real_dataset_values}")
+        logger.info(
+            f"loading file for real dataset values from :{args.real_dataset_values}"
+        )
         real_cond = np.load(args.real_dataset_values)
     else:
-        print(f"Calculating values for the real data.")
-        real_cond = calculate_real_cond(args.dataset)
-    print(f"time taken to calculate statistics of real data: {time.time()-start_time}")
-    print("Calculating generated cond")
+        real_cond = calculate_real_cond(
+            args.dataset, args.save_real_dataset, sample_num=args.sample
+        )
+    logger.info(
+        f"time taken to calculate statistics of real data: {time.time()-start_time}"
+    )
+
     generated_cond = calculate_generated_cond(
         args.ckpt,
         args.sample,
@@ -225,8 +268,14 @@ if __name__ == "__main__":
         args.batch,
         args.device,
     )
-    print(f"time taken to calculate statistics of fake data: {time.time()-start_time}")
+    np.save("./generated_cond.npy", generated_cond)
+    logger.info(
+        f"time taken to calculate statistics of fake data: {time.time()-start_time}"
+    )
     fsd = calculate_fsd(real_cond, generated_cond)
-    print(
-        f"FSD value by semantic pallete method is {fsd} , Time Taken in total : {time.time()-start_time}"
+    kl = calculate_kl(real_cond, generated_cond)
+    fsd_count = calculate_fsd(real_cond * 100, generated_cond * 100)
+    logger.info(f"KL divergence between 2 conditions is : {kl}")
+    logger.info(
+        f"FSD value by semantic pallete method is {fsd} and fsd_count {fsd_count} , Time Taken in total : {time.time()-start_time}"
     )
