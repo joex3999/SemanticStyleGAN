@@ -133,4 +133,7 @@ pretrained/
 
 #Custom 
 log_files/
-notebooks/data
+notebooks/data/
+results/
+checkpoints/
+*.npy

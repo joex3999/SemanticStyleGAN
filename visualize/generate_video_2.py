@@ -124,7 +124,7 @@ if __name__ == "__main__":
     mean_latent = model.style(
         torch.randn(args.truncation_mean, model.style_dim, device=args.device)
     ).mean(0)
-
+    print(f'mean_latent shape is {mean_latent.shape}')
     print("Generating original image ...")
     with torch.no_grad():
         if args.latent is None:
@@ -150,7 +150,9 @@ if __name__ == "__main__":
         raise ValueError("Unknown dataset name: f{args.dataset_name}")
 
     with torch.no_grad():
-        for latent_index, latent_name in latent_dict.items():
+            latent_index=28
+            latent_name="car_shape"
+            print(f'')
             styles_new = styles.repeat(args.sample, 1, 1)
             mix_styles = model.style(torch.randn(args.sample, 512, device=args.device))
             mix_styles[-1] = mix_styles[0]

@@ -424,7 +424,6 @@ class SemanticGenerator(nn.Module):
 
         latent = self.truncate_styles(latent, truncation, truncation_latent)
         latent = self.mix_styles(latent)  # expanded latent code
-
         # Position Embedding
         if coords is None:
             coords = self.make_coords(

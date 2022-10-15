@@ -188,6 +188,7 @@ def train(
         truncation=1.0,
         mean_latent=None,
         batch_size=args.batch,
+        latent_size=args.latent,
     )
 
     loader = sample_data(loader)
@@ -274,7 +275,7 @@ def train(
             ).backward()
             d_optim.step()
             # if g_temp_loss - d_loss <= loss_threshold:
-                
+
             #     iterations_d_no_update = 0
         loss_dict["r1_img"] = r1_img_loss
         loss_dict["r1_seg"] = r1_seg_loss
@@ -579,7 +580,7 @@ if __name__ == "__main__":
         torch.distributed.init_process_group(backend="nccl", init_method="env://")
         synchronize()
 
-    args.latent = 512
+    args.latent = 128  ## J-TODO: Decreasing number of latent space.
     args.n_mlp = 8
 
     args.start_iter = 0

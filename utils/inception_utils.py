@@ -323,11 +323,11 @@ def prepare_inception_metrics(dataset, parallel, no_fid=False):
 
     return get_inception_metrics
 
-def sample_gema(g_ema, device, truncation, mean_latent, batch_size):  
+def sample_gema(g_ema, device, truncation, mean_latent, batch_size,latent_size=512):  
     with torch.no_grad():
         g_ema.eval()
 
-        sample_z = torch.randn(batch_size, 512, device=device)
+        sample_z = torch.randn(batch_size, latent_size, device=device)
 
         samples = g_ema([sample_z], truncation=truncation, truncation_latent=mean_latent)
         
