@@ -174,6 +174,7 @@ def calculate_generated_cond(ckpt, sample, truncation, truncation_mean, batch, d
     logger.info(f"Loading model from checkpoint")
     model = initalize_model(ckpt, "cuda")
     logger.info(f"Model initalized successfuly")
+    logger.info(f"Style dimension is {model.style_dim}")
     mean_latent = model.style(
         torch.randn(truncation_mean, model.style_dim, device=device)
     ).mean(0)
@@ -191,6 +192,7 @@ def calculate_generated_cond(ckpt, sample, truncation, truncation_mean, batch, d
             styles = model.style(
                 torch.randn(batch_iter, model.style_dim, device=device)
             )
+            logger.info(f"Styles shape is {styles.shape}")
             styles = truncation * styles + (1 - truncation) * mean_latent.unsqueeze(0)
             images, segs = generate(
                 model, styles, mean_latent=mean_latent, batch_size=batch
@@ -244,7 +246,7 @@ if __name__ == "__main__":
         help="saved value for real dataset",
     )
     args = parser.parse_args()
-    logger.add("./log_files/logguru/logging_{time}_fsd.log")
+    logger.add("./log_files/logguru_v2/logging_{time}_fsd.log")
     start_time = time.time()
     logger.info("Calculating!!!")
     if args.real_dataset_values:

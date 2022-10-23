@@ -14,7 +14,6 @@
 # DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS,
 # WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING
 # OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
-
 import os
 import argparse
 import shutil
@@ -23,6 +22,7 @@ import imageio
 import time
 import torch
 import sys
+
 
 sys.path.insert(0, "../SemanticStyleGAN")
 from models import make_model
@@ -85,6 +85,7 @@ if __name__ == "__main__":
         styles = model.style(
             torch.randn(args.sample, model.style_dim, device=args.device)
         )
+        print(f"Styles shape is :{styles.shape}")
         styles = args.truncation * styles + (
             1 - args.truncation
         ) * mean_latent.unsqueeze(0)
