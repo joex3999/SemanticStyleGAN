@@ -1,0 +1,78 @@
+directions to look at : from linear interp. extracted from weights of Car's shape LG
+
+1-> minimizes mid car and does not affect sides that much ?
+3-> decrease all increase right side ?
+4-> increase all 
+
+rexplore: 6 
+
+
+bilinear:
+
+0 - > increase side car on the right more than on the left
+2 - > increasecars on the right ?
+5 - > decrease side cars increase mid car.
+7 - > decrease all increase mid car 
+
+
+__________________________
+
+interleaved:
+
+0-> Best increase cars on the right.
+3 -> more side cars
+5 - > increase  for cars on left side 
+7-> is interesting. 1 side increase on the left while the other direction increase both sides. (controls mainly cars on the right.)
+9,1,2-> Nolthing major
+
+
+There are directions in textures that increases shadows, increases rocky road texture, lighting and other stuff
+
+
+
+Trees:
+
+2-> from right to mid and left 
+5-> too many trees to 1 tree in mid 
+
+roads :
+PCA 0 -> Decrease from left
+PCA 2 - >Swerve road to right ?
+PCA 6-> enlarge road
+
+______________________________________________________
+Sefa results on seperated layers:
+ Layer 2 : dir 4: greater amount of cars
+ Layer 3 : dir 1: increase mid car in a dir, then increase right/left drastically
+ Layer 4: dir 0 : Quite good for overall car closeups dir3: good mid and side car increase
+ Layer 5: dir0: decent increase on left ... dir 2: good increase on left ... dir5: increase on right
+
+__________________________
+coarse layer PCA 
+rexplore: 1
+
+
+Other directions while exploring top 10 normal PCA directions :
+
+    With vegitation:
+    direction 8 is best for overall increase
+
+    road+sw:
+    dir 2 : increase right side walk/ decrease road
+    dir 6: strong decrease road increase side walk. ( 7 is similar too)
+    dir 8: sw in middle of street:
+
+    build+sky+trees:
+    dir 3 : build+sky vs trees.
+    dir 8 : much better effect for that. which proves that directions for dominant classes has more effect
+            when edited all at once.
+
+
+Sefa on all shape layers for car again:  {-20,20,35}
+    dir 6: decreases side cars / increase side cars
+    dir 7: increase/ decrease cars on the left
+    conclusion : You need to look again at the new changes introduced in this range for sefa.
+
+next step: 1)Identify meaningful directions for various classes and combine them.
+           2)Principal components on textures of trees/cars/road/building
+           3) Find the 64x principal components for layer 6 (was computed once but lost.)

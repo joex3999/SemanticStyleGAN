@@ -95,14 +95,22 @@ class ConvLayer(nn.Sequential):
 
 
 class ResBlock(nn.Module):
-    def __init__(self, in_channel, out_channel, blur_kernel=[1, 3, 3, 1],spectral_norm=False):
+    def __init__(
+        self, in_channel, out_channel, blur_kernel=[1, 3, 3, 1], spectral_norm=False
+    ):
         super().__init__()
 
         self.conv1 = ConvLayer(in_channel, in_channel, 3)
         self.conv2 = ConvLayer(in_channel, out_channel, 3, downsample=True)
 
         self.skip = ConvLayer(
-            in_channel, out_channel, 1, downsample=True, activate=False, bias=False,spectral_norm=spectral_norm
+            in_channel,
+            out_channel,
+            1,
+            downsample=True,
+            activate=False,
+            bias=False,
+            spectral_norm=spectral_norm,
         )
 
     def forward(self, input):
@@ -315,10 +323,12 @@ class ModulatedConv2d(nn.Module):
             f"upsample={self.upsample}, downsample={self.downsample})"
         )
 
-    def forward(self, input, style):
+    def forward(self, input, style, w_injected):
         batch, in_channel, height, width = input.shape
-
-        style = self.modulation(style).view(batch, 1, in_channel, 1, 1)
+        if w_injected is not None and w_injected.sum() != 0:
+            style = w_injected.view(batch, 1, in_channel, 1, 1)
+        else:
+            style = self.modulation(style).view(batch, 1, in_channel, 1, 1)
         weight = self.scale * self.weight * style
 
         if self.demodulate:
@@ -419,8 +429,8 @@ class StyledConv(nn.Module):
         # self.activate = ScaledLeakyReLU(0.2)
         self.activate = FusedLeakyReLU(out_channel)
 
-    def forward(self, input, style, noise=None):
-        out = self.conv(input, style)
+    def forward(self, input, style, noise=None, w_injected=None):
+        out = self.conv(input, style, w_injected)
         if self.noise:
             out = self.noise(out, noise=noise)
         # out = out + self.bias

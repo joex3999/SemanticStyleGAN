@@ -62,10 +62,13 @@ class LocalGenerator(nn.Module):
         if self.use_depth:
             self.to_depth = ToRGB(hidden_channel, 1, style_dim)
 
-    def forward(self, x, latent):
+    def forward(self, x, latent, w_injected=None):
         depth = torch.zeros(x.size(0), 1, x.size(2), x.size(3)).to(x.device)
         for i, linear in enumerate(self.linears):
-            x = linear(x, latent[:, i])
+            if w_injected is not None:
+                x = linear(x, latent[:, i], w_injected=w_injected[i])
+            else:
+                x = linear(x, latent[:, i])
             if self.use_depth and i == self.depth_layers - 1:
                 depth = self.to_depth(x, None)
                 if self.detach_texture and i < self.n_layers - 1:
@@ -219,7 +222,6 @@ class SemanticGenerator(nn.Module):
         self.transparent_dims = list(transparent_dims)
         self.n_latent = self.base_layers + self.n_local * 2  # Default latent space
         self.n_latent_expand = self.n_local * self.local_layers  # Expanded latent space
-        print(f"n_latent: {self.n_latent}, n_latent_expand: {self.n_latent_expand}")
 
         self.pos_embed = PositionEmbedding(2, self.local_channel, N_freqs=self.log_size)
         self.local_nets = nn.ModuleList()
@@ -268,6 +270,18 @@ class SemanticGenerator(nn.Module):
                 )
             styles = style_t
         return styles
+
+    def inject_coarse(self, latent, new_latent, class_indexes, coarse=0):
+        """
+        latent: old latent of size N  x (n_local x local_layers) x style_dim
+        new_latent: list of coarse latents to be injected
+        class_index: list of classes where we want to inject coarse latent
+        coarse: either coarse 0 or 1, specific layer you want to inject latent code.
+        """
+        for class_index in class_indexes:
+            start_index = class_index * self.local_layers
+            latent[:, start_index + coarse] = new_latent
+        return latent
 
     def expand_latents(self, latent):
         """Expand the default latent codes.
@@ -418,6 +432,10 @@ class SemanticGenerator(nn.Module):
         return_latents=False,
         return_coarse=False,
         return_all=False,
+        coarse_inject_latent=None,
+        coarse_inject_class_list=None,
+        coarse_inject_layer=0,
+        w_injected=None,
     ):
 
         if not input_is_latent:
@@ -425,7 +443,13 @@ class SemanticGenerator(nn.Module):
 
         latent = self.truncate_styles(latent, truncation, truncation_latent)
         latent = self.mix_styles(latent)  # expanded latent code
-
+        if coarse_inject_latent is not None:
+            latent = self.inject_coarse(
+                latent,
+                coarse_inject_latent,
+                coarse_inject_class_list,
+                coarse_inject_layer,
+            )
         # Position Embedding
         if coords is None:
             coords = self.make_coords(
@@ -441,7 +465,10 @@ class SemanticGenerator(nn.Module):
             local_latent = latent[
                 :, i * self.local_layers : (i + 1) * self.local_layers
             ]
-            feat, depth = self.local_nets[i](x, local_latent)
+            if w_injected is not None:
+                feat, depth = self.local_nets[i](x, local_latent, w_injected[i])
+            else:
+                feat, depth = self.local_nets[i](x, local_latent)
             feats.append(feat)
             depths.append(depth)
 

@@ -8,12 +8,16 @@
 #SBATCH --mail-type=NONE
 ##SBATCH --partition=DEADLINE
 ##SBATCH --comment=ECCVRebuttal
-#SBATCH --output=/usr/stud/faragy/storage/user/logs/SSG_Testing/%j_output.out
-#SBATCH --error=/usr/stud/faragy/storage/user/logs/SSG_Testing/%j_error.out
+#SBATCH --output=/usr/stud/faragy/storage/user/logs/SSG_v4.2/%j_output.out
+#SBATCH --error=/usr/stud/faragy/storage/user/logs/SSG_v4.2/%j_error.out
 # Activate everything you need
 #module load cuda/11.3
 #Start Training From checkpoint
 #CUDA_VISIBLE_DEVICES=0,1,2,3 python -m torch.distributed.launch --nproc_per_node=4 train.py --dataset "/usr/stud/faragy/storage/user/data/lmdb_datasets/lmdb_v3.6" --inception "/usr/stud/faragy/storage/user/data/inception_models/inception_v3.6.pkl" --save_every 5000  --checkpoint_dir /usr/stud/faragy/storage/user/data/checkpoints/SSG_v3.12 --seg_dim 16 --size 256  --residual_refine 
+
+#CUDA_VISIBLE_DEVICES=0,1,2,3 python -m torch.distributed.launch --nproc_per_node=4 train.py --dataset "/usr/stud/faragy/storage/user/data/lmdb_datasets/lmdb_v3.6" --inception "/usr/stud/faragy/storage/user/data/inception_models/inception_v3.6.pkl" --save_every 5000  --checkpoint_dir /usr/stud/faragy/storage/user/data/checkpoints/SSG_v4.2 --ckpt /usr/stud/faragy/storage/user/data/checkpoints/SSG_v4.2/ckpt/125000.pt --seg_dim 16 --size 256  --residual_refine 
+
+
 #Preprocessing
 #python ~/storage/user/SemanticStyleGAN/data/preprocess_cityscapes.py --data="/usr/stud/faragy/storage/user/data/cityscapes/gtFine" --output=/usr/stud/faragy/storage/user/data/preprocessed/v3.6/gtFine_preprocessed/
 #Prepare lmdb  Data for 5k images
@@ -21,7 +25,7 @@
 #Training Inception Network
 #python prepare_inception.py "/usr/stud/faragy/storage/user/data/lmdb_datasets/lmdb_v3.6" --output "/usr/stud/faragy/storage/user/data/inception_models/inception_v3.6.pkl" --size 256 --dataset_type mask
 ##Calculate FSD:
-python calc_fsd.py --ckpt "/usr/stud/faragy/storage/user/data/checkpoints/SSG_v3.12/ckpt/145000.pt" --dataset="/usr/stud/faragy/storage/user/data/preprocessed/v3.6/gtFine_preprocessed" --real_dataset_values="./real_dataset_cond.npy" --save_real_dataset "True" --sample=5000
+python calc_fsd.py --ckpt "/usr/stud/faragy/storage/user/data/checkpoints/SSG_v3.12/ckpt/130000.pt" --dataset="/usr/stud/faragy/storage/user/data/preprocessed/v3.6/gtFine_preprocessed" --real_dataset_values="./real_dataset_cond.npy" --save_real_dataset "True" --sample=5000
 #Calculate KID:
 #python calc_kid.py --ckpt "/usr/stud/faragy/storage/user/data/checkpoints/SSG_v3.12/ckpt/145000.pt" --dataset="/usr/stud/faragy/storage/user/data/cityscapes/leftImg8bit/train_extra" --sample=1000
 
