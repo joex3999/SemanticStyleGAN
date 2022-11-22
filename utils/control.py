@@ -72,7 +72,6 @@ latent_dict_cityscapes = {
 
 
 class Control:
-
     def __init__(
         self,
         ckpt_dir,
@@ -169,6 +168,34 @@ class Control:
     ):
 
         styles_copy = styles.clone().detach()
+        if addition:
+            styles_copy[0, latent_index] += change_factor
+        else:
+            styles_copy[0, latent_index] *= change_factor
+        if add_mean_latent:
+            styles_copy[0, latent_index] = 0.8 * styles_copy[0, latent_index] + (
+                1 - 0.8
+            ) * self.mean_latent.unsqueeze(0)
+        return self.generate_and_plot_image(
+            styles_copy, class_index, plot=plot, get_image=get_image
+        )
+
+    def edit_texture(
+        self,
+        latent_index,
+        class_index,
+        change_factor,
+        styles,
+        addition=True,
+        plot=True,
+        get_image=True,
+        add_mean_latent=False,
+    ):
+
+        styles_copy = styles.clone().detach()
+        if latent_index is None:
+            class_index = 0
+            latent_index = np.arange(5, 34, 2)
         if addition:
             styles_copy[0, latent_index] += change_factor
         else:

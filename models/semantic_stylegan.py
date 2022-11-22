@@ -15,6 +15,7 @@
 # WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING
 # OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
+from distutils.command.build_scripts import first_line_re
 import math
 import random
 import torch.nn.utils.parametrizations as parametrizations
@@ -180,6 +181,7 @@ class SemanticGenerator(nn.Module):
         self,
         size=256,
         style_dim=512,
+        real_style_dim=2176,
         n_mlp=8,
         channel_multiplier=2,
         blur_kernel=[1, 3, 3, 1],
@@ -204,6 +206,7 @@ class SemanticGenerator(nn.Module):
         assert min_feat_size < coarse_size and coarse_size % min_feat_size == 0
         self.size = size
         self.style_dim = style_dim
+        self.real_style_dim = real_style_dim
         self.log_size = int(math.log(size, 2))
         self.n_local = self.seg_dim = seg_dim
         self.base_layers = base_layers
@@ -218,7 +221,6 @@ class SemanticGenerator(nn.Module):
         self.transparent_dims = list(transparent_dims)
         self.n_latent = self.base_layers + self.n_local * 2  # Default latent space
         self.n_latent_expand = self.n_local * self.local_layers  # Expanded latent space
-        print(f"n_latent: {self.n_latent}, n_latent_expand: {self.n_latent_expand}")
 
         self.pos_embed = PositionEmbedding(2, self.local_channel, N_freqs=self.log_size)
         self.local_nets = nn.ModuleList()
@@ -253,7 +255,10 @@ class SemanticGenerator(nn.Module):
         for i in range(n_mlp):
             layers.append(
                 EqualLinear(
-                    style_dim, style_dim, lr_mul=lr_mlp, activation="fused_lrelu"
+                    real_style_dim,
+                    real_style_dim,
+                    lr_mul=lr_mlp,
+                    activation="fused_lrelu",
                 )
             )
         self.style = nn.Sequential(*layers)
@@ -313,6 +318,52 @@ class SemanticGenerator(nn.Module):
                     )
         latent_expanded = torch.cat(latent_expanded, 1)
         return latent_expanded
+
+    def convert_latent_code(self, latent_code):
+        assert latent_code.shape[1] == (self.n_local + 1) * self.style_dim
+        latent_code_n = latent_code.clone().detach()
+        latent_code_n = latent_code_n.reshape(
+            latent_code.shape[0], self.n_local + 1, self.style_dim
+        )
+        latent_code_n = torch.repeat_interleave(latent_code_n, 2, dim=1)
+        return latent_code_n
+
+    def mix_styles_latent_split(self, styles):
+        """
+        A second version of mix styles that takes a combined latent code as input and splits it to every
+        local generater and the base W.
+        Input(styles) : A combined tensor with all latent variables for all g of shape ( Batch X (n_local+1)*style_dim))
+        output: A correctly split tensor of shape (Batch x n_latent x style_dim)
+        """
+        if len(styles) < 2:
+            # Input is the latent code
+            if styles[0].ndim < 3:
+                latent = self.convert_latent_code(styles[0])
+            else:
+                latent = styles[0]
+        elif len(styles) > 2:
+            # Input is the latent code (list)
+            latent = torch.stack(styles, 1)  ## This case should not happen.
+        else:
+            # Input are two latent codes -> style mixing
+            first_l = self.convert_latent_code(styles[0])
+            second_l = self.convert_latent_code(styles[1])
+            latent = first_l.clone().detach()
+
+            for i in range(self.n_local):
+                N = first_l.size(0)
+                index = i * 2 + 2
+                for j in range(N):
+                    inject_index = random.randint(0, 2)
+                    if inject_index == 1:
+                        latent[j, index + 1] = second_l[j, index + 1]
+                    else:
+                        latent[j, index] = second_l[j, index]
+                        latent[j, index + 1] = second_l[j, index + 1]
+        latent = self.expand_latents(
+            latent
+        )  # N  x (n_local x local_layers) x style_dim
+        return latent
 
     def mix_styles(self, styles):
         if len(styles) < 2:
@@ -421,9 +472,8 @@ class SemanticGenerator(nn.Module):
 
         if not input_is_latent:
             latent = [self.style(s) for s in latent]
-
         latent = self.truncate_styles(latent, truncation, truncation_latent)
-        latent = self.mix_styles(latent)  # expanded latent code
+        latent = self.mix_styles_latent_split(latent)  # expanded latent code
         # Position Embedding
         if coords is None:
             coords = self.make_coords(

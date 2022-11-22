@@ -84,6 +84,7 @@ def generate(
 ):
     images, segs = [], []
     for head in range(0, styles.size(0), batch_size):
+        print(f"Styles shape in utils : {styles.shape}")
         images_, segs_ = model(
             [styles[head : head + batch_size]],
             input_is_latent=True,
