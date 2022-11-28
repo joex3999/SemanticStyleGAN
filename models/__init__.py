@@ -26,8 +26,7 @@ def make_model(args, verbose=True):
     model = SemanticGenerator(
         args.size,
         args.latent,
-        args.real_latent,
-        args.n_mlp,  ##J-TODO: Change with real_lat.
+        args.n_mlp,
         channel_multiplier=args.channel_multiplier,
         seg_dim=args.seg_dim,
         local_layers=args.local_layers,

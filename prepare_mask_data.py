@@ -48,7 +48,7 @@ def resize_worker(img_file, size, use_rgb, format, resample):
     return i, img
 
 
-def find_images(path):
+def find_images(path, except_test=False):
     if os.path.isfile(path):
         with open(path, "r") as f:
             files = [line.strip() for line in f.readlines()]
@@ -56,8 +56,13 @@ def find_images(path):
         files = list()
         IMAGE_EXTENSIONS = {"jpg", "png", "jpeg", "webp"}
         IMAGE_EXTENSIONS = IMAGE_EXTENSIONS.union({f.upper() for f in IMAGE_EXTENSIONS})
-        for ext in IMAGE_EXTENSIONS:
-            files += glob(f"{path}/**/*.{ext}", recursive=True)
+        if except_test:
+            for ext in IMAGE_EXTENSIONS:
+                files += glob(f"{path}/train/**/*.{ext}", recursive=True)
+                files += glob(f"{path}/val/**/*.{ext}", recursive=True)
+        else:
+            for ext in IMAGE_EXTENSIONS:
+                files += glob(f"{path}/**/*.{ext}", recursive=True)
         files = sorted(files)
     return files
 
@@ -97,23 +102,35 @@ if __name__ == "__main__":
         default=False,
         help="whether you are dealing with cityscapes or not",
     )
+    parser.add_argument(
+        "--IDD",
+        type=bool,
+        default=False,
+        help="whether you are dealing with cityscapes or not",
+    )
     parser.add_argument("image_path", type=str, help="path to the image files")
     parser.add_argument("label_path", type=str, help="path to the label files")
 
     args = parser.parse_args()
-
-    images = find_images(args.image_path)
+    ## IF except_test is enabled, the images that will be loaded are /train/* And /test/*
+    images = find_images(args.image_path, except_test=True)
     labels = find_images(args.label_path)
-
+    print(images)
+    print(labels)
     get_key = lambda fpath: os.path.splitext(os.path.basename(fpath))[0]
     if args.cityscapes:
         get_key = lambda fpath: "_".join(
             os.path.splitext(os.path.basename(fpath))[0].split("_")[:3]
         )
-    label_dict = {get_key(label): label for label in labels}
-    labels = [label_dict[get_key(image)] for image in images]
+    if args.IDD:
+        get_key = lambda fpath: os.path.splitext(os.path.basename(fpath))[0].split("_")[
+            0
+        ]
+
     print(get_key(labels[0]))
     print(get_key(images[0]))
+    label_dict = {get_key(label): label for label in labels}
+    labels = [label_dict[get_key(image)] for image in images]
     print(f"Number of images: {len(images)}")
     with lmdb.open(args.out, map_size=1024**4, readahead=False) as env:
         prepare(

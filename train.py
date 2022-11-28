@@ -22,7 +22,7 @@ import os
 import sys
 import time
 import subprocess
-import random
+
 import numpy as np
 import torch
 from torch import nn, autograd, optim
@@ -30,8 +30,10 @@ from torch.nn import functional as F
 from torch.utils import data
 from torchvision import transforms, utils
 from torch.utils.tensorboard import SummaryWriter
+
 from models import make_model, DualBranchDiscriminator
 from utils.dataset import MaskDataset
+
 from utils.distributed import (
     get_rank,
     synchronize,
@@ -40,13 +42,10 @@ from utils.distributed import (
     get_world_size,
 )
 
-print("ok")
 import functools
 from utils.inception_utils import sample_gema, prepare_inception_metrics
 from visualize.utils import color_map
 import random
-
-print("done with imports")
 
 
 def data_sampler(dataset, shuffle, distributed):
@@ -189,7 +188,7 @@ def train(
         truncation=1.0,
         mean_latent=None,
         batch_size=args.batch,
-        latent_size=args.real_latent,
+        latent_size=args.latent,
     )
 
     loader = sample_data(loader)
@@ -205,8 +204,7 @@ def train(
     path_lengths = torch.tensor(0.0, device=device)
     mean_path_length_avg = 0
     loss_dict = {}
-    iterations_d_no_update = 0
-    loss_threshold = 2.0
+
     if args.distributed:
         g_module = generator.module
         d_module = discriminator.module
@@ -216,7 +214,7 @@ def train(
 
     accum = 0.5 ** (32 / (10 * 1000))
 
-    sample_z = torch.randn(args.n_sample, args.real_latent, device=device)
+    sample_z = torch.randn(args.n_sample, args.latent, device=device)
 
     print("Start Training Iterations...")
     for idx in pbar:
@@ -235,32 +233,22 @@ def train(
         requires_grad(generator, False)
         requires_grad(discriminator, True)
 
-        noise = mixing_noise(args.batch, args.real_latent, args.mixing, device)
+        noise = mixing_noise(args.batch, args.latent, args.mixing, device)
         fake_img, fake_seg = generator(noise)
 
         fake_pred = discriminator(fake_img, fake_seg)
         real_pred = discriminator(real_img, real_mask)
-        g_temp_loss = g_nonsaturating_loss(fake_pred)
+
         d_loss = d_logistic_loss(real_pred, fake_pred)
 
         loss_dict["d"] = d_loss
         loss_dict["real_score"] = real_pred.mean()
         loss_dict["fake_score"] = fake_pred.mean()
 
-        # rand_num = random.random()
-        # if rand_num<=0.8:'
         discriminator.zero_grad()
         d_loss.backward()
         d_optim.step()
-        # iterations_d_no_update = 0
-        # if g_temp_loss - d_loss <= loss_threshold:
 
-        # else:
-        #     iterations_d_no_update += 1
-        #     if iterations_d_no_update > 20:
-        #         print(
-        #             f"It has been {iterations_d_no_update} iterations without an update"
-        #         )
         d_regularize = i % args.d_reg_every == 0
 
         if d_regularize:
@@ -268,16 +256,16 @@ def train(
             real_mask.requires_grad = True
             real_pred = discriminator(real_img, real_mask)
             r1_img_loss, r1_seg_loss = d_r1_loss(real_pred, real_img, real_mask)
+
             discriminator.zero_grad()
             (
                 (args.r1_img / 2 * r1_img_loss + args.r1_seg / 2 * r1_seg_loss)
                 * args.d_reg_every
                 + 0 * real_pred[0]
             ).backward()
-            d_optim.step()
-            # if g_temp_loss - d_loss <= loss_threshold:
 
-            #     iterations_d_no_update = 0
+            d_optim.step()
+
         loss_dict["r1_img"] = r1_img_loss
         loss_dict["r1_seg"] = r1_seg_loss
 
@@ -285,8 +273,9 @@ def train(
         requires_grad(generator, True)
         requires_grad(discriminator, False)
 
-        noise = mixing_noise(args.batch, args.real_latent, args.mixing, device)
+        noise = mixing_noise(args.batch, args.latent, args.mixing, device)
         fake_img, fake_seg, fake_seg_coarse, _, _ = generator(noise, return_all=True)
+
         fake_pred = discriminator(fake_img, fake_seg)
         g_loss = g_nonsaturating_loss(fake_pred)
 
@@ -304,14 +293,13 @@ def train(
         g_optim.step()
 
         g_regularize = args.path_regularize > 0 and i % args.g_reg_every == 0
+
         if g_regularize:
             path_batch_size = max(1, args.batch // args.path_batch_shrink)
             with torch.no_grad():
-                noise = mixing_noise(
-                    path_batch_size, args.real_latent, args.mixing, device
-                )
+                noise = mixing_noise(path_batch_size, args.latent, args.mixing, device)
                 noise = [g_module.style(n) for n in noise]
-                latents = g_module.mix_styles_latent_split(noise).clone()
+                latents = g_module.mix_styles(noise).clone()
             latents.requires_grad = True
             fake_img, fake_seg = generator([latents], input_is_latent=True)
 
@@ -564,7 +552,7 @@ if __name__ == "__main__":
     parser.add_argument("--local_rank", type=int, default=0)
 
     args = parser.parse_args()
-    print("in")
+
     # build checkpoint dir
     ckpt_dir = args.checkpoint_dir
     os.makedirs(args.checkpoint_dir, exist_ok=True)
@@ -575,20 +563,19 @@ if __name__ == "__main__":
     args.n_gpu = n_gpu
 
     args.distributed = n_gpu > 1
-    print("inn")
+
     if args.distributed:
         torch.cuda.set_device(args.local_rank)
         torch.distributed.init_process_group(backend="nccl", init_method="env://")
         synchronize()
 
-    args.latent = 16  ## J-TODO: Decreasing number of latent space.
-    args.real_latent = args.latent * (args.seg_dim + 1)
+    args.latent = 512  ## J-TODO: Changing latent to 64
     args.n_mlp = 8
 
     args.start_iter = 0
-    print("making model")
+
     generator = make_model(args, verbose=(args.local_rank == 0)).to(device)
-    print("model ready")
+
     discriminator = DualBranchDiscriminator(
         args.size,
         args.size,
