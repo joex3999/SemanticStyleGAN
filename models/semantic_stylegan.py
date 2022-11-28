@@ -15,8 +15,8 @@
 # WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING
 # OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
+from distutils.command.build_scripts import first_line_re
 import math
-from pickle import FALSE
 import random
 import torch.nn.utils.parametrizations as parametrizations
 import torch
@@ -62,13 +62,10 @@ class LocalGenerator(nn.Module):
         if self.use_depth:
             self.to_depth = ToRGB(hidden_channel, 1, style_dim)
 
-    def forward(self, x, latent, w_injected=None):
+    def forward(self, x, latent):
         depth = torch.zeros(x.size(0), 1, x.size(2), x.size(3)).to(x.device)
         for i, linear in enumerate(self.linears):
-            if w_injected is not None:
-                x = linear(x, latent[:, i], w_injected=w_injected[i])
-            else:
-                x = linear(x, latent[:, i])
+            x = linear(x, latent[:, i])
             if self.use_depth and i == self.depth_layers - 1:
                 depth = self.to_depth(x, None)
                 if self.detach_texture and i < self.n_layers - 1:
@@ -184,6 +181,7 @@ class SemanticGenerator(nn.Module):
         self,
         size=256,
         style_dim=512,
+        real_style_dim=2176,
         n_mlp=8,
         channel_multiplier=2,
         blur_kernel=[1, 3, 3, 1],
@@ -208,6 +206,7 @@ class SemanticGenerator(nn.Module):
         assert min_feat_size < coarse_size and coarse_size % min_feat_size == 0
         self.size = size
         self.style_dim = style_dim
+        self.real_style_dim = real_style_dim
         self.log_size = int(math.log(size, 2))
         self.n_local = self.seg_dim = seg_dim
         self.base_layers = base_layers
@@ -256,7 +255,10 @@ class SemanticGenerator(nn.Module):
         for i in range(n_mlp):
             layers.append(
                 EqualLinear(
-                    style_dim, style_dim, lr_mul=lr_mlp, activation="fused_lrelu"
+                    real_style_dim,
+                    real_style_dim,
+                    lr_mul=lr_mlp,
+                    activation="fused_lrelu",
                 )
             )
         self.style = nn.Sequential(*layers)
@@ -270,18 +272,6 @@ class SemanticGenerator(nn.Module):
                 )
             styles = style_t
         return styles
-
-    def inject_coarse(self, latent, new_latent, class_indexes, coarse=0):
-        """
-        latent: old latent of size N  x (n_local x local_layers) x style_dim
-        new_latent: list of coarse latents to be injected
-        class_index: list of classes where we want to inject coarse latent
-        coarse: either coarse 0 or 1, specific layer you want to inject latent code.
-        """
-        for class_index in class_indexes:
-            start_index = class_index * self.local_layers
-            latent[:, start_index + coarse] = new_latent
-        return latent
 
     def expand_latents(self, latent):
         """Expand the default latent codes.
@@ -328,6 +318,52 @@ class SemanticGenerator(nn.Module):
                     )
         latent_expanded = torch.cat(latent_expanded, 1)
         return latent_expanded
+
+    def convert_latent_code(self, latent_code):
+        assert latent_code.shape[1] == (self.n_local + 1) * self.style_dim
+        latent_code_n = latent_code.clone().detach()
+        latent_code_n = latent_code_n.reshape(
+            latent_code.shape[0], self.n_local + 1, self.style_dim
+        )
+        latent_code_n = torch.repeat_interleave(latent_code_n, 2, dim=1)
+        return latent_code_n
+
+    def mix_styles_latent_split(self, styles):
+        """
+        A second version of mix styles that takes a combined latent code as input and splits it to every
+        local generater and the base W.
+        Input(styles) : A combined tensor with all latent variables for all g of shape ( Batch X (n_local+1)*style_dim))
+        output: A correctly split tensor of shape (Batch x n_latent x style_dim)
+        """
+        if len(styles) < 2:
+            # Input is the latent code
+            if styles[0].ndim < 3:
+                latent = self.convert_latent_code(styles[0])
+            else:
+                latent = styles[0]
+        elif len(styles) > 2:
+            # Input is the latent code (list)
+            latent = torch.stack(styles, 1)  ## This case should not happen.
+        else:
+            # Input are two latent codes -> style mixing
+            first_l = self.convert_latent_code(styles[0])
+            second_l = self.convert_latent_code(styles[1])
+            latent = first_l.clone().detach()
+
+            for i in range(self.n_local):
+                N = first_l.size(0)
+                index = i * 2 + 2
+                for j in range(N):
+                    inject_index = random.randint(0, 2)
+                    if inject_index == 1:
+                        latent[j, index + 1] = second_l[j, index + 1]
+                    else:
+                        latent[j, index] = second_l[j, index]
+                        latent[j, index + 1] = second_l[j, index + 1]
+        latent = self.expand_latents(
+            latent
+        )  # N  x (n_local x local_layers) x style_dim
+        return latent
 
     def mix_styles(self, styles):
         if len(styles) < 2:
@@ -432,24 +468,12 @@ class SemanticGenerator(nn.Module):
         return_latents=False,
         return_coarse=False,
         return_all=False,
-        coarse_inject_latent=None,
-        coarse_inject_class_list=None,
-        coarse_inject_layer=0,
-        w_injected=None,
     ):
 
         if not input_is_latent:
             latent = [self.style(s) for s in latent]
-
         latent = self.truncate_styles(latent, truncation, truncation_latent)
-        latent = self.mix_styles(latent)  # expanded latent code
-        if coarse_inject_latent is not None:
-            latent = self.inject_coarse(
-                latent,
-                coarse_inject_latent,
-                coarse_inject_class_list,
-                coarse_inject_layer,
-            )
+        latent = self.mix_styles_latent_split(latent)  # expanded latent code
         # Position Embedding
         if coords is None:
             coords = self.make_coords(
@@ -465,10 +489,7 @@ class SemanticGenerator(nn.Module):
             local_latent = latent[
                 :, i * self.local_layers : (i + 1) * self.local_layers
             ]
-            if w_injected is not None:
-                feat, depth = self.local_nets[i](x, local_latent, w_injected[i])
-            else:
-                feat, depth = self.local_nets[i](x, local_latent)
+            feat, depth = self.local_nets[i](x, local_latent)
             feats.append(feat)
             depths.append(depth)
 
@@ -522,21 +543,25 @@ class DualBranchDiscriminator(nn.Module):
         if seg_size is None:
             seg_size = img_size
 
-        convs = [ConvLayer(img_dim, self.channels[img_size], 1)]
+        convs = [ConvLayer(img_dim, self.channels[img_size], 1, spectral_norm=True)]
 
         in_channel = self.channels[img_size]
         for i in range(log_size, 2, -1):
             out_channel = self.channels[2 ** (i - 1)]
-            convs.append(ResBlock(in_channel, out_channel, blur_kernel))
+            convs.append(
+                ResBlock(in_channel, out_channel, blur_kernel, spectral_norm=True)
+            )
             in_channel = out_channel
         self.convs_img = nn.Sequential(*convs)
 
         log_size = int(math.log(seg_size, 2))
-        convs = [ConvLayer(seg_dim, self.channels[seg_size], 1)]
+        convs = [ConvLayer(seg_dim, self.channels[seg_size], 1, spectral_norm=True)]
         in_channel = self.channels[seg_size]
         for i in range(log_size, 2, -1):
             out_channel = self.channels[2 ** (i - 1)]
-            convs.append(ResBlock(in_channel, out_channel, blur_kernel))
+            convs.append(
+                ResBlock(in_channel, out_channel, blur_kernel, spectral_norm=True)
+            )
             in_channel = out_channel
         self.convs_seg = nn.Sequential(*convs)
 
