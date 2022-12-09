@@ -44,9 +44,13 @@ ______________________________________________________
 Sefa results on seperated layers:
  Layer 2 : dir 4: greater amount of cars
  Layer 3 : dir 1: increase mid car in a dir, then increase right/left drastically
- Layer 4: dir 0 : Quite good for overall car closeups dir3: good mid and side car increase
- Layer 5: dir0: decent increase on left ... dir 2: good increase on left ... dir5: increase on right
+ Layer 4: dir 0 : Quite good for overall car closeups dir3: good mid and left side car increase
+ Layer 5: dir0: decent increase on left(from right to left) ... dir 2: good increase on left ... dir5: increase on right decreaes on left
 
+PCA results on seperated layers :
+Layer2: dir found to increase car on left// but not worth while
+Layer 4: dir1: good increase/decrease left without affecting mid
+Layer 5: dir1: good increase of cars on right . Dir 2: good increase of cars on left, maybe 5 good increase on left while mid static
 __________________________
 coarse layer PCA 
 rexplore: 1
@@ -75,4 +79,3 @@ Sefa on all shape layers for car again:  {-20,20,35}
 
 next step: 1)Identify meaningful directions for various classes and combine them.
            2)Principal components on textures of trees/cars/road/building
-           3) Find the 64x principal components for layer 6 (was computed once but lost.)

@@ -102,7 +102,7 @@ class Control:
             torch.randn(self.truncation_mean, self.model.style_dim, device=self.device)
         ).mean(0)
 
-    def from_rgb_to_label(self, image, color_map):
+    def from_rgb_to_label(self, image, color_map=color_map):
         color_map_sum = {}
         new_image = np.zeros((image.shape[0], image.shape[1]))
         for c in color_map:
