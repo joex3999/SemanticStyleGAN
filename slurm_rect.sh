@@ -4,7 +4,7 @@
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=2
 #SBATCH --mem=32G
-#SBATCH --gpus=1
+#SBATCH --gpus=3
 #SBATCH --time=4-23:00:00
 #SBATCH --mail-type=ALL
 ##SBATCH --partition=DEADLINE
@@ -16,6 +16,8 @@
 # Activate everything you need
 module load cuda/11.3
 
+##Train for rect IDD
+CUDA_VISIBLE_DEVICES=0,1,2 python3.9 -m torch.distributed.launch --nproc_per_node=3 train.py --dataset /no_backups/g013/data/IDD/lmdb_datasets/lmdb_v3_rectangle --inception /no_backups/g013/data/IDD/inception_models/inception_v3_rectangle.pkl --save_every 5000 --checkpoint_dir /no_backups/g013/checkpoints/IDD_rect  --seg_dim 13 --size 256  --residual_refine 
 
 
 #Preprocess IDD
@@ -26,7 +28,7 @@ module load cuda/11.3
 #python3.9 prepare_mask_data.py --IDD "True" /data/public/idd-segmentation/IDD_Segmentation/leftImg8bit /no_backups/g013/data/IDD/preprocessed/v3 --out /no_backups/g013/data/IDD/lmdb_datasets/lmdb_v3_rectangle --size_h 128 --size_w 256
 
 #Training Inception Network
-python3.9 prepare_inception.py /no_backups/g013/data/IDD/lmdb_datasets/lmdb_v3_rectangle --output /no_backups/g013/data/IDD/inception_models/inception_v3_rectangle.pkl --size_h 128 --size_w 256 --dataset_type mask
+#python3.9 prepare_inception.py /no_backups/g013/data/IDD/lmdb_datasets/lmdb_v3_rectangle --output /no_backups/g013/data/IDD/inception_models/inception_v3_rectangle.pkl --size_h 128 --size_w 256 --dataset_type mask
 
 
 

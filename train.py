@@ -235,7 +235,6 @@ def train(
 
         noise = mixing_noise(args.batch, args.latent, args.mixing, device)
         fake_img, fake_seg = generator(noise)
-
         fake_pred = discriminator(fake_img, fake_seg)
         real_pred = discriminator(real_img, real_mask)
 
@@ -634,9 +633,9 @@ if __name__ == "__main__":
             broadcast_buffers=False,
             find_unused_parameters=find_unused_parameters,
         )
-
+    ##J-TODO: Here we change the resolution manually, TODO: Change it.
     dataset = MaskDataset(
-        args.dataset, resolution=args.size, label_size=args.seg_dim, aug=args.aug
+        args.dataset, resolution=[256, 128], label_size=args.seg_dim, aug=args.aug
     )
     print("Loading train dataloader with size ", len(dataset))
 

@@ -9,12 +9,13 @@ from multiprocessing import Pool
 import cv2
 from pathlib import Path
 
-sys.path.insert(0, "../../SemanticStyleGAN")
+sys.path.insert(0, "../SemanticStyleGAN")
 from data import idd_mapping
 
 
-cut_down_mapping = idd_mapping.cut_down_mapping
+# cut_down_mapping = idd_mapping.cut_down_mapping_v4_level1
 
+cut_down_mapping = idd_mapping.cut_down_mapping_v1_level1_split_rickshaw
 # validation_cutoff = 28000
 
 # Reading an image, Simplifing it's labels to only 8 labels instead of 33
@@ -28,8 +29,12 @@ def simplify_image_labels(image, viewable=False):
     return new_image
 
 
-def process_img(dataset_path, output_prefix):
+def process_img(dataset_path, output_prefix, level_3_ids=False):
     accum = 0
+    if level_3_ids:
+        print("Converting from Level 3Ids instead of normal ids")
+    else:
+        print("Converting from normal ID maps")
     files_count = sum([len(files) for r, d, files in os.walk(dataset_path)])
     for subdir, _, files in os.walk(dataset_path):
         # The dataset has to be of format */gtFine/train/*/*.png
@@ -45,9 +50,10 @@ def process_img(dataset_path, output_prefix):
             accum += 1
             if accum % 1000 == 0:
                 print(f"Done with {accum}/{files_count} images")
-            if "labelids" not in file:
+            if level_3_ids and "labellevel3Ids" not in file:
                 continue
-            print("in")
+            if (not level_3_ids) and "labelids" not in file:
+                continue
             filepath = subdir + os.sep + file
             output_path = str(output_dir) + os.sep + file
             image = imread(filepath)

@@ -91,6 +91,18 @@ if __name__ == "__main__":
         help="resolutions of images for the dataset",
     )
     parser.add_argument(
+        "--size_w",
+        type=int,
+        default=None,
+        help="resolutions of images for the dataset",
+    )
+    parser.add_argument(
+        "--size_h",
+        type=int,
+        default=None,
+        help="resolutions of images for the dataset",
+    )
+    parser.add_argument(
         "--n_worker",
         type=int,
         default=8,
@@ -113,6 +125,11 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
     ## IF except_test is enabled, the images that will be loaded are /train/* And /test/*
+    size = args.size
+    if args.size_h and args.size_w:
+        #Order here is different.
+        size = [args.size_w, args.size_h]
+    print(f"Setting size used to : {size}")
     images = find_images(args.image_path, except_test=True)
     labels = find_images(args.label_path)
     print(images)
@@ -137,7 +154,7 @@ if __name__ == "__main__":
             env,
             images,
             args.n_worker,
-            args.size,
+            size,
             "image",
             use_rgb=True,
             format="jpeg",
@@ -147,7 +164,7 @@ if __name__ == "__main__":
             env,
             labels,
             args.n_worker,
-            args.size,
+            size,
             "label",
             use_rgb=False,
             format="png",

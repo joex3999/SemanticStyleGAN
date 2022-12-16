@@ -46,62 +46,96 @@ class MaskDataset(Dataset):
             meminit=False,
         )
         if not self.env:
-            raise IOError('Cannot open lmdb dataset', path)
+            raise IOError("Cannot open lmdb dataset", path)
 
         with self.env.begin(write=False) as txn:
-            self.length = int(txn.get('image-length'.encode('utf-8')).decode('utf-8'))
+            self.length = int(txn.get("image-length".encode("utf-8")).decode("utf-8"))
 
         if self.transform is None:
-            self.transform = transforms.Compose([
-                        transforms.ToTensor(),
-                        transforms.Normalize((0.5,0.5,0.5), (0.5,0.5,0.5), inplace=True)
-                    ])
+            self.transform = transforms.Compose(
+                [
+                    transforms.ToTensor(),
+                    transforms.Normalize(
+                        (0.5, 0.5, 0.5), (0.5, 0.5, 0.5), inplace=True
+                    ),
+                ]
+            )
 
         self.aug = aug
         if self.aug == True:
-            self.aug_t = albumentations.Compose([
-                            A.transforms.HorizontalFlip(p=0.5),
-                            G.transforms.ShiftScaleRotate(shift_limit=0.1,
-                                                scale_limit=0.2,
-                                                rotate_limit=15,#from -15 to 15. Maybe increase this a bit.
-                                                border_mode=cv2.BORDER_CONSTANT,
-                                                value=0,
-                                                mask_value=0,
-                                                p=0.5),
-                    ])
-        
+            self.aug_t = albumentations.Compose(
+                [
+                    A.transforms.HorizontalFlip(p=0.5),
+                    G.transforms.ShiftScaleRotate(
+                        shift_limit=0.1,
+                        scale_limit=0.2,
+                        rotate_limit=15,  # from -15 to 15. Maybe increase this a bit.
+                        border_mode=cv2.BORDER_CONSTANT,
+                        value=0,
+                        mask_value=0,
+                        p=0.5,
+                    ),
+                ]
+            )
 
     def _onehot_mask(self, mask):
         label_size = self.label_size
         labels = np.zeros((label_size, mask.shape[0], mask.shape[1]))
         for i in range(label_size):
-            labels[i][mask==i] = 1.0
-        
+            labels[i][mask == i] = 1.0
+
         return labels
-        
+
     def __len__(self):
         return self.length
-    
+
     def __getitem__(self, idx):
 
         with self.env.begin(write=False) as txn:
-            img = Image.open(BytesIO(txn.get(f'image-{str(idx).zfill(7)}'.encode('utf-8')))).convert('RGB')
-            if img.size[0] != self.resolution:
-                img = img.resize((self.resolution, self.resolution), resample=Image.LANCZOS)
-                
-            mask = Image.open(BytesIO(txn.get(f'label-{str(idx).zfill(7)}'.encode('utf-8')))).convert('L')
-            if mask.size[0] != self.resolution:
-                mask = mask.resize((self.resolution, self.resolution), resample=Image.NEAREST)
+            img = Image.open(
+                BytesIO(txn.get(f"image-{str(idx).zfill(7)}".encode("utf-8")))
+            ).convert("RGB")
+            if isinstance(self.resolution, list):
+                if (
+                    img.size[0] != self.resolution[0]
+                    or img.size[1] != self.resolution[1]
+                ):
+                    img = img.resize(
+                        (self.resolution[0], self.resolution[1]), resample=Image.LANCZOS
+                    )
+
+                mask = Image.open(
+                    BytesIO(txn.get(f"label-{str(idx).zfill(7)}".encode("utf-8")))
+                ).convert("L")
+                if (
+                    mask.size[0] != self.resolution[0]
+                    or mask.size[1] != self.resolution[1]
+                ):
+                    mask = mask.resize(
+                        (self.resolution[0], self.resolution[1]), resample=Image.NEAREST
+                    )
+            else:
+                if img.size[0] != self.resolution:
+                    img = img.resize(
+                        (self.resolution, self.resolution), resample=Image.LANCZOS
+                    )
+
+                mask = Image.open(
+                    BytesIO(txn.get(f"label-{str(idx).zfill(7)}".encode("utf-8")))
+                ).convert("L")
+                if mask.size[0] != self.resolution:
+                    mask = mask.resize(
+                        (self.resolution, self.resolution), resample=Image.NEAREST
+                    )
 
         if self.aug:
             augmented = self.aug_t(image=np.array(img), mask=np.array(mask))
-            img = Image.fromarray(augmented['image'])
-            mask = augmented['mask']
-        
+            img = Image.fromarray(augmented["image"])
+            mask = augmented["mask"]
+
         img = self.transform(img)
         mask = self._onehot_mask(np.array(mask))
         mask = torch.tensor(mask, dtype=torch.float) * 2 - 1
-        
         return {"image": img, "mask": mask}
 
 
@@ -117,10 +151,10 @@ class MultiResolutionDataset(Dataset):
         )
 
         if not self.env:
-            raise IOError('Cannot open lmdb dataset', path)
+            raise IOError("Cannot open lmdb dataset", path)
 
         with self.env.begin(write=False) as txn:
-            self.length = int(txn.get('length'.encode('utf-8')).decode('utf-8'))
+            self.length = int(txn.get("length".encode("utf-8")).decode("utf-8"))
 
         self.resolution = resolution
         self.transform = transform
@@ -130,7 +164,7 @@ class MultiResolutionDataset(Dataset):
 
     def __getitem__(self, index):
         with self.env.begin(write=False) as txn:
-            key = f'{self.resolution}-{str(index).zfill(5)}'.encode('utf-8')
+            key = f"{self.resolution}-{str(index).zfill(5)}".encode("utf-8")
             img_bytes = txn.get(key)
 
         buffer = BytesIO(img_bytes)
@@ -138,4 +172,3 @@ class MultiResolutionDataset(Dataset):
         img = self.transform(img)
 
         return img
-

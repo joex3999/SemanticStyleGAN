@@ -24,7 +24,7 @@ import torch
 import sys
 
 
-sys.path.insert(0, "../SemanticStyleGAN")
+sys.path.insert(0, "../SemanticStyleGAN_rect")
 from models import make_model
 from visualize.utils import generate
 

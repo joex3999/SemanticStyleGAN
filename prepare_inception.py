@@ -74,6 +74,8 @@ if __name__ == '__main__':
         description='Calculate Inception v3 features for datasets'
     )
     parser.add_argument('--size', type=int, default=256)
+    parser.add_argument('--size_h', type=int, default=None)
+    parser.add_argument('--size_w', type=int, default=None)
     parser.add_argument('--batch', default=64, type=int, help='batch size')
     parser.add_argument('--n_sample', type=int, default=None)
     parser.add_argument('--output', type=str, required=True)
@@ -84,7 +86,9 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     inception = inception_utils.load_inception_net()
-
+    if args.size_h and args.size_w:
+        args.size=[args.size_h,args.size_w]
+    print(f"Size used is {args.size}")
     dset = get_dataset(args)
     loader = DataLoader(dset, shuffle=False, batch_size=args.batch, drop_last=False, num_workers=4)
 
