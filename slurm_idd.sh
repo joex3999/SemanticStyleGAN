@@ -4,14 +4,13 @@
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=2
 #SBATCH --mem=32G
-#SBATCH --mem=8G
-#SBATCH --gpus=4
+#SBATCH --gpus=1
 #SBATCH --time=4-23:00:00
 #SBATCH --mail-type=ALL
 ##SBATCH --partition=DEADLINE
 ##SBATCH --comment=ECCVRebuttal
-#SBATCH --output=./log_files/IDD_v3/SSG%j.%N_output.out
-#SBATCH --error=./log_files/IDD_v3/SSG%j.%N_error.out
+#SBATCH --output=./log_files/IDD_rectangle/SSG%j.%N_output.out
+#SBATCH --error=./log_files/IDD_rectangle/SSG%j.%N_error.out
 #SBATCH --qos=batch
 
 # Activate everything you need
@@ -19,17 +18,27 @@ module load cuda/11.3
 
 
 
+#Preprocess IDD
+#python3.9 ~/SemanticStyleGAN/data/preprocess_idd.py --data="/data/public/idd-segmentation/IDD_Segmentation/gtFine" --output="/no_backups/g013/data/IDD/preprocessed/v5/"
 
 
 #Prepare Data 
-#python3.9 prepare_mask_data.py --IDD "True" /data/public/idd-segmentation/IDD_Segmentation/leftImg8bit /no_backups/g013/data/IDD/preprocessed/v1 --out /no_backups/g013/data/IDD/lmdb_datasets/lmdb_v3.3 --size 256
+#python3.9 prepare_mask_data.py --IDD "True" /data/public/idd-segmentation/IDD_Segmentation/leftImg8bit /no_backups/g013/data/IDD/preprocessed/v3 --out /no_backups/g013/data/IDD/lmdb_datasets/lmdb_v3_rectangle --size_h 128 --size_w 256
 
 #Training Inception Network
-#python3.9 prepare_inception.py /no_backups/g013/data/IDD/lmdb_datasets/lmdb_v1 --output /no_backups/g013/data/IDD/inception_models/inception_v1.pkl --size 256 --dataset_type mask
+python3.9 prepare_inception.py /no_backups/g013/data/IDD/lmdb_datasets/lmdb_v3_rectangle --output /no_backups/g013/data/IDD/inception_models/inception_v3_rectangle.pkl --size_h 128 --size_w 256 --dataset_type mask
+
 
 
 #Training using Multiple GPUs
-CUDA_VISIBLE_DEVICES=0,1,2,3 python3.9 -m torch.distributed.launch --nproc_per_node=4 train.py --dataset /no_backups/g013/data/IDD/lmdb_datasets/lmdb_v1 --inception /no_backups/g013/data/IDD/inception_models/inception_v1.pkl --save_every 5000 --checkpoint_dir /no_backups/g013/checkpoints/IDD_v3  --seg_dim 16 --size 256  --residual_refine --batch=4
+#CUDA_VISIBLE_DEVICES=0,1,2 python3.9 -m torch.distributed.launch --nproc_per_node=3 train.py --dataset /no_backups/g013/data/IDD/lmdb_datasets/lmdb_v2 --inception /no_backups/g013/data/IDD/inception_models/inception_v2.pkl --save_every 5000 --checkpoint_dir /no_backups/g013/checkpoints/IDD_v3  --seg_dim 16 --size 256  --residual_refine 
+#13 LG
+#CUDA_VISIBLE_DEVICES=0,1,2,3 python3.9 -m torch.distributed.launch --nproc_per_node=4 train.py --dataset /no_backups/g013/data/IDD/lmdb_datasets/lmdb_v3 --inception /no_backups/g013/data/IDD/inception_models/inception_v3.pkl --save_every 5000   --checkpoint_dir /no_backups/g013/checkpoints/IDD_v9  --seg_dim 13 --size 256  --residual_refine --batch=8
+
+#21LG
+#CUDA_VISIBLE_DEVICES=0,1,2 python3.9 -m torch.distributed.launch --nproc_per_node=3 train.py --dataset /no_backups/g013/data/IDD/lmdb_datasets/lmdb_v4 --inception /no_backups/g013/data/IDD/inception_models/inception_v4.pkl --save_every 5000  --checkpoint_dir /no_backups/g013/checkpoints/IDD_v6  --seg_dim 21 --size 256  --residual_refine --ckpt "/no_backups/g013/checkpoints/IDD_v6/ckpt/005000.pt"
+
+
 
 
 #python3.9 train.py --dataset /no_backups/g013/data/lmdb_datasets/lmdb_v3.3 --inception /no_backups/g013/data/inception_models/inception_v3.3.pkl --save_every 5000 --checkpoint_dir /no_backups/g013/checkpoints/SSG_v3.10  --seg_dim 16 --size 256  --residual_refine
