@@ -137,7 +137,6 @@ class MaskDataset(Dataset):
         img = self.transform(img)
         mask = self._onehot_mask(np.array(mask))
         mask = torch.tensor(mask, dtype=torch.float) * 2 - 1
-        print(f"image shape:{img.shape} mask shape :{mask.shape}")
         return {"image": img, "mask": mask}
 
 

@@ -21,12 +21,15 @@ module load cuda/11.3
 #Preprocess IDD
 #python3.9 ~/SemanticStyleGAN/data/preprocess_idd.py --data="/data/public/idd-segmentation/IDD_Segmentation/gtFine" --output="/no_backups/g013/data/IDD/preprocessed/v5/"
 
+#Prepare image Data 
+python3.9 prepare_image_data.py  /data/public/idd-segmentation/IDD_Segmentation/leftImg8bit  --out /no_backups/g013/data/IDD/lmdb_datasets/lmdb_v1_images_only --size 256
 
-#Prepare Data 
+
+#Prepare mask Data 
 #python3.9 prepare_mask_data.py --IDD "True" /data/public/idd-segmentation/IDD_Segmentation/leftImg8bit /no_backups/g013/data/IDD/preprocessed/v3 --out /no_backups/g013/data/IDD/lmdb_datasets/lmdb_v3_rectangle --size_h 128 --size_w 256
 
 #Training Inception Network
-python3.9 prepare_inception.py /no_backups/g013/data/IDD/lmdb_datasets/lmdb_v3_rectangle --output /no_backups/g013/data/IDD/inception_models/inception_v3_rectangle.pkl --size_h 128 --size_w 256 --dataset_type mask
+#python3.9 prepare_inception.py /no_backups/g013/data/IDD/lmdb_datasets/lmdb_v3_rectangle --output /no_backups/g013/data/IDD/inception_models/inception_v3_rectangle.pkl --size_h 128 --size_w 256 --dataset_type mask
 
 
 
