@@ -79,3 +79,33 @@ Sefa on all shape layers for car again:  {-20,20,35}
 
 next step: 1)Identify meaningful directions for various classes and combine them.
            2)Principal components on textures of trees/cars/road/building
+____________________________________________________________________________________________________--
+More results for thesis :
+
+For Road/ PCA on S Space:
+Layer 5:
+    dir 6: Increase road size
+    dir 7: Make road more narrow.
+
+Layer 3:
+dir0: Decent narrowing of road 
+
+layer 9 :
+dir0: Change road pavement ?
+dir4: Darken road.
+dir6: increase shadows.
+dir 7 : Add strong road markings.
+
+layer 8 : 
+dir0: Softens dark textures.( Remove road markings)
+dir4: Increase road markings
+
+layer 7:
+dir 0 : more road markings too
+
+For Trees Textures :
+
+layer9:
+    dir4: Increase brightness for trees.
+layer 8 :
+    dir7:leaves number

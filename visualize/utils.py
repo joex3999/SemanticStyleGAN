@@ -18,80 +18,41 @@
 import numpy as np
 import torch
 from scipy.interpolate import CubicSpline
+import sys
 
-# color_map = {
-#     0: [0, 0, 0],
-#     1: [239, 234, 90],
-#     2: [44, 105, 154],
-#     3: [4, 139, 168],
-#     4: [13, 179, 158],
-#     5: [131, 227, 119],
-#     6: [185, 231, 105],
-#     7: [107, 137, 198],
-#     8: [241, 196, 83],
-#     9: [242, 158, 76],
-#     10: [234, 114, 71],
-#     11: [215, 95, 155],
-#     12: [207, 113, 192],
-#     13: [159, 89, 165],
-#     14: [142, 82, 172],
-#     15: [158, 115, 200],
-#     16: [116, 95, 159],
-# }
-# City Scapes Color Map for version_3
-#
-# color_map = {
-#     0: [0, 0, 0], #Void
-#     1: [128, 64,128], #Road
-#     2: [244, 35,232], # Side Walk
-#     3: [70, 70, 70], # Building
-#     4: [102,102,156], # Wall
-#     5: [190,153,153],#Fence
-#     6: [153,153,153],# pole
-#     7: [250,170, 30], # traffic light
-#     8: [220,220,  0], #Traffic sign
-#     9: [107,142, 35], # Vegitation
-#     10: [70,130,180], #sky
-#     11: [220, 20, 60], #human
-#     12: [255,  0,  0],#rider
-#     13: [ 0,  0,142],#car
-#     14: [ 0, 60,100],# other vehicles
-#     15: [ 0,  0,230],  #bike and motorcycle
-#     16: [116, 95, 159],
-# }
-
-color_map = {
-    0: [0, 0, 0],  # Void
-    1: [128, 64, 128],  # Road
-    2: [244, 35, 232],  # Side Walk
-    3: [70, 70, 70],  # Building
-    4: [102, 102, 156],  # Wall
-    5: [190, 153, 153],  # Fence
-    6: [153, 153, 153],  # pole
-    7: [250, 170, 30],  # traffic light
-    8: [220, 220, 0],  # Traffic sign
-    9: [107, 142, 35],  # Vegitation
-    10: [70, 130, 180],  # sky
-    11: [220, 20, 60],  # human
-    12: [255, 0, 0],  # rider
-    13: [0, 0, 142],  # car
-    14: [0, 60, 100],  # other vehicles
-    15: [0, 0, 230],  # bike and motorcycle
-    16: [116, 95, 159],  # Rickshaw
+# sys.path.insert(0, "../SemanticStyleGAN")
+# from visualize.color_maps import color_map_v6_24C
+#TODO: Import color mappings correctly
+color_map_v6_24C = {
+    0: [0, 0, 0],
+    1: [128, 64, 128],
+    2: [244, 35, 232],
+    3: [220, 20, 60],
+    4: [255, 127, 80],
+    5: [255, 215, 0],
+    6: [0, 0, 142],
+    7: [0, 0, 230],
+    8: [0, 0, 139],
+    9: [0, 0, 200],
+    10: [0, 60, 100],
+    11: [202, 202, 156],
+    12: [102, 102, 156],
+    13: [190, 153, 153],
+    14: [220, 220, 0],
+    15: [250, 170, 30],
+    16: [153, 153, 153],
+    17: [70, 70, 70],
+    18: [101, 101, 101],
+    19: [107, 142, 35],
+    20: [70, 130, 180],
+    21: [128, 128, 128],
+    22: [224, 224, 224],
+    23: [153, 255, 255],
 }
 
-# City Scapes Color Map for version 1
-#
-# color_map = {
-#     0: [0, 0, 0], #Void
-#     1: [128, 64,128], #Road
-#     2: [220, 20, 60], # Human
-#     3: [ 0,  0,142], # Vehicle
-#     4: [70, 70, 70], # Buildings/Construction
-#     5: [190,153,153],#Objects
-#     6: [107,142, 35],# Naturer
-#     7: [70,130,180], #Sky
-# }
+color_map = color_map_v6_24C
+
+
 def generate_img(
     model, styles, mean_latent=None, truncation=1.0, batch_size=16, *args, **kwargs
 ):
@@ -103,7 +64,7 @@ def generate_img(
             truncation=truncation,
             truncation_latent=mean_latent,
             *args,
-            **kwargs
+            **kwargs,
         )
         images.append(images_)
     images = torch.cat(images, 0)
@@ -121,7 +82,7 @@ def generate(
             truncation=truncation,
             truncation_latent=mean_latent,
             *args,
-            **kwargs
+            **kwargs,
         )
         images.append(images_.detach().cpu())
         segs.append(segs_.detach().cpu())
@@ -129,7 +90,7 @@ def generate(
     return tensor2image(images), tensor2seg(segs)
 
 
-def generate_tensors(
+def generate_tensor(
     model, styles, mean_latent=None, truncation=1.0, batch_size=16, *args, **kwargs
 ):  # TODO: combine this and generate into one func
     images, segs = [], []
@@ -140,12 +101,12 @@ def generate_tensors(
             truncation=truncation,
             truncation_latent=mean_latent,
             *args,
-            **kwargs
+            **kwargs,
         )
         images.append(images_.detach().cpu())
         segs.append(segs_.detach().cpu())
     images, segs = torch.cat(images, 0), torch.cat(segs, 0)
-    return tensor2image(images), tensor2seg(segs), images, segs
+    return images, segs
 
 
 def tensor2image(tensor):

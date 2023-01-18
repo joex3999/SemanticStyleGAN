@@ -523,26 +523,26 @@ class DualBranchDiscriminator(nn.Module):
             seg_size = img_size
 
         # convs = [ConvLayer(img_dim, self.channels[img_size], 1, spectral_norm=True)]
-        convs = [ConvLayer(img_dim, self.channels[img_size], 1, spectral_norm=True)]
+        convs = [ConvLayer(img_dim, self.channels[img_size], 1, spectral_norm=False)]
         in_channel = self.channels[img_size]
         for i in range(log_size, 2, -1):
             out_channel = self.channels[2 ** (i - 1)]
             convs.append(
                 # ResBlock(in_channel, out_channel, blur_kernel, spectral_norm=True)
-                ResBlock(in_channel, out_channel, blur_kernel, spectral_norm=True)
+                ResBlock(in_channel, out_channel, blur_kernel, spectral_norm=False)
             )
             in_channel = out_channel
         self.convs_img = nn.Sequential(*convs)
 
         log_size = int(math.log(seg_size, 2))
         # convs = [ConvLayer(seg_dim, self.channels[seg_size], 1, spectral_norm=True)]
-        convs = [ConvLayer(seg_dim, self.channels[seg_size], 1, spectral_norm=True)]
+        convs = [ConvLayer(seg_dim, self.channels[seg_size], 1, spectral_norm=False)]
         in_channel = self.channels[seg_size]
         for i in range(log_size, 2, -1):
             out_channel = self.channels[2 ** (i - 1)]
             convs.append(
                 # ResBlock(in_channel, out_channel, blur_kernel, spectral_norm=True)
-                ResBlock(in_channel, out_channel, blur_kernel, spectral_norm=True)
+                ResBlock(in_channel, out_channel, blur_kernel, spectral_norm=False)
             )
             in_channel = out_channel
         self.convs_seg = nn.Sequential(*convs)

@@ -8,9 +8,9 @@
 #SBATCH --mail-type=NONE
 ##SBATCH --partition=DEADLINE
 ##SBATCH --comment=ECCVRebuttal
-#SBATCH --output=/usr/stud/faragy/storage/user/logs/IDD_v8/%j_output.out
-#SBATCH --error=/usr/stud/faragy/storage/user/logs/IDD_v8/%j_error.out
-#SBATCH --exclude=node4
+#SBATCH --output=/usr/stud/faragy/storage/user/logs/IDD_v10_adapt/%j_output.out
+#SBATCH --error=/usr/stud/faragy/storage/user/logs/IDD_v10_adapt/%j_error.out
+
 # Activate everything you need
 #module load cuda/11.3
 
@@ -18,11 +18,12 @@
 ##Preprocessing
 ## Since indian driving dataset is not present on TUM's side, we feed the lmdb datasets directly from Stuttgart.
 
-CUDA_VISIBLE_DEVICES=0,1,2 python -m torch.distributed.launch --nproc_per_node=3 train.py --dataset "/usr/stud/faragy/storage/user/data/IDD/lmdb_datasets/lmdb_v5" --inception "/usr/stud/faragy/storage/user/data/IDD/inception_models/inception_v5.pkl" --save_every 5000  --checkpoint_dir /usr/stud/faragy/storage/user/data/checkpoints/IDD_v8 --seg_dim 17 --size 256  --residual_refine 
+#CUDA_VISIBLE_DEVICES=0,1,2 python -m torch.distributed.launch --nproc_per_node=3 train.py --dataset "/usr/stud/faragy/storage/user/data/IDD/lmdb_datasets/lmdb_v5" --inception "/usr/stud/faragy/storage/user/data/IDD/inception_models/inception_v5.pkl" --save_every 5000  --checkpoint_dir /usr/stud/faragy/storage/user/data/checkpoints/IDD_v8 --seg_dim 17 --size 256  --residual_refine 
+
+##Domain Adapatation
 
 
-
-
+CUDA_VISIBLE_DEVICES=0,1,2 python -m torch.distributed.launch --nproc_per_node=3 train_adaptation.py --dataset "/usr/stud/faragy/storage/user/data/IDD/lmdb_datasets/lmdb_v1_images_only"  --save_every 5000  --checkpoint_dir /usr/stud/faragy/storage/user/data/checkpoints/IDD_v11_adapatation --seg_dim 16 --size 256  --residual_refine --ckpt="/usr/stud/faragy/storage/user/data/checkpoints/SSG_v3.13/ckpt/140000_2.pt" --freeze_local
 
 
 
