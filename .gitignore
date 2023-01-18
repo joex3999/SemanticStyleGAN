@@ -134,3 +134,5 @@ pretrained/
 #Custom 
 log_files/
 notebooks/data
+notebooks/thesis_related_results
+inverting_output/
