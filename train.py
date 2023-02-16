@@ -569,7 +569,7 @@ if __name__ == "__main__":
         torch.distributed.init_process_group(backend="nccl", init_method="env://")
         synchronize()
 
-    args.latent = 512  ## J-TODO: Changing latent to 64
+    args.latent = 512 
     args.n_mlp = 8
 
     args.start_iter = 0

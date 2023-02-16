@@ -47,9 +47,14 @@ Sefa results on seperated layers:
  Layer 4: dir 0 : Quite good for overall car closeups dir3: good mid and left side car increase
  Layer 5: dir0: decent increase on left(from right to left) ... dir 2: good increase on left ... dir5: increase on right decreaes on left
 
+road:
+5_0: left side inc/dec
+9_0: darken road
+9_2/9_5: Shadows on road.
+
 PCA results on seperated layers :
 Layer2: dir found to increase car on left// but not worth while
-Layer 4: dir1: good increase/decrease left without affecting mid
+Layer 4: dir1: good increase/decrease sides/left without affecting mid dir2: good inc and decrease mid
 Layer 5: dir1: good increase of cars on right . Dir 2: good increase of cars on left, maybe 5 good increase on left while mid static
 __________________________
 coarse layer PCA 
@@ -109,3 +114,63 @@ layer9:
     dir4: Increase brightness for trees.
 layer 8 :
     dir7:leaves number
+
+5_7: good remove or add trees
+4_9: decrease on left increase on right ?
+
+______________________________________________________________
+Paper related : dir (x,y) where x is layer, y is eigenvec.
+For table 4 (Concerning mapillary directions): This is using GANSPACe in S Space.
+Class car :
+5_0: Cars inc and dec  ## Still left, increase the scale.
+5_1; increase sider/ dec mid 
+5_4: increase/decrease sides
+4_2: left side inc/ right side and mid inc
+
+9_3: turn cars black/ white
+
+Class Sky:
+5_1: inc/dec sky. same as 5_2 same as 5_4same as 4_1 ( good )
+5_5: Affect right side of sky.
+
+
+9_0: Brighten or darken sky.
+9_7: Cloudy or clear skies (9_8: might be better) (8_1 good,)
+..
+newest: 
+9_9: night and day ? or 9_6 
+
+
+Class Vegi:
+9_1: Removes leaves similar to 9_0 and 9_4 9_7 also interesting
+5_0: decrease trees/ increase bushes
+5_3: Increase/ decrease vegitation as a whole
+
+
+USING SEFA: ( layer,dir)
+Sky:
+9_0: night to day
+9_3/9_7/9_5/8_7: make it Cloudy
+5_0: Drecrease sky 
+4_2: decrease sky all sides.
+
+vegetation:
+5_0: bring vegi down to bushes
+5_1: increase trees
+5_2: increase bushes and keep trees
+9_0: darken trees
+9_4 blur trees
+9_3: remove leaves
+9_5: turn trees blue or red ( same as 9_7)
+
+_______________________________________-
+
+Important FID curves:
+TTUR:v3.6
+BS:4/16LG no spectral :3.3
+BS 16/ no spectral norm : v3.12 -> TUM
+v3.13: Your best model.
+24 classes /bs 12: v7.0
+
+3.7 : First increase of batchsize + spectral for 16 class
+3.5_2: batch size 4  no spectral 

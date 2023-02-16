@@ -221,7 +221,54 @@ cut_down_mapping_v4 = {
     32: 11,  # Motorcycle
     33: 11,  # Bicycle
 }
-
+"""
+Version 5 (9 classes )
+0: void: unlabeled/ego vehicle/ rectif. border/ out of roi /static/ dynamic/ ground
+1: Road :  roadq/parking/rail track/swalk
+2: Buildings and Walls:building/bridge/tunnel/wall/ guard rail /fence 
+3: Poles/Traffic Sign./ Tr.Light: pole / pole group / traffic light / traffic sign
+4: Veget.: Vegetation terrain
+5: Sky: Sky 
+6: Person/Rider:Person/Rider
+7: Car:car
+8: Any Vehicle: caravan/ trailer/ bus/ truck / train /motorcycle/ bicycle
+"""
+cut_down_mapping_v5 = {
+    0: 0,  # unlabeled
+    1: 0,  # ego v
+    2: 0,  # recti border
+    3: 0,  # out of roi
+    4: 0,  # static
+    5: 0,  # dynamic
+    6: 0,  # ground
+    7: 1,  # road
+    8: 1,  # swalk
+    9: 1,  # parking
+    10: 1,  # railtrack
+    11: 2,  # building
+    12: 2,  # wall
+    13: 2,  # fence
+    14: 2,  # guard rail
+    15: 2,  # Bridge
+    16: 2,  # tunnel
+    17: 3,  # Pole
+    18: 3,  # polegroup
+    19: 3,  # Traffic light
+    20: 3,  # traffic sign
+    21: 4,  # Vegi
+    22: 4,  # Terrain
+    23: 5,  # Sky
+    24: 6,  # Person
+    25: 6,  # Rider
+    26: 7,  # Car
+    27: 8,  # Truck
+    28: 8,  # Bus
+    29: 8,  # Caravan
+    30: 8,  # Trailer
+    31: 8,  # Train
+    32: 8,  # Motorcycle
+    33: 8,  # Bicycle
+}
 labels = {
     "unlabeled": 0,
     "ego vehicle": 1,
