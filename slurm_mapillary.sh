@@ -4,7 +4,7 @@
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=2
 #SBATCH --mem=32G
-#SBATCH --gpus=3
+#SBATCH --gpus=1
 #SBATCH --time=4-23:00:00
 #SBATCH --mail-type=ALL
 ##SBATCH --partition=DEADLINE
@@ -17,6 +17,9 @@ module load cuda/11.3
 
 
 
+#Generate some image.
+python3.9 visualize/generate.py /no_backups/g013/checkpoints/mapillary_v1/ckpt/240000.pt --outdir /usrhomes/g013/SemanticStyleGAN/results/mapillary_appendix --sample 100 --save_latent
+
 #Preprocessing mapillary was done from inside the notebook.
 
 #Prepare Data 
@@ -26,7 +29,7 @@ module load cuda/11.3
 #python3.9 prepare_inception.py /no_backups/g013/data/mapillary/lmdb_datasets/lmdb_v1 --output /no_backups/g013/data/mapillary/inception_models/inception_v1.pkl --size 256 --dataset_type mask
 
 
-CUDA_VISIBLE_DEVICES=0,1,2 python3.9 -m torch.distributed.launch --nproc_per_node=3 train.py --dataset /no_backups/g013/data/mapillary/lmdb_datasets/lmdb_v1 --inception /no_backups/g013/data/mapillary/inception_models/inception_v1.pkl --save_every 5000 --checkpoint_dir /no_backups/g013/checkpoints/mapillary_v1 --ckpt "/no_backups/g013/checkpoints/mapillary_v1/ckpt/040000.pt"  --seg_dim 16 --size 256  --residual_refine 
+#CUDA_VISIBLE_DEVICES=0,1,2 python3.9 -m torch.distributed.launch --nproc_per_node=3 train.py --dataset /no_backups/g013/data/mapillary/lmdb_datasets/lmdb_v1 --inception /no_backups/g013/data/mapillary/inception_models/inception_v1.pkl --save_every 5000 --checkpoint_dir /no_backups/g013/checkpoints/mapillary_v1 --ckpt "/no_backups/g013/checkpoints/mapillary_v1/ckpt/040000.pt"  --seg_dim 16 --size 256  --residual_refine 
 
 
 

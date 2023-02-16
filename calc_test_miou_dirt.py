@@ -13,13 +13,18 @@ import math
 sys.path.insert(0, "../SemanticStyleGAN")
 from models import make_model
 from models.segmentor.models.segmentor import Segmentor
-
 from utils.options import Options
 from utils.confusion_matrix import get_confusion_matrix
 from visualize.utils import generate
+import torchvision.transforms as transforms
+from PIL import Image
 
-
+"""
+NOTE: This file is was created to retrieve one metric. 
+IT IS EXTREMELY HARD CODED. PLEASE DO NOT CHANGE OR USE.
+"""
 ##TODO: Remove and import from another place
+counter = 0
 color_map = {
     0: [0, 0, 0],  # Void
     1: [128, 64, 128],  # Road
@@ -126,69 +131,42 @@ def initalize_model(ckpt, device):
     return model
 
 
-def get_generated_data(ckpt, sample, truncation, truncation_mean, batch, device="cuda"):
-    logger.info("Calculating generated cond")
-    logger.info(f"Loading model from checkpoint")
-    model = initalize_model(ckpt, "cuda")
-    logger.info(f"Model initalized successfuly")
-    mean_latent = model.style(
-        torch.randn(truncation_mean, model.style_dim, device=device)
-    ).mean(0)
-    start_time = time.time()
-    res_images = []
-    res_segs = []
-    with torch.no_grad():
-        n_batch = sample // batch
-        resid = sample - (n_batch * batch)
-        batch_sizes = [batch] * n_batch + [resid]
-        for batch_iter in tqdm(batch_sizes):
-            if batch_iter < batch:
-                logger.info(f"Skipping batch iteration of size {batch_iter}")
-                continue
-
-            styles = model.style(
-                torch.randn(batch_iter, model.style_dim, device=device)
-            )
-            styles = truncation * styles + (1 - truncation) * mean_latent.unsqueeze(0)
-            images, segs = generate(
-                model, styles, mean_latent=mean_latent, batch_size=batch
-            )
-
-            for i in range(len(images)):
-                image = torch.tensor(images[i])
-                image = image.permute(2, 0, 1)
-                image = image.unsqueeze(0)
-                # J-TODO: Check robustness of interpolation/ size change. And refactor transformation.
-                transform = T.Resize((128, 256))
-                image = transform(image)
-                res_images.append(image)
-
-                converted_seg = from_rgb_to_label(segs[i], color_map)
-                converted_seg = torch.tensor(converted_seg)
-                converted_seg = converted_seg.unsqueeze(0)
-                converted_seg = transform(converted_seg)
-                res_segs.append(converted_seg)
-
-        logger.info(f"Time taken to generate images : {time.time()-start_time}")
-        res_images = torch.tensor(np.concatenate(res_images))
-        res_segs = torch.tensor(np.concatenate(res_segs))
-    logger.info(
-        f"res_images shape is :{res_images.shape}    res_segs shape is : {res_segs.shape}"
-    )
-    logger.info(f"Average speed: {(time.time() - start_time)/(sample)}s")
-    return res_images, res_segs
+def get_data(img_path, seg_path, batch_size, max_image_num):
+    img_list = []
+    seg_list = []
+    global counter
+    for _ in range(batch_size):
+        seg = torch.load(
+            f"{seg_path}/image_{counter}.pt", map_location=torch.device("cpu")
+        )
+        img = Image.open(f"{img_path}/image_{counter}.png").convert("RGB")
+        to_tensor = transforms.ToTensor()
+        img = to_tensor(img)
+        img = img.unsqueeze(0)
+        seg_list.append(seg)
+        img_list.append(img)
+        counter += 1
+        if len(seg_list) >= batch_size or counter >= max_image_num:
+            imgs = torch.cat(img_list, 0) * 255
+            segs = torch.cat(seg_list, 0)
+            segs = torch.argmax(segs, dim=1)
+            transform = T.Resize((128, 256))
+            imgs = transform(imgs)
+            segs = transform(segs)
+            return imgs, segs
 
 
 def compute_confusion_matrix(opt, data, model, num_semantics=17):
     with torch.no_grad():
         # np.save("./notebooks/data/segmentation_model_input_SSG.npy", data["img"].cpu())
-        data["img"] = (data["img"] * 2 / 255) - 1  # convert image range from [-1 to 1]
+        data["img"] = (data["img"] * 2 / 255) - 1  # convert image range to [-1 to 1]
         pred_seg = model(data, mode="inference", hard=False)
     pred_sem_seg = pred_seg["sem_seg"]
 
     sem_index_pred = pred_sem_seg.max(dim=1, keepdim=True)[1]
     sem_index_pred = torch.from_numpy(simplify_image_labels(sem_index_pred, False))
     sem_index_real = data["sem_seg"].cuda()
+    sem_index_real = torch.from_numpy(simplify_image_labels(sem_index_real, False))
     sem_index_real = sem_index_real.unsqueeze(1)
     logger.info(sem_index_real.shape)
     # np.save("./notebooks/data/segmentation_model_output_SSG.npy", pred_sem_seg.cpu())
@@ -241,30 +219,29 @@ if __name__ == "__main__":
     device = "cuda"
     eval_idx = range(1, 16, 1)
 
- 
+    ## MIOU SPECIFIC PARAMETERS ##
+    seg_path = "/no_backups/g013/other_GANs/cityscapes_segs"
+    img_path = "/no_backups/g013/other_GANs/cityscapes_imgs"
+    max_img_num = 3000
     segmentor = initialize_segmentor(segmentor_opt)
-
-    
-    gen_images, gen_segmentations = get_generated_data(
-        segmentor_opt.ckpt,
-        segmentor_opt.sample,
-        segmentor_opt.truncation,
-        segmentor_opt.truncation_mean,
-        batch_size,
-        device,
-    )
+    ######
     logger.info(
         f"time taken to calculate statistics of fake data: {time.time()-start_time}"
     )
     gan_test_confusion_matrix = torch.zeros(
         (segmentor_opt.res_semantics, segmentor_opt.res_semantics)
     )
-    batch_range = int(len(gen_images) / seg_batch_size)
     # Segmenter takes input as batch size 16
-    for i in range(0, batch_range):
+    batch_range = int(max_img_num / batch_size)
+    for i in range(batch_range):
+        images, segmentations = get_data(img_path, seg_path, batch_size, max_img_num)
+
+        print(
+            f"shape of images and segmentations : {images.shape}  /  {segmentations.shape}"
+        )
         data = {
-            "img": gen_images[i : i + seg_batch_size].float(),
-            "sem_seg": gen_segmentations[i : i + seg_batch_size].float(),
+            "img": images.float(),
+            "sem_seg": segmentations.float(),
         }
         gan_test_confusion_matrix += compute_confusion_matrix(
             segmentor_opt, data, segmentor, segmentor_opt.res_semantics

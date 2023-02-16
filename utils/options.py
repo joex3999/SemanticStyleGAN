@@ -719,6 +719,13 @@ class Options:
             default=17,
             help="number of samples to be generated to calculate FSD",
         )
+        parser.add_argument(
+            "--train_miou",
+            default=False,
+            action="store_true",
+            help="if true, load extended version of dataset if available",
+        )
+        parser.add_argument("--lmdb", type=str,help="Loads lmdb dataset for cityscapes in case of train_mious")
         return parser
 
     def initialize_seg_generator(self, parser):

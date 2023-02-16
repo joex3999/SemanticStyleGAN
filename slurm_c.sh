@@ -18,7 +18,7 @@
 module load cuda/11.3
 #Salloc command
 #salloc --job-name="SemanticStyleGan_CityScapes" --nodes=1 --ntasks=1  --cpus-per-task=2 --mem=32G --gpus=1 --time=4-23:00:00 --qos=batch
-python3.9 visualize/generate.py "/no_backups/g013/checkpoints/SSG_v4.1/ckpt/215000.pt" --outdir results/controlled_samples_128 --sample 100 --save_latent
-#python3.9 visualize/generate.py /no_backups/g013/checkpoints/SSG_v3.13/ckpt/140000.pt --outdir results/controlled_samples --sample 1 --save_latent
+#python3.9 visualize/generate.py "/no_backups/g013/checkpoints/SSG_v4.1/ckpt/215000.pt" --outdir results/controlled_samples_128 --sample 100 --save_latent
+python3.9 visualize/generate.py /no_backups/g013/checkpoints/SSG_v3.13/ckpt/140000.pt --outdir /usrhomes/g013/SemanticStyleGAN/results/cityscapes_appendix  --sample 100 --save_latent
 #python3.9 visualize/generate_components.py /no_backups/g013/checkpoints/SSG_v3.13/ckpt/140000.pt --outdir results/samples --latent results/controlled_samples/000002_latent.npy
 #python3.9 visualize/generate_video.py /no_backups/g013/checkpoints/SSG_v3.13/ckpt/140000.pt --outdir results/video --latent results/saved_samples/second_latent.npy

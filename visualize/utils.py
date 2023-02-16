@@ -18,29 +18,12 @@
 import numpy as np
 import torch
 from scipy.interpolate import CubicSpline
+import sys
 
-# color_map = {
-#     0: [0, 0, 0],
-#     1: [239, 234, 90],
-#     2: [44, 105, 154],
-#     3: [4, 139, 168],
-#     4: [13, 179, 158],
-#     5: [131, 227, 119],
-#     6: [185, 231, 105],
-#     7: [107, 137, 198],
-#     8: [241, 196, 83],
-#     9: [242, 158, 76],
-#     10: [234, 114, 71],
-#     11: [215, 95, 155],
-#     12: [207, 113, 192],
-#     13: [159, 89, 165],
-#     14: [142, 82, 172],
-#     15: [158, 115, 200],
-#     16: [116, 95, 159],
-# }
-# City Scapes Color Map for version_3
-#
-color_map = {
+# sys.path.insert(0, "../SemanticStyleGAN")
+# from visualize.color_maps import color_map_v6_24C
+#TODO: Import color mappings correctly
+color_map_v3_16C = {
     0: [0, 0, 0],  # Void
     1: [128, 64, 128],  # Road
     2: [244, 35, 232],  # Side Walk
@@ -58,49 +41,16 @@ color_map = {
     14: [0, 60, 100],  # other vehicles
     15: [0, 0, 230],  # bike and motorcycle
     16: [116, 95, 159],
+    17: [70, 70, 70],
+    18: [101, 101, 101],
+    19: [107, 142, 35],
+    20: [70, 130, 180],
+    21: [128, 128, 128],
+    22: [224, 224, 224],
+    23: [153, 255, 255],
 }
 
-# IDD Color map for the 13 LG version
-# color_map = {
-#     0: [0, 0, 0],  # Void
-#     1: [128, 64, 128],  # Drivable
-#     2: [244, 35, 232],  # Non-drivable
-#     3: [220, 20, 60],  # living Things
-#     4: [0, 0, 230],  # 2 wheeler
-#     5: [190, 153, 153],  # Rickshaw
-#     6: [0, 0, 142],  # Car
-#     7: [0, 60, 100],  # Large Vehicles
-#     8: [220, 220, 0],  # Barriers
-#     9: [153, 153, 153],  # Structures
-#     10: [70, 70, 70],  # Construction
-#     11: [107, 142, 35],  # Vegitation
-#     12: [70, 130, 180],  # Sky
-# }
-
-# IDD Color map for the the 21LG IDD_v6
-# color_map = {
-#     0: [0, 0, 0],  # Void
-#     1: [128, 64, 128],  # Drivable
-#     2: [244, 35, 232],  # Non-drivable
-#     3: [220, 20, 60],  # Person rider
-#     4: [255, 127, 80],  # animal
-#     5: [255, 215, 0],  # Rickshaw
-#     6: [0, 0, 142],  # Car
-#     7: [0, 0, 230],  # Motorcycle/bic
-#     8:[0, 0, 139],  # truck
-#     9: [0, 0, 200],  # bus
-#     10:  [0, 60, 100],  # other v
-#     11: [202,202,156],  # curb
-#     12: [102, 102, 156],  # wall
-#     13: [190, 153, 153], #fence
-#     14:[220, 220, 0],#traffics
-#     15:[250, 170, 30], #trafficl
-#     16:[153, 153, 153],#polegroup
-#     17:[70, 70, 70],#building
-#     18:[101, 101, 101],#bridge/tunnel
-#     19:[107, 142, 35],#vegit
-#     20: [70, 130, 180],#sky/fallbackb
-# }
+color_map = color_map_v3_16C
 
 
 def generate_img(

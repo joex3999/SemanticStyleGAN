@@ -50,16 +50,6 @@ cut_down_mapping_v1 = {
 
 """
 Version 2 
-0: unlabled out of roi
-1: Flat : road sidewalk parking rail track
-2: human : person rider
-3: vehicle : car truck bus on rails motorcycle bicycle caravan trailer
-4: construction : building wall fence guard rail bridge tunnel
-5: object : pole pole group rtaffic sign traffic light
-6: nature : vegetation terrain
-7: sky : sky
-8:void : ground dynamic static
-
 0: void: unlabeled/ego vehicle/ rectif. border/ out of roi /static/ dynamic/ ground
 1: Road :  roadq/parking/rail track
 2: S.Walk: Swalk
@@ -111,6 +101,262 @@ cut_down_mapping_v2 = {
     29: 14,
     30: 14,
     31: 14,
+    32: 15,
+    33: 15,
+}
+
+"""
+Version 3
+0: void: unlabeled/ego vehicle/ rectif. border/ out of roi /static/ dynamic/ ground
+1: Road :  roadq/parking/rail track
+2: S.Walk: Swalk
+3: Build:building
+4: Wall: wall
+5: Fence: fence
+6: Pole: pole
+7: Tr.Light: traffic light
+8: Sign:  rtraffic sign
+9: Veget.: Vegetation
+10: Sky: Sky 
+11: Person:Person
+12:Rider: rider
+13: Car:car
+14: Caravan & trailer: caravan/ trailer
+15: M.Bike/Bike: motorcycle/ bicycle
+16:Pole Group: Pole Group
+17:terrain: Terrain
+18:Bridge: bridge
+19:Tunnel:tunnel
+20:Guard rail: Guard Rail.
+21:Train:Train
+22:Bus & truck : bus/ truck
+23: Guard rail : Guard rail
+"""
+cut_down_mapping_v3_24C = {
+    0: 0,
+    1: 0,
+    2: 0,
+    3: 0,
+    4: 0,
+    5: 0,
+    6: 0,
+    7: 1,
+    8: 2,
+    9: 1,
+    10: 1,
+    11: 3,
+    12: 4,
+    13: 5,
+    14: 23,
+    15: 18,
+    16: 19,
+    17: 6,
+    18: 16,
+    19: 7,
+    20: 8,
+    21: 9,
+    22: 17,
+    23: 10,
+    24: 11,
+    25: 12,
+    26: 13,
+    27: 22,
+    28: 22,
+    29: 14,
+    30: 14,
+    31: 21,
+    32: 15,
+    33: 15,
+}
+
+
+"""
+Version 4 (12 classes )
+0: void: unlabeled/ego vehicle/ rectif. border/ out of roi /static/ dynamic/ ground
+1: Road :  roadq/parking/rail track/swalk
+2: Build:building/bridge/tunnel
+3: Wall: wall/ guard rail /fence 
+4: Pole: pole / pole group
+5: Tr.Light: traffic light / traffic sign
+6: Veget.: Vegetation terrain
+7: Sky: Sky 
+8: Person/Rider:Person/Rider
+9: Car:car
+10: Other vehicles: caravan/ trailer/ bus/ truck / train
+11: M.Bike/Bike: motorcycle/ bicycle
+"""
+cut_down_mapping_v4 = {
+    0: 0,  # unlabeled
+    1: 0,  # ego v
+    2: 0,  # recti border
+    3: 0,  # out of roi
+    4: 0,  # static
+    5: 0,  # dynamic
+    6: 0,  # ground
+    7: 1,  # road
+    8: 1,  # swalk
+    9: 1,  # parking
+    10: 1,  # railtrack
+    11: 2,  # building
+    12: 3,  # wall
+    13: 3,  # fence
+    14: 3,  # guard rail
+    15: 2,  # Bridge
+    16: 2,  # tunnel
+    17: 4,  # Pole
+    18: 4,  # polegroup
+    19: 5,  # Traffic light
+    20: 5,  # traffic sign
+    21: 6,  # Vegi
+    22: 6,  # Terrain
+    23: 7,  # Sky
+    24: 8,  # Person
+    25: 8,  # Rider
+    26: 9,  # Car
+    27: 10,  # Truck
+    28: 10,  # Bus
+    29: 10,  # Caravan
+    30: 10,  # Trailer
+    31: 10,  # Train
+    32: 11,  # Motorcycle
+    33: 11,  # Bicycle
+}
+
+
+"""
+Version 8 29 classes
+0: void: unlabeled/ego vehicle/ rectif. border/ out of roi /static/ dynamic/ ground
+1: Road :  roadq
+2: S.Walk: Swalk
+3: Build:building
+4: Wall: wall
+5: Fence: fence
+6: Pole: pole
+7: Tr.Light: traffic light
+8: Sign:  rtraffic sign
+9: Veget.: Vegetation
+10: Sky: Sky 
+11: Person:Person
+12:Rider: rider
+13: Car:car
+14: Caravan & trailer: caravan
+15: M.Bike/Bike: motorcycle
+16:Pole Group: Pole Group
+17:terrain: Terrain
+18:Bridge: bridge
+19:Tunnel:tunnel
+20:Guard rail: Guard Rail.
+21:Train:Train
+22:Bus & truck : bus
+23: Guard rail : Guard rail
+
+24:parking
+25:rail track
+26:truck
+27:bicycle
+28:trailer
+"""
+cut_down_mapping_v8_29C = {
+    0: 0,
+    1: 0,
+    2: 0,
+    3: 0,
+    4: 0,
+    5: 0,
+    6: 0,
+    7: 1,
+    8: 2,
+    9: 24,
+    10: 25,
+    11: 3,
+    12: 4,
+    13: 5,
+    14: 23,
+    15: 18,
+    16: 19,
+    17: 6,
+    18: 16,
+    19: 7,
+    20: 8,
+    21: 9,
+    22: 17,
+    23: 10,
+    24: 11,
+    25: 12,
+    26: 13,
+    27: 26,
+    28: 22,
+    29: 14,
+    30: 28,
+    31: 21,
+    32: 15,
+    33: 27,
+}
+"""
+Version 8 29 classes
+0: void: unlabeled/ego vehicle/ rectif. border/ out of roi /static/ dynamic/ ground
+1: Road :  roadq
+2: S.Walk: Swalk
+3: Build:building
+4: Wall: wall
+5: Fence: fence
+6: Pole: pole
+7: Tr.Light: traffic light
+8: Sign:  rtraffic sign
+9: Veget.: Vegetation
+10: Sky: Sky 
+11: Person:Person
+12:Rider: rider
+13: Car:car
+14: Caravan & trailer: caravan
+15: M.Bike/Bike: motorcycle /bicycle
+16:Pole Group: Pole Group
+17:terrain: Terrain
+18:Bridge: bridge
+19:Tunnel:tunnel
+20:Guard rail: Guard Rail.
+21:Train:Train
+22:Bus & truck : bus
+23: Guard rail : Guard rail
+
+24:parking
+25:rail track
+26:truck/trailer
+"""
+
+cut_down_mapping_v9_27C = {
+    0: 0,
+    1: 0,
+    2: 0,
+    3: 0,
+    4: 0,
+    5: 0,
+    6: 0,
+    7: 1,
+    8: 2,
+    9: 24,
+    10: 25,
+    11: 3,
+    12: 4,
+    13: 5,
+    14: 23,
+    15: 18,
+    16: 19,
+    17: 6,
+    18: 16,
+    19: 7,
+    20: 8,
+    21: 9,
+    22: 17,
+    23: 10,
+    24: 11,
+    25: 12,
+    26: 13,
+    27: 26,
+    28: 22,
+    29: 14,
+    30: 26,
+    31: 21,
     32: 15,
     33: 15,
 }

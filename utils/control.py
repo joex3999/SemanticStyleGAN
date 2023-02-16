@@ -132,7 +132,7 @@ class Control:
         imageio.mimwrite(f"{save_dir}", frames, fps=20)
 
     def generate_and_plot_image(
-        self, styles, class_index, coords=None, plot=True, get_image=True
+        self, styles, class_index, coords=None, plot=True, get_image=True, mask=None
     ):
         image, seg = generate(
             self.model,
@@ -141,11 +141,10 @@ class Control:
             randomize_noise=False,
             batch_size=self.batch,
             coords=coords,
+            composition_mask=mask,
         )
-
         all_classes = self.get_class_dist(seg[0], color_map)
         class_percentage = (all_classes[0][class_index] / all_classes.sum()) * 100
-
         if plot:
             print(f"Class percentage is {class_percentage}")
             plt.imshow(np.concatenate((image[0], seg[0]), 1))
@@ -221,10 +220,14 @@ class Control:
     ):
 
         styles_copy = styles.clone().detach()
+
         if not whole_image:
             if isinstance(principal_component, list):
                 for pc in principal_component:
                     styles_copy[0, latent_index] += pc * change_factor
+            elif isinstance(latent_index, list):
+                for li in latent_index:
+                    styles_copy[0, li] += principal_component * change_factor
             else:
                 styles_copy[0, latent_index] += principal_component * change_factor
         else:
@@ -237,3 +240,91 @@ class Control:
         return self.generate_and_plot_image(
             styles_copy, class_index, plot=plot, get_image=get_image
         )
+
+    def edit_image_inject_coarse(
+        self,
+        class_index,
+        change_factor,
+        styles,
+        principal_component,
+        plot=True,
+        get_image=True,
+        coarse_inject_layer=0,
+    ):
+        styles_copy = styles[0, 0].clone().detach()
+        styles_copy += principal_component * change_factor
+        return self.inject_coarse_and_plot_image(
+            styles,
+            class_index,
+            plot=plot,
+            get_image=get_image,
+            coarse_inject_latent=styles_copy,
+            coarse_inject_class_list=[class_index],
+            coarse_inject_layer=coarse_inject_layer,
+        )
+
+    def edit_image_inject_modulation(
+        self, class_index, styles, w_extended, plot=True, get_image=True
+    ):
+        return self.inject_modulation_and_plot_image(
+            styles, class_index, plot=plot, get_image=get_image, w_extended=w_extended
+        )
+
+    def inject_coarse_and_plot_image(
+        self,
+        styles,
+        class_index,
+        coarse_inject_latent,
+        coarse_inject_class_list,
+        coords=None,
+        plot=True,
+        get_image=True,
+        coarse_inject_layer=0,
+    ):
+        image, seg = generate(
+            self.model,
+            styles[0].unsqueeze(0),
+            mean_latent=self.mean_latent,
+            randomize_noise=False,
+            batch_size=self.batch,
+            coords=coords,
+            coarse_inject_latent=coarse_inject_latent,
+            coarse_inject_class_list=coarse_inject_class_list,
+            coarse_inject_layer=coarse_inject_layer,
+        )
+        all_classes = self.get_class_dist(seg[0], color_map)
+        class_percentage = (all_classes[0][class_index] / all_classes.sum()) * 100
+        if plot:
+            print(f"Class percentage is {class_percentage}")
+            plt.imshow(np.concatenate((image[0], seg[0]), 1))
+            plt.show()
+        if get_image:
+            return image, seg
+        else:
+            return float(class_percentage)
+
+    def inject_modulation_and_plot_image(
+        self, styles, class_index, w_extended, coords=None, plot=True, get_image=True
+    ):
+        """
+        W_extended is a 3D array, n_LGSx n_local_layers x 64.
+        """
+        image, seg = generate(
+            self.model,
+            styles[0].unsqueeze(0),
+            mean_latent=self.mean_latent,
+            randomize_noise=False,
+            batch_size=self.batch,
+            coords=coords,
+            w_injected=w_extended,
+        )
+        all_classes = self.get_class_dist(seg[0], color_map)
+        class_percentage = (all_classes[0][class_index] / all_classes.sum()) * 100
+        if plot:
+            print(f"Class percentage is {class_percentage}")
+            plt.imshow(np.concatenate((image[0], seg[0]), 1))
+            plt.show()
+        if get_image:
+            return image, seg
+        else:
+            return float(class_percentage)
