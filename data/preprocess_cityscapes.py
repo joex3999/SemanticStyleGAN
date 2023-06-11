@@ -12,7 +12,7 @@ import cityscapes_mapping
 
 
 # cut_down_mapping_v1 = cityscapes_mapping.cut_down_mapping_v1
-cut_down_mapping_v2 = cityscapes_mapping.cut_down_mapping_v9_27C
+cut_down_mapping_v2 = cityscapes_mapping.cut_down_mapping_v2
 
 # validation_cutoff = 28000
 

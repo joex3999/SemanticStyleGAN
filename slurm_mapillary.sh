@@ -18,7 +18,7 @@ module load cuda/11.3
 
 
 #Generate some image.
-python3.9 visualize/generate.py /no_backups/g013/checkpoints/mapillary_v1/ckpt/240000.pt --outdir /usrhomes/g013/SemanticStyleGAN/results/mapillary_appendix --sample 100 --save_latent
+#python3.9 visualize/generate.py /no_backups/g013/checkpoints/mapillary_v1/ckpt/240000.pt --outdir /usrhomes/g013/SemanticStyleGAN/results/mapillary_appendix --sample 100 --save_latent
 
 #Preprocessing mapillary was done from inside the notebook.
 
@@ -40,6 +40,15 @@ python3.9 visualize/generate.py /no_backups/g013/checkpoints/mapillary_v1/ckpt/2
 #21LG
 #CUDA_VISIBLE_DEVICES=0,1,2 python3.9 -m torch.distributed.launch --nproc_per_node=3 train.py --dataset /no_backups/g013/data/IDD/lmdb_datasets/lmdb_v4 --inception /no_backups/g013/data/IDD/inception_models/inception_v4.pkl --save_every 5000  --checkpoint_dir /no_backups/g013/checkpoints/IDD_v6  --seg_dim 21 --size 256  --residual_refine --ckpt "/no_backups/g013/checkpoints/IDD_v6/ckpt/005000.pt"
 
+#For miou test mapillary
+python3.9  calc_test_miou.py \
+ --name test_synthetic_cityscapes_128 \
+  --ckpt "/no_backups/g013/checkpoints/SSG_v3.13/ckpt/140000.pt" --sample 5000 --res_semantics 17\
+ --dataset "mapillary" --max_dim 1024 --dim 128 \
+ --x_model deeplabv3 --x_which_iter 137 --x_load_path "/no_backups/g013/checkpoints/segmenter_real_mapillary_128" \
+ --batch_size 16 \
+ --x_synthetic_dataset\
+ --lmdb "/no_backups/g013/data/mapillary/lmdb_datasets/lmdb_v1"
 
 
 

@@ -5,27 +5,28 @@
 #SBATCH --cpus-per-task=2
 #SBATCH --mem=32G
 #SBATCH --mem=8G
-#SBATCH --gpus=2
+#SBATCH --gpus=1
 #SBATCH --time=4-23:00:00
 #SBATCH --mail-type=ALL
 ##SBATCH --partition=DEADLINE
 ##SBATCH --comment=ECCVRebuttal
-#SBATCH --output=./log_files/classes_ablation/SSG%j.%N_output_27C.out
-#SBATCH --error=./log_files/classes_ablation/SSG%j.%N_error_27C.out
+#SBATCH --output=./log_files/classes_ablation_temp/SSG%j.%N_output_27C.out
+#SBATCH --error=./log_files/classes_ablation_temp/SSG%j.%N_error_27C.out
 #SBATCH --qos=batch
+#SBATCH --exclude=linse2
 
 # Activate everything you need
 module load cuda/11.3
 
 #Preprocess CityScapes
-#p#ython3.9 ~/SemanticStyleGAN/data/preprocess_cityscapes.py --data="/no_backups/g013/data/gtFine" --output="/no_backups/g013/data/preprocessed/v9_27C/"
+#python3.9 ~/SemanticStyleGAN/data/preprocess_cityscapes.py --data="/no_backups/g013/data/gtFine" --output="/no_backups/g013/data/preprocessed/v9_27C/"
 
 
 #Prepare Data
 #python3.9 prepare_mask_data.py --cityscapes "True" /no_backups/g013/data/leftImg8bit /no_backups/g013/data/preprocessed/v9_27C --out /no_backups/g013/data/lmdb_datasets/lmdb_v9_27C --size 256
 #python3.9 prepare_inception.py /no_backups/g013/data/lmdb_datasets/lmdb_v9_27C --output /no_backups/g013/data/inception_models/inception_v9_27C.pkl --size 256 --dataset_type mask
 
-CUDA_VISIBLE_DEVICES=0,1 python3.9 -m torch.distributed.launch --nproc_per_node=2 train.py --dataset /no_backups/g013/data/lmdb_datasets/lmdb_v9_27C --inception /no_backups/g013/data/inception_models/inception_v9_27C.pkl --save_every 10000 --checkpoint_dir /no_backups/g013/checkpoints/SSG_27C_new  --seg_dim 27 --size 256  --residual_refine --batch=1 --ckpt "/no_backups/g013/checkpoints/SSG_27C/ckpt/010000.pt" 
+CUDA_VISIBLE_DEVICES=0 python3.9 -m torch.distributed.launch --nproc_per_node=1 train.py --dataset /no_backups/g013/data/lmdb_datasets/lmdb_v9_27C --inception /no_backups/g013/data/inception_models/inception_v9_27C.pkl --save_every 10000 --checkpoint_dir /no_backups/g013/checkpoints/SSG_27C_tempz  --seg_dim 27 --size 256  --residual_refine --batch=1 --ckpt "/no_backups/g013/checkpoints/SSG_27C/ckpt/010000.pt" 
 
 
 #Training using Multiple GPUs
