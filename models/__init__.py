@@ -16,6 +16,7 @@
 # OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
 import pprint
+
 from .semantic_stylegan import SemanticGenerator, DualBranchDiscriminator
 
 
