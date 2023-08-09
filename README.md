@@ -94,8 +94,8 @@ Copyright (c) 2021 Yuval Alaluf
 License (MIT) https://github.com/yuval-alaluf/restyle-encoder/blob/main/LICENSE
 
 **SemanticStyleGAN model and implementation:**  
-https://github.com/seasonSH/SemanticStyleGAN
-Copyright (C) 2022 ByteDance Inc.
+https://github.com/seasonSH/SemanticStyleGAN  
+Copyright (C) 2022 ByteDance Inc.  
 License (MIT) https://github.com/seasonSH/SemanticStyleGAN/tree/main/LICENSES
 
 **Please Note**: The CUDA files are made available under the [Nvidia Source Code License-NC](https://nvlabs.github.io/stylegan2/license.html)
